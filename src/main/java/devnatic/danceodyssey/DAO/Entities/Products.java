@@ -21,12 +21,12 @@ public class Products {
     int idProduct;
     int refProduct;
     String productName;
-    float Price;
+    float price;
     int pointsPrice;
     String description;
-    boolean ProductState;
+    boolean productState;
     Status status;
-    String Model;
+    String model;
     byte[] productimage;
     int quantity;
 }

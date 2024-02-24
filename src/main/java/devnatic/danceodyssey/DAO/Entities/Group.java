@@ -1,13 +1,11 @@
 package devnatic.danceodyssey.DAO.Entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 @Entity
+@Table(name = "DanceGroups")
 @Setter
 @Getter
 @AllArgsConstructor
@@ -17,8 +15,8 @@ import lombok.experimental.FieldDefaults;
 public class Group {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int GroupID;
-    String GroupName;
-    String GroupDescription;
+    int groupID;
+    String groupName;
+    String groupDescription;
 
 }

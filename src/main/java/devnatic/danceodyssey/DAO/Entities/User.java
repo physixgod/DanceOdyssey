@@ -19,9 +19,9 @@ public class User {
     int userID;
     String firstName;
     String lastName;
-    String Email;
-    String Password;
-    String TelNumber;
+    String email;
+    String password;
+    String telNumber;
     @ManyToMany(cascade = CascadeType.ALL)
     private Set<Event> eventsAttendedByUsers;
     @OneToMany(cascade = CascadeType.ALL, mappedBy="userRec")

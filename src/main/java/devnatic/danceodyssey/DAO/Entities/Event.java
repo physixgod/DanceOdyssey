@@ -17,11 +17,11 @@ import java.util.Set;
 public class Event {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int EventID;
-    String EventName;
+    int eventID;
+    String eventName;
     LocalDate startDate;
-    String Location;
-    int MaxParticipants;
+    String location;
+    int maxParticipants;
     @ManyToMany(mappedBy="eventsAttendedByUsers", cascade = CascadeType.ALL)
     private Set<User> users;
     @ManyToMany(mappedBy="eventsAttendedByDancers", cascade = CascadeType.ALL)

@@ -17,8 +17,8 @@ public class Admin {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int idAdmin;
-    String Username;
-    String Password;
+    String username;
+    String password;
     @OneToMany(cascade = CascadeType.ALL)
     private Set<Competition> Competitions;
 }
