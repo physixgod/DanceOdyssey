@@ -19,7 +19,7 @@ public class Reclamation {
     String reclamationDate;
     String reclamationResponse;
     @ManyToOne
-    Dancer userRec;
+    User userRec; //corrected
     @ManyToOne
     Dancer dancerRec;
 }

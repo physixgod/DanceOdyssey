@@ -1,10 +1,7 @@
 package devnatic.danceodyssey.DAO.Entities;
 
-import devnatic.danceodyssey.DAO.ENUM.PaymentMethod;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import devnatic.danceodyssey.DAO.ENUM.Payment_mode;
+import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -16,12 +13,24 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Table(name = "orders")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int orderID;
-    float totalPrice;
+    int orderId;
+    Float totalPrice;
     LocalDate orderDate;
-    PaymentMethod paymentMethod;
+    private Boolean archive;
+    private String description;
+    @Enumerated(EnumType.STRING)
+    Payment_mode payment_mode;
+    @ManyToOne(cascade = CascadeType.ALL)
+    Products products;
+    @ManyToOne
+    Delivery delivery;
+    @ManyToOne
+    CART carT;
+
+
 }

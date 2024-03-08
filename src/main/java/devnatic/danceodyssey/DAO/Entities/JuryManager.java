@@ -16,14 +16,14 @@ import java.util.Set;
 public class JuryManager {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int JuryID;
+    int juryID;
     String expertiseArea;
     String diploma;
-    String FirstName;
-    String LastName;
-    String Email;
-    String Password;
-    String TelNumber;
+    String firstName;
+    String lastName;
+    String email;
+    String password;
+    String telNumber;
     @ManyToMany(cascade = CascadeType.ALL)
     private Set<Competition> competitionsManagedByJuries;
 }

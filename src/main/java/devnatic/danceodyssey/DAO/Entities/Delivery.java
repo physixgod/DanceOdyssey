@@ -1,14 +1,12 @@
 package devnatic.danceodyssey.DAO.Entities;
 
 import devnatic.danceodyssey.DAO.ENUM.DeliveryStatus;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 @Entity
 @Setter
@@ -24,9 +22,13 @@ public class Delivery {
     LocalDate release_date;
     LocalDate archive_date;
     boolean validated;
+    @Enumerated(EnumType.STRING)
     DeliveryStatus deliveryStatus;
     String Adress;
     float weight;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy="delivery")
+    private Set<Order> Orders;
+
 
 
 }

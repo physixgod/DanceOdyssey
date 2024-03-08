@@ -13,15 +13,14 @@ import java.util.Set;
 @NoArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class DanceCourses {
+public class CART {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int courseID;
-    String courseName;
-    String description;
-    String category;
-    int durationInHours;
-    String requiredSkillLevel;
-    @ManyToMany(mappedBy="dancecourses", cascade = CascadeType.ALL)
-    private Set<Dancer> dancers;
+    Integer id;
+    Integer nbrProd;
+    Float TotPrice;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy="carT")
+    private Set<Order> OrdersC;
+
+
 }
