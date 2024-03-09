@@ -13,4 +13,7 @@ public interface EventIServices {
     public List<Event> ShowEvents();
     public Set<Dancer> showEventDancers(int idEvent);
     public Set<User> showEventUsers(int idEvent);
+    public Event AddEventByDancer(Event e ,int idDancer);
+    public Set<Event> showMyCreatedEvents(int idDancer);
+    public Event getEventById(int id );
 }

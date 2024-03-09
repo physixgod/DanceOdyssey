@@ -35,5 +35,21 @@ public class EventRestController {
     public Set<User> showEventsUsers(@PathVariable("id") int idEvent){
         return eventIServices.showEventUsers(idEvent);
     }
+    @PostMapping("AddEventByDancer/{idDancer}")
+    public Event AddEventByDancer(@PathVariable("idDancer") int idDancer ,@RequestBody Event event){
+        return eventIServices.AddEventByDancer(event,idDancer);
+    }
+    @GetMapping("MyCreatedEvents/{idDancer}")
+    public Set<Event> showMyCreatedEvents(@PathVariable("idDancer") int idDancer){
+        return  eventIServices.showMyCreatedEvents(idDancer);
+    }
+    @GetMapping("getEventById/{id}")
+    public Event getEventById(@PathVariable("id") int id){
+        return eventIServices.getEventById(id);
+    }
+    @PutMapping("DeleteEvent/{id}")
+    public void DeleteEvent(@PathVariable("id")int id){
+         eventIServices.DeleteEvent(id);
+    }
 
 }

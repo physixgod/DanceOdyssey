@@ -1,5 +1,6 @@
 package devnatic.danceodyssey.DAO.Entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -22,10 +23,13 @@ public class Event {
     LocalDate startDate;
     String location;
     int maxParticipants;
+    Boolean cancelled;
+    String description;
     @ManyToMany(mappedBy="eventsAttendedByUsers", cascade = CascadeType.ALL)
     private Set<User> users;
     @ManyToMany(mappedBy="eventsAttendedByDancers", cascade = CascadeType.ALL)
     private Set<Dancer> dancers;
     @ManyToMany(mappedBy="eventsCreatedByDancers", cascade = CascadeType.ALL)
+    @JsonIgnore()
     private Set<Dancer> eventsMakers;
 }

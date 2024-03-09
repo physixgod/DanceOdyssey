@@ -22,4 +22,7 @@ public interface CompetitionIServices {
     List<Competition> showClosedCompetitions();
     public Competition getCompetitionByID(int id);
     void registerCompetition(int idDancer,int idCompetition);
+    Set<Dancer> getCompetitionDancers (int idCompetition);
+    Map<String,String> showMyCompetitons(int idDancer);
+
 }

@@ -79,5 +79,14 @@ public class CompetitionRestController {
     public void affecterDancerCompetition(@PathVariable("idC") int idC,@PathVariable("idD") int idD){
         competitionIServices.registerCompetition(idD,idC);
     }
+    @GetMapping("getCompetitionDancers/{id}")
+    public Set<Dancer> getCompetitionDancers(@PathVariable("id") int idCompetition){
+        return competitionIServices.getCompetitionDancers(idCompetition);
+    }
+    @GetMapping("getMyCompetitions/{id}")
+    public Map<String, String> showMyCompetitons(@PathVariable(("id")) int idDancer){
+        return competitionIServices.showMyCompetitons(idDancer);
+    }
+
 
 }
