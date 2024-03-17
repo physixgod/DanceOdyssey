@@ -6,7 +6,6 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
-import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -30,12 +29,10 @@ public class Products {
     Integer quantity;
     Boolean archived ;
      LocalDate datePublication;
-    @Lob
-    @Column(name = "imageUrl", columnDefinition = "TEXT")
-    String imageUrl;
+
 
     @OneToMany(mappedBy = "produit", cascade = CascadeType.ALL)
-    private Set<ImageData> image;
+    private Set<Image> images;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JsonIgnore
@@ -60,8 +57,11 @@ public class Products {
         if (category != null) {
             category.getProductsSS_C().add(this);
         }
-    }
 
+    }
+    public Set<Image> getImages() {
+        return images;
+    }
     public void setCategoriesProduct(CategoriesProduct category) {
         setCategoryProduct(category, false);
     }

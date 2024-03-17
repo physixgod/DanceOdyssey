@@ -17,4 +17,5 @@ public interface ProductRepository extends JpaRepository<Products, Integer> {
     Integer findMaxProductId();
     Optional<Products> findByRefProduct(Integer refProduct);
     Set<Products> findProductsByArchived(Boolean archived);
+    Set<Products> findProductsByProductNameContainingIgnoreCase(String name);
 }

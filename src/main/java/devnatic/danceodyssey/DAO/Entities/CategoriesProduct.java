@@ -23,10 +23,7 @@ public class CategoriesProduct {
     Integer idCategories;
 
     String type;
-    // Remove the following unnecessary annotations
-    // @Id
-    // @GeneratedValue(strategy = GenerationType.IDENTITY)
-    // Integer id;
+
 
     public CategoriesProduct(String type) {
         this.type = type;
