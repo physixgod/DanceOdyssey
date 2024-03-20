@@ -19,14 +19,16 @@ public class Competition {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int CompetitionID;
-    String CompetitionName;
-    String DanceCategory;
+    String competitionName;
+    String danceCategory;
     LocalDate startDate;
     LocalDate endDate;
-    String Location;
-    int Rating ;
-    String Prize;
-    int MaxParticipants;
+    String location;
+    int rating ;
+    String prize;
+    int maxParticipants;
+    String status;
+    String excelFile;
     @OneToMany(mappedBy = "competition", cascade = CascadeType.ALL)
     private Set<Participate> participations;
     @ManyToMany(mappedBy="competitionsManagedByJuries", cascade = CascadeType.ALL)

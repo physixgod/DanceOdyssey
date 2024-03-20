@@ -17,11 +17,11 @@ import java.util.Set;
 public class DanceCourses {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int CourseID;
-    String CourseName;
-    String Description;
-    String Category;
-    int DurationInHours;
+    int courseID;
+    String courseName;
+    String description;
+    String category;
+    int durationInHours;
     String requiredSkillLevel;
     @ManyToMany(mappedBy="dancecourses", cascade = CascadeType.ALL)
     private Set<Dancer> dancers;

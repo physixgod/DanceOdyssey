@@ -18,30 +18,30 @@ import java.util.Set;
 public class Dancer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int DancerId;
+    int dancerId;
     String firstName;
     String lastName;
     String Password;
-    int Points;
+    int points;
     @Enumerated(EnumType.STRING)
     DanceStyle danceStyle;
     @Enumerated(EnumType.STRING)
     ExperienceLevel experienceLevel;
-    String Email;
-    String TelNum;
+    String email;
+    String telNum;
     @ManyToMany(cascade = CascadeType.ALL)
     private Set<Event> eventsAttendedByDancers;
     @ManyToMany(cascade = CascadeType.ALL)
     private Set<Event> eventsCreatedByDancers;
     @OneToMany(cascade = CascadeType.ALL)
-    private Set<Group> CreatedGroups;
+    private Set<Group> createdGroups;
     @ManyToMany(cascade = CascadeType.ALL)
-    private Set<Group> JoinedGroups;
+    private Set<Group> joinedGroups;
     @ManyToMany(cascade = CascadeType.ALL)
     private Set<DanceCourses> dancecourses;
-    @OneToMany(mappedBy = "dancerParticipation", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "DancerParticipated", cascade = CascadeType.ALL) // corrected
     private Set<Participate> participates;
     @OneToMany(cascade = CascadeType.ALL, mappedBy="dancerRec")
-    private Set<Reclamation> DancersReclamations;
+    private Set<Reclamation> dancersReclamations;
 
 }
