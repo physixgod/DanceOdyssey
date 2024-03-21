@@ -16,4 +16,6 @@ public interface EventIServices {
     public Event AddEventByDancer(Event e ,int idDancer);
     public Set<Event> showMyCreatedEvents(int idDancer);
     public Event getEventById(int id );
+    public double calculateDistance(double lat1, double lon1, double lat2, double lon2);
+    public List<Event> getEventsNearLocation(double yourLatitude, double yourLongitude, double maxDistance);
 }

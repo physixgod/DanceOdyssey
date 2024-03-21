@@ -178,6 +178,10 @@ public class CompetitionServices implements CompetitionIServices {
                 output.put(p.getCompetition().getCompetitionName(),String.valueOf(p.getCompetitionRank()));
             }
         }
+
+        System.err.println(participateRepository.findByDancerParticipatedDancerId(idDancer).toString());
+        System.err.println(participateRepository.findByCompetitionCompetitionIDOrderByCompetitionRankAsc(19).toString());
+
         return output;
     }
 }

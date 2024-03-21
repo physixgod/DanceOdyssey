@@ -16,10 +16,11 @@
     @NoArgsConstructor
     @Builder
     @FieldDefaults(level = AccessLevel.PRIVATE)
+    @ToString
     public class Competition {
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
-        int CompetitionID;
+        int competitionID;
         String competitionName;
         String danceCategory;
         String description;
@@ -33,7 +34,10 @@
         String status;
         @OneToMany(mappedBy = "competition")
         @JsonIgnore()
+        @ToString.Exclude
+
         private Set<Participate> participations;
+        @ToString.Exclude
         @ManyToMany(mappedBy="competitionsManagedByJuries", cascade = CascadeType.ALL)
         private Set<JuryManager> jurymanagers;
 

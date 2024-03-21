@@ -16,4 +16,5 @@ List<Competition> findCompetitionByStartDateBefore(LocalDate date);
 List<Competition> findCompetitionByDanceCategoryContainingIgnoreCase(String dance);
     List<Competition> findByStatus(String status);
 
+
 }

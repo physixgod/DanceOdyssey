@@ -19,37 +19,49 @@ import java.util.Set;
 
 public class EventRestController {
     EventIServices eventIServices;
+
     @PostMapping("AddEvent")
-    public Event AddEvent(@RequestBody Event  e) {
+    public Event AddEvent(@RequestBody Event e) {
         return eventIServices.AddOrUpdateEvent(e);
     }
+
     @GetMapping("ShowEvents")
-    public List<Event> ShowEvents(){
+    public List<Event> ShowEvents() {
         return eventIServices.ShowEvents();
     }
+
     @GetMapping("showEventsDancers/{id}")
-    public Set<Dancer> showEventsDancers(@PathVariable("id") int idEvent){
+    public Set<Dancer> showEventsDancers(@PathVariable("id") int idEvent) {
         return eventIServices.showEventDancers(idEvent);
     }
+
     @GetMapping("showEventsUsers/{id}")
-    public Set<User> showEventsUsers(@PathVariable("id") int idEvent){
+    public Set<User> showEventsUsers(@PathVariable("id") int idEvent) {
         return eventIServices.showEventUsers(idEvent);
     }
+
     @PostMapping("AddEventByDancer/{idDancer}")
-    public Event AddEventByDancer(@PathVariable("idDancer") int idDancer ,@RequestBody Event event){
-        return eventIServices.AddEventByDancer(event,idDancer);
-    }
-    @GetMapping("MyCreatedEvents/{idDancer}")
-    public Set<Event> showMyCreatedEvents(@PathVariable("idDancer") int idDancer){
-        return  eventIServices.showMyCreatedEvents(idDancer);
-    }
-    @GetMapping("getEventById/{id}")
-    public Event getEventById(@PathVariable("id") int id){
-        return eventIServices.getEventById(id);
-    }
-    @PutMapping("DeleteEvent/{id}")
-    public void DeleteEvent(@PathVariable("id")int id){
-         eventIServices.DeleteEvent(id);
+    public Event AddEventByDancer(@PathVariable("idDancer") int idDancer, @RequestBody Event event) {
+        return eventIServices.AddEventByDancer(event, idDancer);
     }
 
+    @GetMapping("MyCreatedEvents/{idDancer}")
+    public Set<Event> showMyCreatedEvents(@PathVariable("idDancer") int idDancer) {
+        return eventIServices.showMyCreatedEvents(idDancer);
+    }
+
+    @GetMapping("getEventById/{id}")
+    public Event getEventById(@PathVariable("id") int id) {
+        return eventIServices.getEventById(id);
+    }
+
+    @PutMapping("DeleteEvent/{id}")
+    public void DeleteEvent(@PathVariable("id") int id) {
+        eventIServices.DeleteEvent(id);
+    }
+
+    @GetMapping("nearbyEvents")
+    public List<Event> getEventsNearby(@RequestParam double yourLatitude, @RequestParam double yourLongitude, @RequestParam double maxDistance) {
+        return eventIServices.getEventsNearLocation(yourLatitude, yourLongitude, maxDistance);
+    }
 }

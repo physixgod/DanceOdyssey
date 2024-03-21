@@ -43,7 +43,7 @@ public class EventServices implements EventIServices {
             }
         }
       eventRepository.delete(e);*/
-        Event e =eventRepository.findById(idEvent).get();
+        Event e = eventRepository.findById(idEvent).get();
         e.setCancelled(Boolean.TRUE);
         eventRepository.save(e);
     }
@@ -51,15 +51,15 @@ public class EventServices implements EventIServices {
     @Override
     public List<Event> ShowEvents() {
         List<Event> events = eventRepository.findAll();
-        List<Event> output1=new ArrayList<>();
-        List<Event> output=new ArrayList<>();
-        for (Event event:events){
-            if (event.getStartDate().isAfter(LocalDate.now())){
+        List<Event> output1 = new ArrayList<>();
+        List<Event> output = new ArrayList<>();
+        for (Event event : events) {
+            if (event.getStartDate().isAfter(LocalDate.now())) {
                 output1.add(event);
             }
         }
-        for (Event event:output1){
-            if (event.getCancelled().equals(false)){
+        for (Event event : output1) {
+            if (event.getCancelled().equals(false)) {
                 output.add(event);
             }
         }
@@ -77,7 +77,7 @@ public class EventServices implements EventIServices {
     }
 
     @Override
-    public Event AddEventByDancer(Event e ,int idDancer) {
+    public Event AddEventByDancer(Event e, int idDancer) {
         Dancer dancer = dancerRepository.findById(idDancer).get();
         e.setCancelled(Boolean.FALSE);
         dancer.getEventsCreatedByDancers().add(e);
@@ -88,10 +88,10 @@ public class EventServices implements EventIServices {
 
     @Override
     public Set<Event> showMyCreatedEvents(int idDancer) {
-        Set<Event> events=dancerRepository.findById(idDancer).get().getEventsCreatedByDancers();
-        Set<Event> output=new HashSet<>();
-        for (Event e:events){
-            if (e.getCancelled().equals(false)){
+        Set<Event> events = dancerRepository.findById(idDancer).get().getEventsCreatedByDancers();
+        Set<Event> output = new HashSet<>();
+        for (Event e : events) {
+            if (e.getCancelled().equals(false)) {
                 output.add(e);
             }
         }
@@ -101,6 +101,33 @@ public class EventServices implements EventIServices {
     @Override
     public Event getEventById(int id) {
         return eventRepository.findById(id).get();
+    }
+
+    public double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
+        double earthRadius = 6371; // Radius of the Earth in kilometers
+        double dLat = Math.toRadians(lat2 - lat1);
+        double dLon = Math.toRadians(lon2 - lon1);
+        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) *
+                        Math.sin(dLon / 2) * Math.sin(dLon / 2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        double distance = earthRadius * c;
+
+        return distance;
+    }
+
+    @Override
+    public List<Event> getEventsNearLocation(double yourLatitude, double yourLongitude, double maxDistance) {
+
+        List<Event> allEvents = ShowEvents();
+        List<Event> eventsNearYou = new ArrayList<>();
+        for (Event event : allEvents) {
+            double distance = calculateDistance(yourLatitude, yourLongitude, event.getLatitude(), event.getLongitude());
+            if (distance <= maxDistance) {
+                eventsNearYou.add(event);
+            }
+        }
+        return eventsNearYou;
     }
 }
 
