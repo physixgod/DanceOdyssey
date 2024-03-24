@@ -1,23 +1,31 @@
 package devnatic.danceodyssey.Services;
 
+import devnatic.danceodyssey.DAO.Entities.Competition;
 import devnatic.danceodyssey.DAO.Entities.Dancer;
 import devnatic.danceodyssey.DAO.Entities.Event;
 import devnatic.danceodyssey.DAO.Entities.User;
 import devnatic.danceodyssey.DAO.Repositories.DancerRepository;
 import devnatic.danceodyssey.DAO.Repositories.EventRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.core.env.Environment;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+
 @org.springframework.stereotype.Service
 @AllArgsConstructor
 public class EventServices implements EventIServices {
     EventRepository eventRepository;
     DancerRepository dancerRepository;
+    Environment environment;
+    NameFile fileNamingUtil;
+    FileUtil utils;
 
     public Event AddOrUpdateEvent(Event e) {
         if (e != null) {
@@ -128,6 +136,33 @@ public class EventServices implements EventIServices {
             }
         }
         return eventsNearYou;
+    }
+
+    @Override
+    public Event updateEventImage(int idEvent, MultipartFile eventImage) {
+        Event event=eventRepository.findById(idEvent).get();
+        try {
+            if (eventImage != null && !eventImage.isEmpty() && eventImage.getSize() > 0) {
+                String uploadDir = environment.getProperty("upload.competition.images");
+                String newPhotoName = fileNamingUtil.nameFile(eventImage);
+                event.setEventImage(newPhotoName);
+                utils.saveNewFile(uploadDir, newPhotoName, eventImage);
+            }
+            return eventRepository.save(event);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to update event photo", e);
+        }
+    }
+
+    @Override
+    public String getImageUrlForEventByID(int idEvent) {
+        Event event=eventRepository.findById(idEvent).get();
+        String baseUrl = environment.getProperty("export.competition.images");
+        String eventImage = event.getEventImage();
+        if (eventImage != null && !eventImage.isEmpty()) {
+            return baseUrl + eventImage;
+        }
+        return null;
     }
 }
 

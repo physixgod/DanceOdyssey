@@ -4,7 +4,9 @@ import devnatic.danceodyssey.DAO.Entities.Competition;
 import devnatic.danceodyssey.DAO.Entities.Dancer;
 import devnatic.danceodyssey.Services.CompetitionIServices;
 import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.util.HashMap;
@@ -18,6 +20,7 @@ import java.util.Set;
 @CrossOrigin(origins = "http://localhost:4200")
 public class CompetitionRestController {
     CompetitionIServices competitionIServices;
+
 
     @PostMapping("AddCompetitionorUpdate")
     public Competition AddCompetitionorUpdate(@RequestBody Competition c) {
@@ -87,6 +90,15 @@ public class CompetitionRestController {
     public Map<String, String> showMyCompetitons(@PathVariable(("id")) int idDancer){
         return competitionIServices.showMyCompetitons(idDancer);
     }
+    @GetMapping("getCompetitionImage/{id}")
+    public String getCompetitionImage(@PathVariable("id") int idCompetition){
+        return competitionIServices.getImageUrlForCompetitionByID(idCompetition);
+    }
+    @PostMapping("uploadCompetitionImage/image/{id}")
+    public Competition updateCompetitionImage(@PathVariable("id")int idCompetition, @RequestParam("image")MultipartFile image){
+        return competitionIServices.updateCompetitionImage(idCompetition,image);
+    }
+
 
 
 }

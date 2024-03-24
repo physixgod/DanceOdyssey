@@ -27,6 +27,7 @@ public class Event {
     String description;
     private double latitude;
     private double longitude;
+    String eventImage;
     @ManyToMany(mappedBy="eventsAttendedByUsers", cascade = CascadeType.ALL)
     private Set<User> users;
     @ManyToMany(mappedBy="eventsAttendedByDancers", cascade = CascadeType.ALL)

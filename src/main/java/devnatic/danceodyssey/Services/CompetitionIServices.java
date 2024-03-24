@@ -2,6 +2,7 @@ package devnatic.danceodyssey.Services;
 
 import devnatic.danceodyssey.DAO.Entities.Competition;
 import devnatic.danceodyssey.DAO.Entities.Dancer;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -24,5 +25,7 @@ public interface CompetitionIServices {
     void registerCompetition(int idDancer,int idCompetition);
     Set<Dancer> getCompetitionDancers (int idCompetition);
     Map<String,String> showMyCompetitons(int idDancer);
-
+    public Competition updateCompetitionImage(int idCompetition, MultipartFile competitionImage);
+    public String getImageUrlForCompetitionByID(int idCompetition);
+    public Competition addCompetitionWithImage(Competition c , MultipartFile competitionImage);
 }

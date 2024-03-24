@@ -8,6 +8,7 @@ import devnatic.danceodyssey.DAO.Repositories.EventRepository;
 import devnatic.danceodyssey.Services.EventIServices;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Set;
@@ -63,5 +64,13 @@ public class EventRestController {
     @GetMapping("nearbyEvents")
     public List<Event> getEventsNearby(@RequestParam double yourLatitude, @RequestParam double yourLongitude, @RequestParam double maxDistance) {
         return eventIServices.getEventsNearLocation(yourLatitude, yourLongitude, maxDistance);
+    }
+    @GetMapping("getEventImage/{id}")
+    public String getCompetitionImage(@PathVariable("id") int idEvent){
+        return eventIServices.getImageUrlForEventByID(idEvent);
+    }
+    @PostMapping("uploadEventImage/image/{id}")
+    public Event updateCompetitionImage(@PathVariable("id")int idEvent, @RequestParam("image") MultipartFile image){
+        return eventIServices.updateEventImage(idEvent,image);
     }
 }

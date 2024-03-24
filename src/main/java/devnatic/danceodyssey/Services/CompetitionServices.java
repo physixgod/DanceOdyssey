@@ -5,7 +5,11 @@ import devnatic.danceodyssey.DAO.Repositories.CompetitionRepository;
 import devnatic.danceodyssey.DAO.Repositories.DancerRepository;
 import devnatic.danceodyssey.DAO.Repositories.ParticipateRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -15,6 +19,81 @@ public class CompetitionServices implements CompetitionIServices {
     CompetitionRepository competitionRepository;
     DancerRepository dancerRepository;
     ParticipateRepository participateRepository;
+    Environment environment;
+    NameFile fileNamingUtil;
+    FileUtil utils;
+    @Override
+    public Competition updateCompetitionImage(int idCompetition, MultipartFile competitionImage) {
+        Competition competition= competitionRepository.findById(idCompetition).get();
+        try {
+            if (competitionImage != null && !competitionImage.isEmpty() && competitionImage.getSize() > 0) {
+                String uploadDir = environment.getProperty("upload.competition.images");
+
+                String newPhotoName = fileNamingUtil.nameFile(competitionImage);
+                competition.setCompetitionImage(newPhotoName);
+
+
+
+                utils.saveNewFile(uploadDir, newPhotoName, competitionImage);
+            }
+            return competitionRepository.save(competition);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to update competition photo", e);
+        }
+    }
+
+    @Override
+    public String getImageUrlForCompetitionByID(int idCompetition) {
+        Competition competition=competitionRepository.findById(idCompetition).get();
+        String baseUrl = environment.getProperty("export.competition.images");
+        String competitionImage = competition.getCompetitionImage();
+
+        if (competitionImage != null && !competitionImage.isEmpty()) {
+
+            System.err.println(baseUrl + competitionImage);
+            return baseUrl + competitionImage;
+        }
+
+        return null;
+    }
+
+    @Override
+    public Competition addCompetitionWithImage(Competition c, MultipartFile competitionImage) {
+        if (c.getStartDate().isBefore(c.getEndDate())) {
+            try {
+                // Set status and current participants
+                c.setStatus("Open");
+                c.setCurrentParticipants(0);
+
+                // Save or update competition
+                Competition savedCompetition = competitionRepository.save(c);
+
+                // Check if an image is provided
+                if (competitionImage != null && !competitionImage.isEmpty() && competitionImage.getSize() > 0) {
+                    String uploadDir = environment.getProperty("upload.competition.images");
+                    String oldPhotoName = savedCompetition.getCompetitionImage();
+                    String newPhotoName = fileNamingUtil.nameFile(competitionImage);
+                    savedCompetition.setCompetitionImage(newPhotoName);
+
+                    // Delete old image if exists
+                    if (oldPhotoName != null) {
+                        utils.deleteFile(uploadDir, oldPhotoName);
+                    }
+
+                    // Save new image
+                    utils.saveNewFile(uploadDir, newPhotoName, competitionImage);
+                }
+
+                return savedCompetition;
+            } catch (IOException e) {
+                throw new RuntimeException("Failed to add or update competition", e);
+            }
+        } else {
+            // Handle invalid date range
+            throw new IllegalArgumentException("End date must be after start date");
+        }
+    }
+
 
     @Override
     public Competition AddCompetitionorUpdate(Competition c) {

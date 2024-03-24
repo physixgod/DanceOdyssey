@@ -32,6 +32,7 @@
         String prize;
         int maxParticipants;
         String status;
+        String competitionImage;
         @OneToMany(mappedBy = "competition")
         @JsonIgnore()
         @ToString.Exclude
