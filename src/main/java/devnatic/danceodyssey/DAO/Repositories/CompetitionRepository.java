@@ -14,7 +14,8 @@ public interface CompetitionRepository extends JpaRepository<Competition,Integer
 List<Competition> findCompetitionByLocationIsContainingIgnoreCase(String Location);
 List<Competition> findCompetitionByStartDateBefore(LocalDate date);
 List<Competition> findCompetitionByDanceCategoryContainingIgnoreCase(String dance);
-    List<Competition> findByStatus(String status);
+List<Competition> findByStatus(String status);
+List<Competition> findCompetitionsByStartDateIsBefore(LocalDate datenow);
 
 
 }

@@ -94,6 +94,27 @@ public class CompetitionServices implements CompetitionIServices {
         }
     }
 
+    @Override
+    public void autoCloseCompetition() {
+        List<Competition>competitions=competitionRepository.findCompetitionsByStartDateIsBefore(LocalDate.now());
+        for(Competition c:competitions){
+            if (!Objects.equals(c.getStatus(), "Closed")) {
+                c.setStatus("Closed");
+                System.err.println(c.getCompetitionName());
+                competitionRepository.save(c);
+            }
+        }
+    }
+
+    @Override
+    public void maxParticipantsAttended() {
+        List<Competition> competitions=competitionRepository.findByStatus("Open");
+        for (Competition competition:competitions){
+            if (competition.getCurrentParticipants()>=competition.getMaxParticipants())
+                competition.setStatus("Closed");
+        }
+    }
+
 
     @Override
     public Competition AddCompetitionorUpdate(Competition c) {

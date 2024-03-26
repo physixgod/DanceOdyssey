@@ -73,4 +73,8 @@ public class EventRestController {
     public Event updateCompetitionImage(@PathVariable("id")int idEvent, @RequestParam("image") MultipartFile image){
         return eventIServices.updateEventImage(idEvent,image);
     }
+    @PostMapping("registerDancerEvent/{idDancer}/{idEvent}")
+    public String registerDancerEvent(@PathVariable("idDancer")int idDancer,@PathVariable("idEvent") int idEvent){
+        return eventIServices.dancerRegisterAtEvent(idDancer,idEvent);
+    }
 }

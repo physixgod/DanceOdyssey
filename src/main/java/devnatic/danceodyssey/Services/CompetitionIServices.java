@@ -28,4 +28,6 @@ public interface CompetitionIServices {
     public Competition updateCompetitionImage(int idCompetition, MultipartFile competitionImage);
     public String getImageUrlForCompetitionByID(int idCompetition);
     public Competition addCompetitionWithImage(Competition c , MultipartFile competitionImage);
+    void autoCloseCompetition();
+    void maxParticipantsAttended();
 }

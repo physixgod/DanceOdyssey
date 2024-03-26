@@ -22,4 +22,7 @@ public interface EventIServices {
     public List<Event> getEventsNearLocation(double yourLatitude, double yourLongitude, double maxDistance);
     public Event updateEventImage(int idEvent, MultipartFile eventImage);
     public String getImageUrlForEventByID(int idEvent);
+    public String dancerRegisterAtEvent(int idDancer,int idEvent );
+    public String userRegisterAtEvent(int idUser,int idEvent);
+
 }
