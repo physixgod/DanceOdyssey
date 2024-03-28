@@ -18,9 +18,6 @@ public class Image {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String imageUrl;
-    private File file;
-    private  String dataUrl;
-
 
     @JsonIgnore
     @ManyToOne(cascade = CascadeType.ALL)

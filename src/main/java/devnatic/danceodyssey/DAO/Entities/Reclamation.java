@@ -12,6 +12,7 @@ import lombok.experimental.FieldDefaults;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Reclamation {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int reclamationID;
@@ -19,7 +20,7 @@ public class Reclamation {
     String reclamationDate;
     String reclamationResponse;
     @ManyToOne
-    User userRec; //corrected
+    User userRec;
     @ManyToOne
     Dancer dancerRec;
 }

@@ -42,7 +42,6 @@ private  final CategoriesProductRepository categoriesProductRepository;
 
             return parentCategory.getSubCatergorie();
         } else {
-            log.error("Parent category with ID {} not found.", parentId);
             return Collections.emptyList();
         }
     }
@@ -76,6 +75,22 @@ private  final CategoriesProductRepository categoriesProductRepository;
             }
         }
         return output;
+    }
+
+    @Override
+    public void addSubCategoriesToParent(Integer parentId, List<String> subcategoryNames) {
+        Optional<CategoriesProduct> parentOptional = categoriesProductRepository.findById(parentId);
+
+        if (parentOptional.isPresent()) {
+            CategoriesProduct parentCategory = parentOptional.get();
+
+            for (String subcategoryName : subcategoryNames) {
+                CategoriesProduct subcategory = new CategoriesProduct(subcategoryName);
+                parentCategory.subCatergories().add(subcategory);
+            }
+
+            categoriesProductRepository.save(parentCategory);
+        }
     }
 
 

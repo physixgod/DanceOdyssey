@@ -13,6 +13,7 @@ public interface ICategorie_Service {
     List<CategoriesProduct> getSubCategories(Integer parentId);
     public CategoriesProduct createCategoryWithSubcategories(String categoryName, List<String> subcategoryNames) ;
     public Set<CategoriesProduct> getParentcategories() ;
+    public void addSubCategoriesToParent(Integer parentId, List<String> subcategoryNames) ;
 
 
 }

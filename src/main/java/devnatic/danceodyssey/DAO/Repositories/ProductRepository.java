@@ -18,4 +18,10 @@ public interface ProductRepository extends JpaRepository<Products, Integer> {
     Optional<Products> findByRefProduct(Integer refProduct);
     Set<Products> findProductsByArchived(Boolean archived);
     Set<Products> findProductsByProductNameContainingIgnoreCase(String name);
+    Set<Products> findProductsByCategoriesProduct_IdCategories(Integer categoryId);
+    Set<Products> findProductsBySubCategoriesProduct_IdCategories(Integer subCategoryId);
+    List<Products> findByProductNameContainingIgnoreCaseAndCategoriesProduct_IdCategories(String name, Integer categoryId);
+
+    List<Products> findByProductNameContainingIgnoreCaseAndSubCategoriesProduct_IdCategories(String name, Integer subCategoryId);
+
 }

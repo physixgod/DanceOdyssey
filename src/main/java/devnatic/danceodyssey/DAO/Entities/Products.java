@@ -6,6 +6,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -16,6 +17,7 @@ import java.util.Set;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Products {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer idProduct;
@@ -29,7 +31,6 @@ public class Products {
     Integer quantity;
     Boolean archived ;
      LocalDate datePublication;
-
 
     @OneToMany(mappedBy = "produit", cascade = CascadeType.ALL)
     private Set<Image> images;
@@ -45,7 +46,7 @@ public class Products {
 
     @ManyToOne
     @JsonIgnore
-    @JoinColumn(name = "subcategory_id", referencedColumnName = "idCategories")  // Spécifiez les deux colonnes
+    @JoinColumn(name = "subcategory_id", referencedColumnName = "idCategories")
     private CategoriesProduct subCategoriesProduct;
     public void setCategoryProduct(CategoriesProduct category, boolean isSubCategory) {
         if (isSubCategory) {
@@ -59,6 +60,7 @@ public class Products {
         }
 
     }
+
     public Set<Image> getImages() {
         return images;
     }
@@ -69,5 +71,14 @@ public class Products {
     public void setSubCategoriesProduct(CategoriesProduct subCategory) {
         setCategoryProduct(subCategory, true);
     }
+    @ManyToMany(mappedBy = "produits")
+    @JsonIgnore
+    private Set<Catalogue> catalogues = new HashSet<>();
+
+
+
+
 
 }
+
+

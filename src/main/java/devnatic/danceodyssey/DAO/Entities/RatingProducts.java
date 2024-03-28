@@ -16,6 +16,7 @@ import java.util.Set;
 public class RatingProducts {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     Integer id;
     String FeedBack;
     Integer Score;

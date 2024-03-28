@@ -17,9 +17,9 @@ public interface IProduct_Services {
 
     public List<Products> ShowAllProducts();
 
-    public ResponseEntity<String> archiveProduct(Integer id) ;
-    public Products AddProductToCategory(Integer productId, Integer categoryId, List<Integer> subCategoryIds) ;
-    public Products getProductByRefProduct(Integer refProduct) ;
+    public void archiveProduct(Integer id) ;
+    public void AddProductToCategory(Integer productId, Integer categoryId, List<Integer> subCategoryIds) ;
+    public void getProductByRefProduct(Integer refProduct) ;
     public Set<Products> getArchivedProducts(Boolean archived);
     public List<Products> getProduitsByIds(List<Integer> idProducts);
     public void addImagesToProduct(List<MultipartFile> imageFiles, int productId) throws IOException ;
@@ -27,6 +27,12 @@ public interface IProduct_Services {
     public Set<Products> searchByName(String name);
     public void updateImageForProduct(MultipartFile updatedImageFile, int productId, int imageId) throws IOException ;
     public Products updateProductById(Integer productId, Products updatedProduct) ;
+    public void unarchiveProduct(Integer id) ;
+    public Set<Products> getProductsByParentCategory(Integer parentId) ;
 
+    public Set<Products> getProductsSubCategory(Integer subCategoryId) ;
+    public List<Products> searchProductsByNameAndCategory(String name, Integer categoryId) ;
+
+    public List<Products> searchProductsByNameAndSubCategory(String name, Integer subCategoryId) ;
 
     }

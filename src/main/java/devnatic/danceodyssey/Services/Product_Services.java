@@ -4,14 +4,10 @@ import devnatic.danceodyssey.DAO.Entities.CategoriesProduct;
 import devnatic.danceodyssey.DAO.Entities.Image;
 import devnatic.danceodyssey.DAO.Entities.Products;
 import devnatic.danceodyssey.DAO.Repositories.CategoriesProductRepository;
-import devnatic.danceodyssey.DAO.Repositories.ImageRepository;
 import devnatic.danceodyssey.DAO.Repositories.ProductRepository;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -27,7 +23,6 @@ import java.util.Set;
 public class Product_Services implements IProduct_Services {
     private final ProductRepository productRepository;
     private final CategoriesProductRepository categoriesProductRepository;
-    private  final ImageRepository imageRepository;
     private final CloudinaryService cloudinaryService;
 
 
@@ -37,7 +32,6 @@ public class Product_Services implements IProduct_Services {
         products.setRefProduct(generateNextRefProduct());
 
         if (productRepository.existsByRefProduct(products.getRefProduct())) {
-            throw new RuntimeException("Product reference already exists.");
         }
 
         products.setArchived(false);
@@ -64,58 +58,46 @@ public class Product_Services implements IProduct_Services {
             return 1000;
         }
     }
-
-
-
     @Override
-    public ResponseEntity<String> archiveProduct(Integer id) {
+    public void archiveProduct(Integer id) {
         Optional<Products> optionalProduct = productRepository.findById(id);
 
         if (optionalProduct.isPresent()) {
             Products product = optionalProduct.get();
             product.setArchived(true);
             productRepository.save(product);
-            return ResponseEntity.ok().body("Product archived successfully");
-        } else {
-            return ResponseEntity.notFound().build();
+
+
         }
-
     }
-
-
     @Override
-    public Products AddProductToCategory(Integer productId, Integer categoryId, List<Integer> subCategoryIds) {
-        Products product = productRepository.findById(productId)
-                .orElseThrow(() -> new RuntimeException("Product not found"));
+    public void AddProductToCategory(Integer productId, Integer categoryId, List<Integer> subCategoryIds) {
+        productRepository.findById(productId).ifPresent(product -> {
+            Optional<CategoriesProduct> categoryOptional = categoriesProductRepository.findById(categoryId);
+            if (categoryOptional.isPresent()) {
+                CategoriesProduct category = categoryOptional.get();
+                product.setCategoriesProduct(category);
 
-        CategoriesProduct category = categoriesProductRepository.findById(categoryId)
-                .orElseThrow(() -> new RuntimeException("Category not found"));
-
-        product.setCategoriesProduct(category);
-
-        List<CategoriesProduct> subCategories = categoriesProductRepository.findAllById(subCategoryIds);
-
-        for (CategoriesProduct subCategory : subCategories) {
-            CategoriesProduct attachedSubCategory = categoriesProductRepository.findById(subCategory.getIdCategories())
-                    .orElseThrow(() -> new RuntimeException("Subcategory not found"));
-
-            product.setSubCategoriesProduct(attachedSubCategory);
-        }
-
-        return productRepository.save(product);
+                List<CategoriesProduct> subCategories = categoriesProductRepository.findAllById(subCategoryIds);
+                for (CategoriesProduct subCategory : subCategories) {
+                    Optional<CategoriesProduct> subCategoryOptional = categoriesProductRepository.findById(subCategory.getIdCategories());
+                    if (subCategoryOptional.isPresent()) {
+                        CategoriesProduct attachedSubCategory = subCategoryOptional.get();
+                        product.setSubCategoriesProduct(attachedSubCategory);
+                    }
+                }
+                productRepository.save(product);
+            }
+        });
     }
-
     @Override
-    public Products getProductByRefProduct(Integer refProduct) {
-        return productRepository.findByRefProduct(refProduct)
-                .orElseThrow(() -> new RuntimeException("Product not found with reference: " + refProduct));
+    public void getProductByRefProduct(Integer refProduct) {
+         productRepository.findByRefProduct(refProduct);
     }
-
     @Override
     public Set<Products> getArchivedProducts(Boolean archived) {
         return productRepository.findProductsByArchived(Boolean.TRUE);
     }
-
     @Override
     public List<Products> getProduitsByIds(List<Integer> idProducts) {
         List<Products> productList = new ArrayList<>();
@@ -127,73 +109,100 @@ public class Product_Services implements IProduct_Services {
         }
         return productList;
     }
-
     @Override
     public void addImagesToProduct(List<MultipartFile> imageFiles, int productId) throws IOException {
-        Products product = productRepository.findById(productId)
-                .orElseThrow(() -> new EntityNotFoundException("Produit non trouvé avec l'ID : " + productId));
+        Optional<Products> productOptional = productRepository.findById(productId);
+        if (productOptional.isPresent()) {
+            Products product = productOptional.get();
+            List<String> imageUrls = cloudinaryService.uploadImagesToCloudinary(imageFiles, productId);
+            for (String imageUrl : imageUrls) {
+                Image image = Image.builder()
+                        .imageUrl(imageUrl)
+                        .produit(product)
+                        .build();
 
-        List<String> imageUrls = cloudinaryService.uploadImagesToCloudinary(imageFiles, productId);
-
-        for (String imageUrl : imageUrls) {
-            Image image = Image.builder()
-                    .imageUrl(imageUrl)
-                    .produit(product)
-                    .build();
-
-            product.getImages().add(image);
+                product.getImages().add(image);
+            }
+            productRepository.save(product);
         }
-
-        productRepository.save(product);
     }
-
     @Override
     public List<Image> getImagesForProduct(Integer productId) {
-        Products product = productRepository.findById(productId)
-                .orElseThrow(() -> new EntityNotFoundException("Produit non trouvé avec l'ID : " + productId));
-
-        return new ArrayList<>(product.getImages());    }
-
+        Optional<Products> productOptional = productRepository.findById(productId);
+        if (productOptional.isPresent()) {
+            Products product = productOptional.get();
+            return new ArrayList<>(product.getImages());
+        }
+            return new ArrayList<>();
+        }
 
     @Override
     public Set<Products> searchByName(String name) {
         return productRepository.findProductsByProductNameContainingIgnoreCase(name);
     }
-
     @Override
     public void updateImageForProduct(MultipartFile updatedImageFile, int productId, int imageId) throws IOException {
-        Products product = productRepository.findById(productId)
-                .orElseThrow(() -> new EntityNotFoundException("Produit non trouvé avec l'ID : " + productId));
+        Optional<Products> productOptional = productRepository.findById(productId);
+        if (productOptional.isPresent()) {
+            Products product = productOptional.get();
 
-        // Find the image by ID within the product's set of images
-        Image existingImage = product.getImages().stream()
-                .filter(image -> image.getId() == imageId)
-                .findFirst()
-                .orElseThrow(() -> new EntityNotFoundException("Image non trouvée avec l'ID : " + imageId));
+            Optional<Image> existingImageOptional = product.getImages().stream()
+                    .filter(image -> image.getId() == imageId)
+                    .findFirst();
 
-        // Upload the updated image to Cloudinary
-        String updatedImageUrl = cloudinaryService.uploadSingleImageToCloudinary(updatedImageFile, productId);
+            if (existingImageOptional.isPresent()) {
+                Image existingImage = existingImageOptional.get();
 
-        // Update the existing image's URL
-        existingImage.setImageUrl(updatedImageUrl);
+                String updatedImageUrl = cloudinaryService.uploadSingleImageToCloudinary(updatedImageFile, productId);
 
-        // Save the updated product with the modified image
-        productRepository.save(product);
+                existingImage.setImageUrl(updatedImageUrl);
+
+                productRepository.save(product);
+            } }
     }
-
     @Override
     public Products updateProductById(Integer productId, Products updatedProduct) {
         Optional<Products> existingProductOptional = productRepository.findById(productId);
 
         return existingProductOptional.map(existingProduct -> {
-            // Copy non-null properties from updatedProduct to existingProduct
             BeanUtils.copyProperties(updatedProduct, existingProduct, "idProduct", "datePublication", "images", "ratingProductsP");
 
-            // Save the updated product to the database
             return productRepository.save(existingProduct);
         }).orElseThrow(() -> new RuntimeException("Product not found with ID: " + productId));
     }
+
+    @Override
+    public void  unarchiveProduct(Integer id) {
+        Optional<Products> optionalProduct = productRepository.findById(id);
+        optionalProduct.ifPresent(product -> {
+            product.setArchived(false);
+            productRepository.save(product);
+        });
     }
+
+    @Override
+    public Set<Products> getProductsByParentCategory(Integer parentId) {
+        return productRepository.findProductsByCategoriesProduct_IdCategories(parentId);
+    }
+
+    @Override
+    public Set<Products> getProductsSubCategory(Integer subCategoryId) {
+        return productRepository.findProductsBySubCategoriesProduct_IdCategories(subCategoryId);
+    }
+
+    @Override
+    public List<Products> searchProductsByNameAndCategory(String name, Integer categoryId) {
+        return productRepository.findByProductNameContainingIgnoreCaseAndCategoriesProduct_IdCategories(name, categoryId);
+    }
+
+    @Override
+    public List<Products> searchProductsByNameAndSubCategory(String name, Integer subCategoryId) {
+        return productRepository.findByProductNameContainingIgnoreCaseAndSubCategoriesProduct_IdCategories(name, subCategoryId);
+    }
+
+
+}
+
 
 
 

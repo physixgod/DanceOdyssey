@@ -21,7 +21,6 @@ public class CategoriesProduct {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer idCategories;
-
     String type;
 
 
@@ -34,12 +33,14 @@ public class CategoriesProduct {
         return subCatergorie;
     }
 
+
     @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(
             name = "category_subcategory",
             joinColumns = @JoinColumn(name = "category_id"),
             inverseJoinColumns = @JoinColumn(name = "subcategory_id")
     )
+
     @JsonIgnore
     private Set<CategoriesProduct> subcategories;
 

@@ -17,6 +17,7 @@ import lombok.experimental.FieldDefaults;
 public class Profil {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+
     int idProfil;
     byte[] profilImage;
     String profilDescription;
