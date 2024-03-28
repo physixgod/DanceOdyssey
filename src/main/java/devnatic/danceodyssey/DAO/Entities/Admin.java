@@ -21,4 +21,5 @@ public class Admin {
     String password;
     @OneToMany(cascade = CascadeType.ALL)
     private Set<Competition> Competitions;
+
 }
