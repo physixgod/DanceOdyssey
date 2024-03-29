@@ -2,10 +2,8 @@ package devnatic.danceodyssey.RestController;
 
 import devnatic.danceodyssey.DAO.Entities.*;
 import devnatic.danceodyssey.DAO.Repositories.UserRepo;
-import devnatic.danceodyssey.Services.IUserServices;
-import devnatic.danceodyssey.Services.JwtService;
-import devnatic.danceodyssey.Services.UserInfoService;
-import devnatic.danceodyssey.Services.UserService;
+import devnatic.danceodyssey.Services.*;
+import devnatic.danceodyssey.utils.CodeGenerator;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -39,6 +37,8 @@ public class Controller {
     private AuthenticationManager authenticationManager;
     @Autowired
     private JwtService jwtService;
+    @Autowired
+    private EmailService emailService;
     @PostMapping("/addUser")
     public User addUser( @RequestBody User user) {
         return services.adduser(user);}
@@ -102,6 +102,37 @@ public class Controller {
     @GetMapping("/getUser/{name}")
     public User getUser(@PathVariable("name")String username){
         return userRepo.findByUserName(username);
+    }
+
+    @PostMapping("/forgotPassword")
+    public ResponseEntity<String> forgotPassword(@RequestParam("email") String email) {
+        // Log the email received from the request
+        System.out.println("Email received from request: " + email);
+
+        // Retrieve user from the database
+        User user = userRepo.findByEmail(email);
+        //
+        System.out.println("dedhedenehdn"+user.getEmail());
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found with the provided email");
+        }
+
+        // Generate a random code
+        String resetCode = CodeGenerator.generateRandomCode();
+
+        // Save the reset code in the database (you may need to modify your User entity)
+
+        // Send the reset code via email
+        emailService.sendEmail(email, resetCode);
+
+        return ResponseEntity.ok("Password reset code sent to your email");
+    }
+    // Add a new endpoint for resetting password
+    @PostMapping("/resetPassword")
+    public ResponseEntity<String> resetPassword(@RequestParam String email, @RequestParam String resetCode, @RequestParam String newPassword) {
+        // Validate the reset code and update the user's password
+        // Send a response based on the success or failure of the reset operation
+        return ResponseEntity.ok("Password reset successful");
     }
 }
 

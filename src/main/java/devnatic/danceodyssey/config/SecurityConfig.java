@@ -42,7 +42,7 @@ public class SecurityConfig {
                 .cors() // Enable CORS
                 .and()
                 .authorizeHttpRequests()
-                .requestMatchers("/user/addNewUser", "/user/generateToken", "/roles", "/user/showusers").permitAll()
+                .requestMatchers("/user/addNewUser", "/user/generateToken", "/roles", "/user/showusers","/user/forgotPassword").permitAll()
                 .and()
                 .authorizeHttpRequests().requestMatchers("/**").authenticated()
                 .and()
