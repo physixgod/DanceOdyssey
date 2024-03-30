@@ -18,7 +18,7 @@ public class RatingProducts {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 
     Integer id;
-    String FeedBack;
+    String feedBack;
     Integer Score;
 
 

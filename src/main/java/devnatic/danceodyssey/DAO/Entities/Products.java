@@ -23,20 +23,30 @@ public class Products {
     Integer idProduct;
     Integer refProduct;
     String productName;
-    float price;
+    Float price;
     Integer pointsPrice;
     String description;
-    boolean productState;
+    Boolean productState;
     String Model;
     Integer quantity;
     Boolean archived ;
-     LocalDate datePublication;
-
+    LocalDate datePublication;
+    Boolean isPromotion;
+    Float prixPromotion;
+    Integer pourcentagePromotion;
+    Boolean isFlashSale;
+    Integer quantiteVendue;
+    // Méthode pour mettre à jour productState
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+        if (quantity != null && quantity.equals(0)) {
+            this.productState = true; // Si la quantité est égale à 0, le productState est mis à true
+        }
+    }
     @OneToMany(mappedBy = "produit", cascade = CascadeType.ALL)
     private Set<Image> images;
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JsonIgnore
     private Set<RatingProducts> ratingProductsP;
 
     @ManyToOne
@@ -48,7 +58,7 @@ public class Products {
     @JsonIgnore
     @JoinColumn(name = "subcategory_id", referencedColumnName = "idCategories")
     private CategoriesProduct subCategoriesProduct;
-    public void setCategoryProduct(CategoriesProduct category, boolean isSubCategory) {
+    public void setCategoryProduct(CategoriesProduct category, Boolean isSubCategory) {
         if (isSubCategory) {
             this.subCategoriesProduct = category;
         } else {
@@ -71,9 +81,7 @@ public class Products {
     public void setSubCategoriesProduct(CategoriesProduct subCategory) {
         setCategoryProduct(subCategory, true);
     }
-    @ManyToMany(mappedBy = "produits")
-    @JsonIgnore
-    private Set<Catalogue> catalogues = new HashSet<>();
+
 
 
 

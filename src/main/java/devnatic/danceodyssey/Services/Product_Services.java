@@ -1,10 +1,10 @@
 package devnatic.danceodyssey.Services;
 
-import devnatic.danceodyssey.DAO.Entities.CategoriesProduct;
-import devnatic.danceodyssey.DAO.Entities.Image;
-import devnatic.danceodyssey.DAO.Entities.Products;
+import devnatic.danceodyssey.DAO.Entities.*;
 import devnatic.danceodyssey.DAO.Repositories.CategoriesProductRepository;
 import devnatic.danceodyssey.DAO.Repositories.ProductRepository;
+import devnatic.danceodyssey.DAO.Repositories.RaitingProductRepository;
+import devnatic.danceodyssey.DAO.Repositories.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -12,10 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -24,6 +21,9 @@ public class Product_Services implements IProduct_Services {
     private final ProductRepository productRepository;
     private final CategoriesProductRepository categoriesProductRepository;
     private final CloudinaryService cloudinaryService;
+    private  final RaitingProductRepository raitingProductRepository;
+    private  final UserRepository userRepository;
+
 
 
 
@@ -165,8 +165,16 @@ public class Product_Services implements IProduct_Services {
         Optional<Products> existingProductOptional = productRepository.findById(productId);
 
         return existingProductOptional.map(existingProduct -> {
-            BeanUtils.copyProperties(updatedProduct, existingProduct, "idProduct", "datePublication", "images", "ratingProductsP");
+            // Copier les propriétés de l'objet mis à jour
+            BeanUtils.copyProperties(updatedProduct, existingProduct, "idProduct", "datePublication", "images", "ratingProductsP", "categoriesProduct", "subCategoriesProduct");
 
+            // Met à jour le productState en fonction de la quantité de produits
+            if (existingProduct.getQuantity() == 0) {
+                existingProduct.setProductState(true);
+            } else {
+                existingProduct.setProductState(false);
+            }
+            // Mettre à jour le produit dans la base de données
             return productRepository.save(existingProduct);
         }).orElseThrow(() -> new RuntimeException("Product not found with ID: " + productId));
     }
@@ -199,6 +207,95 @@ public class Product_Services implements IProduct_Services {
     public List<Products> searchProductsByNameAndSubCategory(String name, Integer subCategoryId) {
         return productRepository.findByProductNameContainingIgnoreCaseAndSubCategoriesProduct_IdCategories(name, subCategoryId);
     }
+
+
+
+    @Override
+    public void AddRatingToProduct(Integer ratingId, Integer productId, Integer userId) {
+        Products product = productRepository.findById(productId).orElse(null);
+        RatingProducts rating = raitingProductRepository.findById(ratingId).orElse(null);
+        User user = userRepository.findById(userId).orElse(null);
+
+        if (product != null && rating != null && user != null) {
+            user.getRatingProductsS().add(rating);
+
+            product.getRatingProductsP().add(rating);
+            productRepository.save(product);
+            raitingProductRepository.save(rating);
+        }
+    }
+
+    @Override
+    public List<Products> getLast5Products() {
+        return productRepository.findTop5ByOrderByDatePublicationDesc();
+    }
+
+
+
+    @Override
+    public List<Products> getTopRatingProducts() {
+        return productRepository.findTop5ByOrderByRatingProductsPScoreDesc();
+    }
+
+    @Override
+    public Float calculateReducedPrice(Integer productId, Integer pourcentagePromotion) {
+        Products product = productRepository.findById(productId).orElse(null);
+        if (product != null && pourcentagePromotion != null && pourcentagePromotion > 0) {
+            Float originalPrice = product.getPrice();
+            Float prixPromotion = calculatePrixPromotion(originalPrice, pourcentagePromotion);
+            product.setPrixPromotion(prixPromotion);
+            product.setIsPromotion(true); // Définir isPromotion comme true
+
+            product.setPourcentagePromotion(pourcentagePromotion);
+            productRepository.save(product);
+            return prixPromotion;
+        } else {
+            // Gérer le cas où le produit ou le pourcentage de promotion est invalide
+            return null;
+        }
+    }
+
+    @Override
+    public List<Products> getPromotionalProducts() {
+        return productRepository.findByIsPromotion(true);
+    }
+
+
+
+
+    private Float calculatePrixPromotion(Float originalPrice, Integer pourcentagePromotion) {
+        // Calculer le prix promotionnel en fonction du pourcentage de promotion
+        Float reduction = originalPrice * (pourcentagePromotion / 100f);
+        return originalPrice - reduction;
+    }
+
+
+
+    @Override
+    public String SumRatting(Integer id, Integer id2) {
+
+        int a=0;
+        int b=0 ;
+        Products p=  productRepository.findById(id).orElse(null);
+        Products p2= productRepository.findById(id2).orElse(null) ;
+
+        for (RatingProducts j: p2.getRatingProductsP()) {
+            b += j.getScore();
+        }
+
+        for(RatingProducts i:p.getRatingProductsP()){
+            a+=i.getScore();
+        }
+        System.out.println("♦♦♦♦♦♦♦♦♦♦"+b);
+
+        if ( a>b )
+            return ("Produit 1 Better than B " )
+                    ;
+        else
+            return (" Produit 2 Better than Produit 1 ") ;
+
+    }
+
 
 
 }

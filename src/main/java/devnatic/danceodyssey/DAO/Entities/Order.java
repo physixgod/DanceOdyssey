@@ -18,11 +18,11 @@ import java.time.LocalDate;
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int orderId;
+    Integer orderId;
     Float totalPrice;
     LocalDate orderDate;
-    private Boolean archive;
-    private String description;
+     Boolean archive;
+     String description;
     @Enumerated(EnumType.STRING)
     Payment_mode payment_mode;
     @ManyToOne(cascade = CascadeType.ALL)

@@ -35,4 +35,12 @@ public interface IProduct_Services {
 
     public List<Products> searchProductsByNameAndSubCategory(String name, Integer subCategoryId) ;
 
+    public String SumRatting(Integer id , Integer id2 );
+    public void AddRatingToProduct(Integer ratingId, Integer productId, Integer userId) ;
+    public List<Products> getLast5Products();
+    List<Products> getTopRatingProducts();
+
+    public Float calculateReducedPrice(Integer productId, Integer pourcentagePromotion) ;
+    public List<Products> getPromotionalProducts();
+
     }

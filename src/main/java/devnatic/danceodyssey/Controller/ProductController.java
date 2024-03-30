@@ -2,8 +2,10 @@ package devnatic.danceodyssey.Controller;
 
 import devnatic.danceodyssey.DAO.Entities.Image;
 import devnatic.danceodyssey.DAO.Entities.Products;
+import devnatic.danceodyssey.DAO.Entities.RatingProducts;
 import devnatic.danceodyssey.Services.CloudinaryService;
 import devnatic.danceodyssey.Services.IProduct_Services;
+import devnatic.danceodyssey.Services.IRaitingProduct;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +24,9 @@ import java.util.Set;
 public class ProductController {
 
     private final IProduct_Services iProductServices;
+    private  final IRaitingProduct iRaitingProduct;
 
 
-//Product
 @PostMapping("/AddProduct")
 public Products AddProduct(@RequestBody Products products) {
     return iProductServices.AddProduct(products);
@@ -50,7 +52,7 @@ public Set<Products> getArchivedProducts() {
     }
 
     @PutMapping("/unarchiveProduct/{id}")
-    public void  unarchiveProduct(Integer id) {
+    public void  unarchiveProduct(@PathVariable Integer id) {
            iProductServices.unarchiveProduct(id);
 
 
@@ -119,10 +121,40 @@ public List<Products> searchProductsByNameAndCategory(@RequestParam String name,
         iProductServices.updateImageForProduct(updatedImageFile, productId, imageId);
     }
 
+    @PostMapping("/ajouterRainting/{productId}/{userId}")
+    public void AddRaitingToProduit(@RequestBody RatingProducts ratingP, @PathVariable Integer productId, @PathVariable Integer userId) {
+
+        iRaitingProduct.AddNEwRaitingProduit(ratingP);
+        iProductServices.AddRatingToProduct(ratingP.getId(), productId, userId);
+    }
+    @GetMapping("/last-5")
+    public List<Products> getLast5Products() {
+        return iProductServices.getLast5Products();
+    }
+
+    @GetMapping("/SumRaint")
+    public String sumProduit (Integer idproduit,  Integer idporduit2 )
+    {
+        return iProductServices.SumRatting(idproduit,idporduit2) ;
+    }
+
+    @PutMapping("/calculate-reduced-price/{productId}/{promotionPercentage}")
+    public Float calculateReducedPrice(@PathVariable Integer productId, @PathVariable Integer promotionPercentage) {
+        return iProductServices.calculateReducedPrice(productId, promotionPercentage);
+    }
+    @GetMapping("/promotions")
+    public List<Products> getPromotionalProducts() {
+        return iProductServices.getPromotionalProducts();
+    }
+    @GetMapping("/products/top-rating")
+    public List<Products> getTopRatingProducts() {
+        return iProductServices.getTopRatingProducts();
+    }
+    }
 
 
 
-}
+
 
 
 

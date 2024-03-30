@@ -23,5 +23,9 @@ public interface ProductRepository extends JpaRepository<Products, Integer> {
     List<Products> findByProductNameContainingIgnoreCaseAndCategoriesProduct_IdCategories(String name, Integer categoryId);
 
     List<Products> findByProductNameContainingIgnoreCaseAndSubCategoriesProduct_IdCategories(String name, Integer subCategoryId);
+    List<Products> findTop5ByOrderByDatePublicationDesc();
 
+    @Query("SELECT p FROM Products p JOIN p.ratingProductsP rp WHERE rp.Score >= 4 ORDER BY rp.Score DESC")
+    List<Products> findTop5ByOrderByRatingProductsPScoreDesc();
+    List<Products> findByIsPromotion(Boolean isPromotion);
 }

@@ -16,8 +16,8 @@ import java.io.File;
 public class Image {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-    private String imageUrl;
+     Integer id;
+     String imageUrl;
 
     @JsonIgnore
     @ManyToOne(cascade = CascadeType.ALL)
