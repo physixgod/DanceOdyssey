@@ -2,7 +2,6 @@ package devnatic.danceodyssey.Services;
 
 import devnatic.danceodyssey.DAO.Entities.Admin;
 import devnatic.danceodyssey.DAO.Entities.User;
-import devnatic.danceodyssey.DAO.Entities.UserInfoDetails;
 import devnatic.danceodyssey.DAO.Repositories.AdminRepo;
 import devnatic.danceodyssey.DAO.Repositories.UserRepo;
 import lombok.AllArgsConstructor;
@@ -14,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -88,4 +86,11 @@ public class UserService implements IUserServices {
     @Override
     public User getUserByUsername(String userName) {
         return userRepo.findByUserName(userName);
+    }
+    @Override
+    public User ResetPassword(String Email, String password){
+        User user = userRepo.findByEmail(Email);
+        user.setPassword(password);
+        return userRepo.save(user);
+
     }}

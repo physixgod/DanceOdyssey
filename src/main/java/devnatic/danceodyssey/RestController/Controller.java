@@ -16,6 +16,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
 import java.util.List;
 
 @RestController
@@ -104,8 +105,8 @@ public class Controller {
         return userRepo.findByUserName(username);
     }
 
-    @PostMapping("/forgotPassword")
-    public ResponseEntity<String> forgotPassword(@RequestParam("email") String email) {
+    @GetMapping ("/forgotPassword")
+    public ResponseEntity<String> forgotPassword(@RequestParam("email") String email,@RequestParam("code") String code) throws MessagingException, jakarta.mail.MessagingException {
         // Log the email received from the request
         System.out.println("Email received from request: " + email);
 
@@ -118,21 +119,20 @@ public class Controller {
         }
 
         // Generate a random code
-        String resetCode = CodeGenerator.generateRandomCode();
+
 
         // Save the reset code in the database (you may need to modify your User entity)
 
         // Send the reset code via email
-        emailService.sendEmail(email, resetCode);
+        emailService.sendEmail(email,code);
 
         return ResponseEntity.ok("Password reset code sent to your email");
     }
     // Add a new endpoint for resetting password
-    @PostMapping("/resetPassword")
-    public ResponseEntity<String> resetPassword(@RequestParam String email, @RequestParam String resetCode, @RequestParam String newPassword) {
-        // Validate the reset code and update the user's password
-        // Send a response based on the success or failure of the reset operation
-        return ResponseEntity.ok("Password reset successful");
+    @GetMapping("/resetPassword")
+    public User resetPassword(@RequestParam("email") String email,@RequestParam("password") String password) {
+        return services.ResetPassword(email,password);
+
     }
 }
 

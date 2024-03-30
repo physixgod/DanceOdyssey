@@ -19,5 +19,5 @@ public interface IUserServices {
     User getUserByUsername(String username);
 
 
-
+    User ResetPassword(String Email, String password);
 }

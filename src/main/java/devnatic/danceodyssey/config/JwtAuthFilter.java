@@ -1,7 +1,10 @@
+// JwtAuthFilter.java
+
 package devnatic.danceodyssey.config;
 
 import devnatic.danceodyssey.Services.JwtService;
 import devnatic.danceodyssey.Services.UserService;
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -16,7 +19,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
-// This class helps us to validate the generated jwt token
 @Component
 public class JwtAuthFilter extends OncePerRequestFilter {
 
@@ -26,7 +28,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     @Autowired
     private UserService userDetailsService;
 
-
+    // Increase clock skew tolerance (e.g., 5 minutes)
+    private static final long CLOCK_SKEW_TOLERANCE = 300000; // 5 minutes in milliseconds
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -35,7 +38,13 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         String username = null;
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             token = authHeader.substring(7);
-            username = jwtService.extractUsername(token);
+            try {
+                username = jwtService.extractUsername(token);
+            } catch (ExpiredJwtException e) {
+                if (!jwtService.isTokenWithinClockSkew(e.getClaims().getExpiration())) {
+                    throw e;
+                }
+            }
         }
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
