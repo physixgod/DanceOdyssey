@@ -19,7 +19,7 @@ public class Event {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int eventID;
-    int currentParticipants;
+        int currentParticipants;
     String eventName;
     LocalDate startDate;
     String location;
@@ -30,8 +30,10 @@ public class Event {
     private double longitude;
     String eventImage;
     @ManyToMany(mappedBy="eventsAttendedByUsers", cascade = CascadeType.ALL)
+    @JsonIgnore
     private Set<User> users;
     @ManyToMany(mappedBy="eventsAttendedByDancers", cascade = CascadeType.ALL)
+    @JsonIgnore
     private Set<Dancer> dancers;
     @ManyToMany(mappedBy="eventsCreatedByDancers", cascade = CascadeType.ALL)
     @JsonIgnore()

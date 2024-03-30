@@ -74,7 +74,7 @@ public class EventRestController {
         return eventIServices.updateEventImage(idEvent,image);
     }
     @PostMapping("registerDancerEvent/{idDancer}/{idEvent}")
-    public String registerDancerEvent(@PathVariable("idDancer")int idDancer,@PathVariable("idEvent") int idEvent){
-        return eventIServices.dancerRegisterAtEvent(idDancer,idEvent);
+    public Boolean registerDancerEvent(@PathVariable("idDancer")int idDancer,@PathVariable("idEvent") int idEvent){
+       return eventIServices.dancerRegisterAtEvent(idDancer,idEvent);
     }
 }
