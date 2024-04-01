@@ -1,9 +1,11 @@
 package devnatic.danceodyssey.DAO.Entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -13,13 +15,15 @@ import java.util.Set;
 @NoArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class RatingProducts {
+public class SubCategory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
     Integer id;
-    String feedBack;
-    Integer score;
 
+    String type;
+
+    @ManyToOne
+    @JoinColumn(name = "parent_category_id", referencedColumnName = "id")
+    ParentCategory parentCategory;
 
 }

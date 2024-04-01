@@ -21,43 +21,29 @@ public class CloudinaryService {
         valuesMap.put("api_secret", "b-uWWHQnYkhmXiYJSNGa5_C-iQw");
         cloudinary = new Cloudinary(valuesMap);
     }
-    public String uploadSingleImageToCloudinary(MultipartFile file, int productId) throws IOException {
-        File convertedFile = convert(file);
 
-        String publicId = "product_" + productId + "_" + UUID.randomUUID().toString();
+    public String uploadSingleImageToCloudinary(MultipartFile file) {
+        File convertedFile = null;
+        try {
+            if(file == null){
+                return null;
+            }
+            convertedFile = convert(file);
 
-        Map<String, Object> params = new HashMap<>();
-        params.put("public_id", publicId);
 
-        Map<String, String> result = cloudinary.uploader().upload(convertedFile, params);
-
-        Files.delete(convertedFile.toPath());
-
-        return result.get("url");
-    }
-    public List<String> uploadImagesToCloudinary(List<MultipartFile> files, int productId) throws IOException {
-        List<String> imageUrls = new ArrayList<>();
-
-        for (MultipartFile file : files) {
-
-            File convertedFile = convert(file);
-
-            String publicId = "product_" + productId + "_" + UUID.randomUUID().toString();
+            String publicId = "product_" + UUID.randomUUID();
 
             Map<String, Object> params = new HashMap<>();
             params.put("public_id", publicId);
-            params.put("width", 800);
-            params.put("height", 600);
-            params.put("crop", "fill");
 
             Map<String, String> result = cloudinary.uploader().upload(convertedFile, params);
 
             Files.delete(convertedFile.toPath());
 
-            imageUrls.add(result.get("url"));
+            return result.get("url");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
-
-        return imageUrls;
     }
 
 

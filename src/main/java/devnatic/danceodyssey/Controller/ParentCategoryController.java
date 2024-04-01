@@ -1,0 +1,46 @@
+package devnatic.danceodyssey.Controller;
+import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import devnatic.danceodyssey.DAO.Entities.ParentCategory;
+import devnatic.danceodyssey.DAO.Entities.SubCategory;
+import devnatic.danceodyssey.Interfaces.IParentCategoryService;
+import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Arrays;
+import java.util.List;
+
+@CrossOrigin(origins = "http://localhost:4200", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
+@RestController
+@RequestMapping("/parentcategories")
+@AllArgsConstructor
+@Slf4j
+public class ParentCategoryController {
+    private  final IParentCategoryService iParentCategoryService;
+    @PostMapping("/addCategory")
+    public ResponseEntity<String> addParentCategoryWithSubCategories(@Valid @RequestBody ParentCategory parentCategory) {
+        try {
+            List<SubCategory> subCategories = parentCategory.getSubCategories();
+
+            // Appeler le service pour ajouter la catégorie parent avec les sous-catégories
+            iParentCategoryService.addParentCategoryWithSubCategories(parentCategory, subCategories);
+
+            log.info("Parent category with subcategories added successfully.");
+            return ResponseEntity.ok("Parent category with subcategories added successfully.");
+        } catch (Exception e) {
+            log.error("Error occurred while adding parent category with subcategories: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("An error occurred while adding parent category with subcategories.");
+        }
+
+    }
+    @GetMapping("/parent-subcategories")
+    public List<ParentCategory> getAllCategories() {
+        return iParentCategoryService.getAllcategories();
+    }
+
+}
