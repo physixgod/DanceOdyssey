@@ -15,6 +15,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.mail.MessagingException;
 import java.util.List;
@@ -133,6 +134,14 @@ public class Controller {
     public User resetPassword(@RequestParam("email") String email,@RequestParam("password") String password) {
         return services.ResetPassword(email,password);
 
+    }
+    @GetMapping("getJuryCV/{id}")
+    public String getJuryCV(@PathVariable("id") int idjurycv){
+        return services.JuryCV(idjurycv);
+    }
+    @PostMapping("updateJuryCV/image/{id}")
+    public JuryManager updateJuryCV(@PathVariable("id")int idJury, @RequestParam("image") MultipartFile image){
+        return services.updateJuryCV(idJury,image);
     }
 }
 

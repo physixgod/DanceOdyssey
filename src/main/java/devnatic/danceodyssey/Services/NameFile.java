@@ -1,6 +1,4 @@
-package devnatic.danceodyssey.DAO.Entities;
-
-
+package devnatic.danceodyssey.Services;
 
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;

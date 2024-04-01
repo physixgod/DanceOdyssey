@@ -24,6 +24,9 @@ public class JuryManager {
     String email;
     String password;
     String telNumber;
+    String juryCV;
+    boolean approved = false;
+    boolean rejected = false;
     @ManyToMany(cascade = CascadeType.ALL)
     private Set<Competition> competitionsManagedByJuries;
 }
