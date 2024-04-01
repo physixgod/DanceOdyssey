@@ -17,6 +17,7 @@ public class Participate {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int idParticipate;
     int competitionRank;
+    double competitionScore;
     @ManyToOne(cascade = CascadeType.ALL)
     @ToString.Exclude
 
