@@ -8,6 +8,7 @@ import lombok.experimental.FieldDefaults;
 
 import java.util.Set;
 
+
 @Entity
 @Setter
 @Getter
@@ -39,9 +40,12 @@ public class Dancer {
     private Set<Group> JoinedGroups;
     @ManyToMany(cascade = CascadeType.ALL)
     private Set<DanceCourses> dancecourses;
-    @OneToMany(mappedBy = "dancerParticipation", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "DancerParticipated", cascade = CascadeType.ALL)
     private Set<Participate> participates;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy="dancerRec")
-    private Set<Reclamation> DancersReclamations;
+    @OneToMany(mappedBy = "dancerRec", cascade = CascadeType.ALL)
+    private Set<Reclamation> DancersReclamation;
+    @OneToMany(mappedBy = "dancerfeed", cascade = CascadeType.ALL)
+    private Set<Feedback> DancersFeedback;
+
 
 }

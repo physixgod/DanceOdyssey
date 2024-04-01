@@ -24,6 +24,7 @@ public class User {
     String TelNumber;
     @ManyToMany(cascade = CascadeType.ALL)
     private Set<Event> eventsAttendedByUsers;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy="userRec")
-    private Set<Reclamation> UsersReclamations;
+    @OneToMany(mappedBy = "userRec", cascade = CascadeType.ALL)
+    private Set<Reclamation> userReclamations;
+
 }
