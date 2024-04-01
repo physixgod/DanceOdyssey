@@ -7,8 +7,10 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import org.webjars.NotFoundException;
 
+import java.io.IOException;
 import java.util.*;
 
 @Slf4j
@@ -16,7 +18,6 @@ import java.util.*;
 @AllArgsConstructor
 public class ProductServices implements IProductServices {
     private final ProductRepository productRepository;
-    private final SubCategoryRepository subCategoryRepository;
     private final CloudinaryService cloudinaryService;
     private final RaitingProductRepository raitingProductRepository;
     private final UserRepository userRepository;
@@ -27,7 +28,6 @@ private final ParentCategoryRepository parentCategoryRepository;
         ParentCategory parentCategory = parentCategoryRepository.findById(parentId).orElseThrow(() -> new NotFoundException("SubCategory not found !"));
         products.setParentCategory(parentCategory);
         setProductRef(products);
-        uploadImagesToRemote(products.getImages());
         products.setArchived(false);
         updateProductPromotion(products);
         return productRepository.save(products);
@@ -65,33 +65,18 @@ private final ParentCategoryRepository parentCategoryRepository;
         }
     }
 
-    private void uploadImagesToRemote(Set<Image> images) {
-        images.forEach(
-                image -> {
-                    String imageUrl = cloudinaryService.uploadSingleImageToCloudinary(image.getImage());
-                    image.setImageUrl(imageUrl);
-                }
-        );
-    }
+
 
     @Override
     public Products updateProductById(Integer productId, Products updatedProduct) {
-
-        uploadImagesToRemote(updatedProduct.getImages());
-
         Optional<Products> existingProductOptional = productRepository.findById(productId);
-        return existingProductOptional.map(existingProduct -> {
-            BeanUtils.copyProperties(updatedProduct, existingProduct, "idProduct", "datePublication", "ratingProductsP", "categoriesProduct", "subCategoriesProduct");
 
-            if (existingProduct.getQuantity() == 0) {
-                existingProduct.setProductState(true);
-            } else {
-                existingProduct.setProductState(false);
-            }
+        return existingProductOptional.map(existingProduct -> {
+            BeanUtils.copyProperties(updatedProduct, existingProduct, "idProduct", "datePublication", "images", "ratingProductsP");
+
             return productRepository.save(existingProduct);
         }).orElseThrow(() -> new RuntimeException("Product not found with ID: " + productId));
     }
-
 
 
     @Override
@@ -100,17 +85,21 @@ private final ParentCategoryRepository parentCategoryRepository;
     }
 
 
-
-
-
     @Override
     public Set<Products> getArchivedProducts(Boolean archived) {
         return productRepository.findProductsByArchived(Boolean.TRUE);
     }
 
     @Override
-    public Products getProductById(Integer idProduct) {
-        return productRepository.findById(idProduct).orElseThrow(() -> new NotFoundException("Product not found !"));
+    public List<Products> getProduitsByIds(List<Integer> idProducts){
+        List<Products> productList = new ArrayList<>();
+        for (Integer id : idProducts) {
+            Optional<Products> productOptional = productRepository.findById(id);
+            if (productOptional.isPresent()) {
+                productList.add(productOptional.get());
+            }
+        }
+        return productList;
     }
 
     @Override
@@ -130,12 +119,17 @@ private final ParentCategoryRepository parentCategoryRepository;
 
     @Override
     public void archiveProduct(Integer id) {
-        Products product = productRepository.findById(id).orElseThrow(()-> new NotFoundException("Product not found"));
-        product.setArchived(true);
-        productRepository.save(product);
+        Optional<Products> optionalProduct = productRepository.findById(id);
+
+        if (optionalProduct.isPresent()) {
+            Products product = optionalProduct.get();
+            product.setArchived(true);
+            productRepository.save(product);
 
 
+        }
     }
+
     @Override
     public void unarchiveProduct(Integer id) {
         Products product = productRepository.findById(id).orElseThrow(()-> new NotFoundException("Product not found"));
@@ -175,7 +169,46 @@ private final ParentCategoryRepository parentCategoryRepository;
     }
 
 
+    @Override
+    public void addImagesToProduct(List<MultipartFile> imageFiles, int productId) throws IOException {
 
+        Optional<Products> productOptional = productRepository.findById(productId);
+        if (productOptional.isPresent()) {
+            Products product = productOptional.get();
+            List<String> imageUrls = cloudinaryService.uploadImagesToCloudinary(imageFiles, productId);
+            for (String imageUrl : imageUrls) {
+                Image image = Image.builder()
+                        .imageUrl(imageUrl)
+                        .product(product)
+                        .build();
+
+                product.getImages().add(image);
+            }
+            productRepository.save(product);
+        }
+    }
+
+    @Override
+    public void updateImageForProduct(MultipartFile updatedImageFile, int productId, int imageId) throws IOException {
+
+        Optional<Products> productOptional = productRepository.findById(productId);
+        if (productOptional.isPresent()) {
+            Products product = productOptional.get();
+
+            Optional<Image> existingImageOptional = product.getImages().stream()
+                    .filter(image -> image.getId() == imageId)
+                    .findFirst();
+
+            if (existingImageOptional.isPresent()) {
+                Image existingImage = existingImageOptional.get();
+
+                String updatedImageUrl = cloudinaryService.uploadSingleImageToCloudinary(updatedImageFile, productId);
+
+                existingImage.setImageUrl(updatedImageUrl);
+
+                productRepository.save(product);
+            } }
+    }
 }
 
 

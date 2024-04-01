@@ -35,9 +35,9 @@ public class ParentCategoryController {
         }
 
     }
-    @GetMapping("/parent-subcategories")
-    public List<ParentCategory> getAllCategories() {
-        return iParentCategoryService.getAllcategories();
+    @GetMapping("/parentcategories-with-subcategories")
+    public List<ParentCategory> getAllParentCategoriesWithSubCategories() {
+        return iParentCategoryService.getAllParentCategories();
     }
 
 }

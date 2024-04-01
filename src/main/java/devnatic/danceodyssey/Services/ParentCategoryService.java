@@ -9,7 +9,9 @@ import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -32,9 +34,12 @@ public class ParentCategoryService implements IParentCategoryService {
     }
 
     @Override
-    public List<ParentCategory> getAllcategories() {
+    public List<ParentCategory> getAllParentCategories() {
         return parentCategoryRepository.findAll();
     }
+
+
+
 }
 
 

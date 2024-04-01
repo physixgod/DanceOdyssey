@@ -5,9 +5,14 @@ import devnatic.danceodyssey.DAO.Entities.Products;
 import devnatic.danceodyssey.DAO.Entities.RatingProducts;
 import devnatic.danceodyssey.Interfaces.IProductServices;
 import devnatic.danceodyssey.Interfaces.IRaitingProduct;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -23,15 +28,22 @@ public class ProductController {
     public Products addProduct( @PathVariable Integer parentId,@RequestBody Products products){
         return iProductServices.addProduct(products,parentId);
     }
-
+    @PostMapping(value = "/{productId}/addImages", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public void addImagesToProduct(
+            @RequestParam("imageFiles") List<MultipartFile> imageFiles,
+            @PathVariable("productId") int productId) throws IOException {
+        iProductServices.addImagesToProduct(imageFiles, productId);
+    }
 
     @PutMapping("/{productId}")
     public Products updateProductById(@PathVariable Integer productId, @RequestBody Products updatedProduct) {
         return iProductServices.updateProductById(productId, updatedProduct);
     }
-    @GetMapping("/{idProduct}")
-    public Products getProductById(@PathVariable Integer idProduct) {
-        return iProductServices.getProductById(idProduct);
+
+    @GetMapping("/{idProducts}")
+    public List<Products> getProduitsByIds(@PathVariable Integer idProducts) {
+        List<Integer> idList = Collections.singletonList(idProducts);
+        return iProductServices.getProduitsByIds(idList);
     }
 
     @GetMapping("/ShowAllProducts")
@@ -48,9 +60,8 @@ public class ProductController {
         iProductServices.archiveProduct(id);
     }
 
-
     @PutMapping("/unarchiveProduct/{id}")
-    public void unarchiveProduct(@PathVariable Integer id) {
+    public void  unarchiveProduct(Integer id) {
         iProductServices.unarchiveProduct(id);
 
 
@@ -85,6 +96,14 @@ public class ProductController {
 
         iRaitingProduct.addNEwRaitingProduit(ratingP);
         iProductServices.addRatingToProduct(ratingP.getId(), productId, userId);
+    }
+    @PutMapping(value = "/{productId}/images/{imageId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public void  updateProductImage(
+            @PathVariable int productId,
+            @PathVariable int imageId,
+            @RequestParam("imageFile") MultipartFile updatedImageFile) throws EntityNotFoundException, IOException {
+
+        iProductServices.updateImageForProduct(updatedImageFile, productId, imageId);
     }
 }
 
