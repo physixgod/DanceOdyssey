@@ -21,14 +21,10 @@ public class ParentCategoryService implements IParentCategoryService {
     @Transactional
     @Override
     public void addParentCategoryWithSubCategories(ParentCategory parentCategory, List<SubCategory> subCategories) {
-        // Save the parent category first to generate its ID
         ParentCategory savedParentCategory = parentCategoryRepository.save(parentCategory);
 
-        // Associate subcategories with the saved parent category
         for (SubCategory subCategory : subCategories) {
-            // Set the parent category for each subcategory
             subCategory.setParentCategory(savedParentCategory);
-            // Save each subcategory
             subCategoryRepository.save(subCategory);
         }
 

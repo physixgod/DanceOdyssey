@@ -40,7 +40,6 @@ public class Products {
 
     @OneToMany(cascade = CascadeType.ALL)
     private Set<RatingProducts> ratingProductsP;
-    // Relation avec ParentCategory
     @ManyToOne
     @JsonIgnore
     @JoinColumn(name = "parent_category_id")

@@ -1,15 +1,10 @@
 package devnatic.danceodyssey.Controller;
 
-import devnatic.danceodyssey.DAO.Entities.ParentCategory;
 import devnatic.danceodyssey.DAO.Entities.SubCategory;
-import devnatic.danceodyssey.Interfaces.IParentCategoryService;
 import devnatic.danceodyssey.Interfaces.ISubCategoryService;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:4200", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
 @RestController
