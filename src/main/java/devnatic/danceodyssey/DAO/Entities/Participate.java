@@ -16,6 +16,7 @@ public class Participate {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int idParticipate;
     int competitionRank;
+    double competitionScore;
     @ManyToOne(cascade = CascadeType.ALL)
     private Dancer DancerParticipated;
     @ManyToOne(cascade = CascadeType.ALL)

@@ -1,22 +1,36 @@
 package devnatic.danceodyssey.Services;
 
 import devnatic.danceodyssey.DAO.Entities.Competition;
+import devnatic.danceodyssey.DAO.Entities.Dancer;
 import devnatic.danceodyssey.DAO.Entities.JuryManager;
+import devnatic.danceodyssey.DAO.Entities.Participate;
 import devnatic.danceodyssey.DAO.Repositories.CompetitionRepository;
+import devnatic.danceodyssey.DAO.Repositories.DancerRepsoitory;
 import devnatic.danceodyssey.DAO.Repositories.JuryManagerRepository;
+import devnatic.danceodyssey.DAO.Repositories.ParticipateRepository;
+import io.github.classgraph.Resource;
 import lombok.AllArgsConstructor;
+import org.apache.poi.ss.usermodel.*;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.web.multipart.MultipartFile;
-
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.core.io.UrlResource;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 
 @org.springframework.stereotype.Service
 @AllArgsConstructor
 public class JuryService implements IJuryService {
-
+    ParticipateRepository participateRepository;
     JuryManagerRepository juryManagerRepository;
+    DancerRepsoitory dancerRepsoitory;
     private CompetitionRepository competitionRepository;
     @Override
     public JuryManager addJury(JuryManager juryManager) {
@@ -198,7 +212,74 @@ public class JuryService implements IJuryService {
         competition.setExcelFile(filePath);
         competitionRepository.save(competition); //
     }
+    public UrlResource downloadExcel(int competitionId) throws MalformedURLException {
+        Competition competition = competitionRepository.findById(competitionId)
+                .orElseThrow(() -> new RuntimeException("Competition not found"));
+
+        String excelFilePath = competition.getExcelFile();
+        Path path = Paths.get(excelFilePath);
+
+        if (!Files.exists(path)) {
+            throw new RuntimeException("Excel file not found");
+        }
+
+        return new UrlResource(path.toUri());
+    }
 
 
+    public Map<String, Double> getParticipantScores(MultipartFile file) throws IOException {
+        Map<String, Double> participantScores = new HashMap<>();
+        List<Participate> participates=new ArrayList<>();
+        try (Workbook workbook = new XSSFWorkbook(file.getInputStream())) {
+            Sheet sheet = workbook.getSheetAt(0);
+            for (Row row : sheet) {
+                Cell idParticipant = row.getCell(0);
+                Cell nameCell = row.getCell(1);
+                Cell scoreCell = row.getCell(2);
+                if (nameCell != null && scoreCell != null &&
+                        nameCell.getCellType() == CellType.STRING &&
+                        scoreCell.getCellType() == CellType.NUMERIC) {
+                    String participantName = nameCell.getStringCellValue();
+                    double score = scoreCell.getNumericCellValue();
+                    participantScores.put(participantName, score);
+                    Participate participate = participateRepository.findById((int) idParticipant.getNumericCellValue()).orElse(null);
+                    participate.setCompetitionScore(score);
+                    participateRepository.save(participate);
+                    participates.add(participate);
+                }
+            }
+        }
+        participates.sort(Comparator.comparing(Participate::getCompetitionScore).reversed());
 
+        for (Participate participate:participates){
+            participate.setCompetitionRank(participates.indexOf(participate)+1);
+            participateRepository.save(participate);
+        }
+        return participantScores;
+    }
+
+    public List<Map.Entry<String, Double>> sortParticipantScores(Map<String, Double> participantScores) {
+        List<Map.Entry<String, Double>> sortedList = new ArrayList<>(participantScores.entrySet());
+        sortedList.sort((entry1, entry2) -> entry2.getValue().compareTo(entry1.getValue()));
+        return sortedList;
+    }
+
+    @Override
+    public Set<Competition> ShowMyCompetitons(int idJury) {
+        JuryManager juryManager=juryManagerRepository.findById(idJury).get();
+        return juryManager.getCompetitionsManagedByJuries();
+    }
+
+
+    public Map<String, Object> getParticipantDetails(int participantId) {
+        Map<String, Object> participantDetails = new HashMap<>();
+        Optional<Participate> participateOptional = participateRepository.findById(participantId);
+        participateOptional.ifPresent(participate -> {
+            participantDetails.put("score", participate.getCompetitionScore());
+            participantDetails.put("rank", participate.getCompetitionRank());
+        });
+        return participantDetails;
+    }
 }
+
+

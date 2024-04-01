@@ -3,12 +3,14 @@ package devnatic.danceodyssey.RestController;
 import devnatic.danceodyssey.DAO.Entities.Competition;
 import devnatic.danceodyssey.DAO.Entities.JuryImage;
 import devnatic.danceodyssey.DAO.Entities.JuryManager;
+import devnatic.danceodyssey.DAO.Repositories.CompetitionRepository;
 import devnatic.danceodyssey.DAO.Repositories.ImageRepository;
 import devnatic.danceodyssey.Services.IJuryService;
 import devnatic.danceodyssey.Services.StorageService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -18,7 +20,11 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 @Configuration
@@ -156,4 +162,55 @@ public class JuryRestController {
         }
     }
 
+    @PostMapping("/Noteparticipants")
+    public Map<String,Double>uploadExcelFile(@RequestParam("file") MultipartFile file) throws IOException {
+        return iJuryService.getParticipantScores(file);
+    }
+    @GetMapping("/MyJuryCompetition/{idJury}")
+    public Set<Competition> MyJuryCompetion(@PathVariable("idJury")int idJury){
+        return iJuryService.ShowMyCompetitons(idJury);
+    }
+
+
+    @Autowired
+    private CompetitionRepository competitionRepository;
+
+
+    @GetMapping("/{competitionId}/downloadExcel")
+    public ResponseEntity<ByteArrayResource> downloadExcel(@PathVariable int competitionId) {
+        try {
+            byte[] excelBytes = generateExcelBytes(competitionId);
+            String fileName = "yourfilename.xlsx"; // Set your desired filename here
+
+            ByteArrayResource resource = new ByteArrayResource(excelBytes);
+            HttpHeaders headers = new HttpHeaders();
+            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName);
+
+            return ResponseEntity.ok()
+                    .headers(headers)
+                    .contentType(MediaType.parseMediaType("application/vnd.ms-excel"))
+                    .body(resource);
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    private byte[] generateExcelBytes(int competitionId) throws IOException {
+        Competition competition = competitionRepository.findById(competitionId)
+                .orElseThrow(() -> new RuntimeException("Competition not found"));
+
+        String excelFilePath = competition.getExcelFile();
+        Path path = Paths.get(excelFilePath);
+
+        if (!Files.exists(path)) {
+            throw new RuntimeException("Excel file not found");
+        }
+
+        return Files.readAllBytes(path);
+    }
+
+    @GetMapping("/participants/{id}/details")
+    public Map<String, Object> getParticipantDetails(@PathVariable int id) {
+        return iJuryService.getParticipantDetails(id);
+    }
 }
