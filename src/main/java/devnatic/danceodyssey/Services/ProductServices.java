@@ -2,7 +2,6 @@ package devnatic.danceodyssey.Services;
 
 import devnatic.danceodyssey.DAO.Entities.*;
 import devnatic.danceodyssey.DAO.Repositories.*;
-import devnatic.danceodyssey.Interfaces.IProductServices;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -208,6 +207,16 @@ private final ParentCategoryRepository parentCategoryRepository;
 
                 productRepository.save(product);
             } }
+    }
+
+    @Override
+    public List<Products> getProductsByParentCategory(ParentCategory parentCategory) {
+        return productRepository.findByParentCategory(parentCategory);
+    }
+
+    @Override
+    public List<Products> getProductsByParentCategoryId(Integer parentId) {
+        return productRepository.findByParentCategory_Id(parentId);
     }
 }
 

@@ -1,4 +1,4 @@
-package devnatic.danceodyssey.Interfaces;
+package devnatic.danceodyssey.Services;
 
 import devnatic.danceodyssey.DAO.Entities.RatingProducts;
 

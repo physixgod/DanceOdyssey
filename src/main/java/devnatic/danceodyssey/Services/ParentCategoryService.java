@@ -4,14 +4,11 @@ import devnatic.danceodyssey.DAO.Entities.ParentCategory;
 import devnatic.danceodyssey.DAO.Entities.SubCategory;
 import devnatic.danceodyssey.DAO.Repositories.ParentCategoryRepository;
 import devnatic.danceodyssey.DAO.Repositories.SubCategoryRepository;
-import devnatic.danceodyssey.Interfaces.IParentCategoryService;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -38,6 +35,10 @@ public class ParentCategoryService implements IParentCategoryService {
         return parentCategoryRepository.findAll();
     }
 
+    @Override
+    public ParentCategory getParentCategorybyType(String type) {
+        return parentCategoryRepository.findByType(type);
+    }
 
 
 }

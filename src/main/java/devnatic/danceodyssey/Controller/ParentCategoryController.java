@@ -3,7 +3,7 @@ import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import devnatic.danceodyssey.DAO.Entities.ParentCategory;
 import devnatic.danceodyssey.DAO.Entities.SubCategory;
-import devnatic.danceodyssey.Interfaces.IParentCategoryService;
+import devnatic.danceodyssey.Services.IParentCategoryService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,5 +39,8 @@ public class ParentCategoryController {
     public List<ParentCategory> getAllParentCategoriesWithSubCategories() {
         return iParentCategoryService.getAllParentCategories();
     }
-
+    @GetMapping("/parentcategories-with-type")
+    public ParentCategory getParentCategorybyType( @PathVariable String type) {
+        return iParentCategoryService.getParentCategorybyType(type);
+    }
 }

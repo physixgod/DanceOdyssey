@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ParentCategoryRepository extends JpaRepository<ParentCategory,Integer> {
 
-
+ParentCategory findByType (String type);
 
 }
 

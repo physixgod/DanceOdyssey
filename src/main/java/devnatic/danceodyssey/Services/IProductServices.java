@@ -1,6 +1,7 @@
-package devnatic.danceodyssey.Interfaces;
+package devnatic.danceodyssey.Services;
 
 import devnatic.danceodyssey.DAO.Entities.Image;
+import devnatic.danceodyssey.DAO.Entities.ParentCategory;
 import devnatic.danceodyssey.DAO.Entities.Products;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -31,5 +32,7 @@ public interface IProductServices {
     public Products addProduct(Products products, Integer parentId) ;
     public void addImagesToProduct(List<MultipartFile> imageFiles, int productId) throws IOException;
     public void updateImageForProduct(MultipartFile updatedImageFile, int productId, int imageId) throws IOException ;
+    public List<Products> getProductsByParentCategory(ParentCategory parentCategory) ;
+    public List<Products> getProductsByParentCategoryId(Integer parentId) ;
 
 }

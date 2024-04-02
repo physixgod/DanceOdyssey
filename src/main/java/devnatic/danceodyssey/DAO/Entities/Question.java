@@ -14,12 +14,12 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Profil {
+public class Question {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    int idProfil;
-    byte[] profilImage;
-    String profilDescription;
-
-
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    int idQuestion;
+    String questionText;
+    String correctAnswer;
+    String wronganswer1;
+    String wronganswer2;
 }

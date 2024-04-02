@@ -4,7 +4,6 @@ import devnatic.danceodyssey.DAO.Entities.ParentCategory;
 import devnatic.danceodyssey.DAO.Entities.SubCategory;
 import devnatic.danceodyssey.DAO.Repositories.ParentCategoryRepository;
 import devnatic.danceodyssey.DAO.Repositories.SubCategoryRepository;
-import devnatic.danceodyssey.Interfaces.ISubCategoryService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 

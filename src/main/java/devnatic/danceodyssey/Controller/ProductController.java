@@ -1,10 +1,11 @@
 package devnatic.danceodyssey.Controller;
 
 import devnatic.danceodyssey.DAO.Entities.Image;
+import devnatic.danceodyssey.DAO.Entities.ParentCategory;
 import devnatic.danceodyssey.DAO.Entities.Products;
 import devnatic.danceodyssey.DAO.Entities.RatingProducts;
-import devnatic.danceodyssey.Interfaces.IProductServices;
-import devnatic.danceodyssey.Interfaces.IRaitingProduct;
+import devnatic.danceodyssey.Services.IProductServices;
+import devnatic.danceodyssey.Services.IRaitingProduct;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
@@ -104,6 +105,16 @@ public class ProductController {
             @RequestParam("imageFile") MultipartFile updatedImageFile) throws EntityNotFoundException, IOException {
 
         iProductServices.updateImageForProduct(updatedImageFile, productId, imageId);
+    }
+    @GetMapping("/byParentCategory/{parentId}")
+    public List<Products> getProductsByParentCategory(@PathVariable Integer parentId) {
+        ParentCategory parentCategory = new ParentCategory();
+        parentCategory.setId(parentId);
+        return iProductServices.getProductsByParentCategory(parentCategory);
+    }
+    @GetMapping("/byParent/{parentId}")
+    public List<Products> getProductsByParentCategoryId(@PathVariable Integer parentId) {
+        return iProductServices.getProductsByParentCategoryId(parentId);
     }
 }
 

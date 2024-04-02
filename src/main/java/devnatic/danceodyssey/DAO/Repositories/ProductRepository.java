@@ -1,5 +1,6 @@
 package devnatic.danceodyssey.DAO.Repositories;
 
+import devnatic.danceodyssey.DAO.Entities.ParentCategory;
 import devnatic.danceodyssey.DAO.Entities.Products;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -28,6 +29,8 @@ public interface ProductRepository extends JpaRepository<Products, Integer> {
     @Query("SELECT p FROM Products p JOIN p.ratingProductsP rp GROUP BY p.idProduct ORDER BY rp.score DESC limit 5")
     List<Products> findTop5ByOrderBySumOfScoresDesc();
     List<Products> findByIsPromotion(Boolean isPromotion);
+    List<Products> findByParentCategory(ParentCategory parentCategory);
+    List<Products> findByParentCategory_Id(Integer parentId);
 
 
 }
