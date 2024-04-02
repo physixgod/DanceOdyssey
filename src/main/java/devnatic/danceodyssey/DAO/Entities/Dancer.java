@@ -42,7 +42,9 @@ public class Dancer {
     @OneToMany(mappedBy = "dancerParticipated", cascade = CascadeType.ALL) // corrected
     @JsonIgnore()
     private Set<Participate> participates;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy="dancerRec")
-    private Set<Reclamation> dancersReclamations;
+    @OneToMany(mappedBy = "dancerRec", cascade = CascadeType.ALL)
+    private Set<Reclamation> DancersReclamation;
+    @OneToMany(mappedBy = "dancerfeed", cascade = CascadeType.ALL)
+    private Set<Feedback> DancersFeedback;
 
 }

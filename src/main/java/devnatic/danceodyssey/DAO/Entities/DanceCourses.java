@@ -5,10 +5,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-
 import java.util.Collection;
 import java.util.List;
-
 import java.util.Set;
 
 @Entity
@@ -18,7 +16,6 @@ import java.util.Set;
 @NoArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@ToString
 public class DanceCourses {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,6 +28,7 @@ public class DanceCourses {
     String requiredSkillLevel;
     String dateCourse;
     String videoUrl;
+
     @ManyToMany(mappedBy = "dancecourses", cascade = CascadeType.ALL)
     private Set<Dancer> dancers;
 }

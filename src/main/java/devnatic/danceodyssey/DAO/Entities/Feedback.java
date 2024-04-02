@@ -3,6 +3,7 @@ package devnatic.danceodyssey.DAO.Entities;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+
 import java.time.LocalDate;
 
 @Entity
@@ -12,22 +13,23 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Reclamation {
+public class Feedback {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int reclamationID;
-    String reclamationDescription;
-    String reclamationDate;
-    String reclamationResponse;
-    String imageurl;
-    @ManyToOne(cascade = CascadeType.ALL)
-    private User userRec;
-    @ManyToOne(cascade = CascadeType.ALL)
-    private Dancer dancerRec;
+    int feedbackID;
+
+    private int rating;
+    private String feedbackMessage;
+    private String createdAt;
+    private boolean resolved;
 
     @PrePersist
     public void prePersist() {
         // Set the current date when the entity is being persisted
-        this.reclamationDate = LocalDate.now().toString();
+        this.createdAt = LocalDate.now().toString();
     }
+    @ManyToOne
+    User userfeed;
+    @ManyToOne
+    Dancer dancerfeed;
 }
