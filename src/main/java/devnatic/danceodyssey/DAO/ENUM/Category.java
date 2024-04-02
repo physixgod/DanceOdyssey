@@ -1,6 +1,6 @@
 package devnatic.danceodyssey.DAO.ENUM;
 
-public enum DanceStyle {
+public enum Category {
     ZOMBA,
     SALSA,
     Ballet,
