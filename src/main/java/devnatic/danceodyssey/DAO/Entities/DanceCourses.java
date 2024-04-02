@@ -5,8 +5,10 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+
 import java.util.Collection;
 import java.util.List;
+
 import java.util.Set;
 
 @Entity
@@ -16,6 +18,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
+@ToString
 public class DanceCourses {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
