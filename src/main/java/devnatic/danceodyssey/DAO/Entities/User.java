@@ -22,10 +22,7 @@ public class User {
     String email;
     String password;
     String telNumber;
-    @ManyToMany(cascade = CascadeType.ALL)
-    private Set<Event> eventsAttendedByUsers;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy="userRec")
-    private Set<Reclamation> UsersReclamations;
+
     @OneToOne
     private CART cart;
     @OneToMany(cascade = CascadeType.ALL)

@@ -19,8 +19,7 @@ public class Admin {
     int idAdmin;
     String username;
     String password;
-    @OneToMany(cascade = CascadeType.ALL)
-    private Set<Competition> Competitions;
+
     @OneToMany(cascade = CascadeType.ALL)
     private Set<Products> ProductsSSA;
 }
