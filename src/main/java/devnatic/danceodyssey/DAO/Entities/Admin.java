@@ -1,9 +1,7 @@
 package devnatic.danceodyssey.DAO.Entities;
-
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
 import java.util.Set;
 
 @Entity
@@ -21,4 +19,6 @@ public class Admin {
     String password;
     @OneToMany(cascade = CascadeType.ALL)
     private Set<Competition> Competitions;
+    @OneToMany(cascade = CascadeType.ALL)
+    private Set<Products> ProductsSSA;
 }

@@ -33,13 +33,12 @@
         int maxParticipants;
         String status;
         String competitionImage;
+        String excelFile;
         @OneToMany(mappedBy = "competition")
         @JsonIgnore()
         @ToString.Exclude
-
         private Set<Participate> participations;
         @ToString.Exclude
         @ManyToMany(mappedBy="competitionsManagedByJuries", cascade = CascadeType.ALL)
         private Set<JuryManager> jurymanagers;
-
     }
