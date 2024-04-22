@@ -1,6 +1,8 @@
 package devnatic.danceodyssey.RestController;
 
 import devnatic.danceodyssey.DAO.Entities.*;
+import devnatic.danceodyssey.DAO.Repositories.JuryRepo;
+import devnatic.danceodyssey.DAO.Repositories.PaymentInfoRepository;
 import devnatic.danceodyssey.DAO.Repositories.UserRepo;
 import devnatic.danceodyssey.Services.*;
 import devnatic.danceodyssey.utils.CodeGenerator;
@@ -26,6 +28,8 @@ import java.util.List;
 @AllArgsConstructor()
 
 public class Controller {
+    @Autowired
+    private JuryRepo juryRepo;
     UserRepo userRepo;
     @Autowired
     private IUserServices services;
@@ -41,6 +45,8 @@ public class Controller {
     private JwtService jwtService;
     @Autowired
     private EmailService emailService;
+    @Autowired
+    private PaymentInfoRepository paymentInfoRepository ;
     @PostMapping("/addUser")
     public User addUser( @RequestBody User user) {
         return services.adduser(user);}
@@ -81,7 +87,9 @@ public class Controller {
             String token = jwtService.generateToken(authRequest.getUsername());
             response.setToken(token);
             User user = services.laodByEmail(authRequest.getUsername());
+            response.setEmail(user.getEmail()); // Set the email
             response.setUserName(user.getUsername());
+            response.setUserID(Long.valueOf(String.valueOf(user.getUserID()))); // Set the userID as a string
             response.setRole(user.getRole());
             return ResponseEntity.ok(response);
         } catch (AuthenticationException e) {
@@ -91,10 +99,10 @@ public class Controller {
     }
 
 
+
     @PostMapping("/addNewUser")
     public User addNewUser(@RequestBody User userInfo) {
-        System.err.println(userInfo.toString());
-        System.err.println(userInfo.getRole().toString());
+
 
         return serviceUser.addUser(userInfo);
     }
@@ -142,6 +150,14 @@ public class Controller {
     @PostMapping("updateJuryCV/image/{id}")
     public JuryManager updateJuryCV(@PathVariable("id")int idJury, @RequestParam("image") MultipartFile image){
         return services.updateJuryCV(idJury,image);
+    }
+    @GetMapping("findjurybyid/{id}")
+    public JuryManager findjurybyid(@PathVariable("id")int idjury){
+        return juryRepo.findById(idjury).get();
+    }
+    @PostMapping("/payment")
+    public PaymentInfo savePaymentInfo(@RequestBody PaymentInfo paymentInfo) {
+        return paymentInfoRepository.save(paymentInfo);
     }
 }
 

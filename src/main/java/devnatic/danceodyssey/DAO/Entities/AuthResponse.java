@@ -12,4 +12,6 @@ public class AuthResponse {
      String token;
      Role role;
      String userName;
+     String email;
+     Long userID;
 }

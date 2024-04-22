@@ -1,9 +1,12 @@
 package devnatic.danceodyssey.DAO.Entities;
 
+import devnatic.danceodyssey.DAO.ENUM.Category;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -13,16 +16,19 @@ import java.util.Set;
 @NoArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@ToString
 public class DanceCourses {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int courseID;
     String courseName;
     String description;
-    String category;
+    @Enumerated(EnumType.STRING)
+    Category category;
     int durationInHours;
     String requiredSkillLevel;
-    @ManyToMany(mappedBy="dancecourses", cascade = CascadeType.ALL)
+    String dateCourse;
+    String videoUrl;
+
+    @ManyToMany(mappedBy = "dancecourses", cascade = CascadeType.ALL)
     private Set<Dancer> dancers;
 }

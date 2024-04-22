@@ -26,7 +26,7 @@ public class EmailService {
         // Set recipient, subject, and text
         helper.setTo(to);
         helper.setSubject("Password Reset Code");
-        helper.setText("Your password reset code is: " + code);
+        helper.setText(" " + code);
 
         // Send the email
         emailSender.send(message);
