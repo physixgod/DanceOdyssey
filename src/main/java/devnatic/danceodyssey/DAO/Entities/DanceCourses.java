@@ -28,7 +28,6 @@ public class DanceCourses {
     String requiredSkillLevel;
     String dateCourse;
     String videoUrl;
-
     @ManyToMany(mappedBy = "dancecourses", cascade = CascadeType.ALL)
     private Set<Dancer> dancers;
 }
