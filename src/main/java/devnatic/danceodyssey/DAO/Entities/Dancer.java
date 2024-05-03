@@ -43,6 +43,11 @@ public class Dancer {
     @JsonIgnore()
     private Set<Participate> participates;
     @OneToMany(cascade = CascadeType.ALL, mappedBy="dancerRec")
+    @ToString.Exclude
     private Set<Reclamation> dancersReclamations;
+    @OneToMany(cascade = CascadeType.ALL , mappedBy = "hoster")
+    Set<Accommodation> hosterAccommodations;
+    @ManyToMany(cascade = CascadeType.ALL , mappedBy = "residents")
+    Set<Accommodation> residentsAcoomadtions;
 
 }
