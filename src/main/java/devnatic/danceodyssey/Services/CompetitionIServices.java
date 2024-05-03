@@ -30,4 +30,5 @@ public interface CompetitionIServices {
     public Competition addCompetitionWithImage(Competition c , MultipartFile competitionImage);
     void autoCloseCompetition();
     void maxParticipantsAttended();
+    int gainPoints(int myScore,int pcScore,int idDancer );
 }

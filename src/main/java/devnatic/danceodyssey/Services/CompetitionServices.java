@@ -115,6 +115,26 @@ public class CompetitionServices implements CompetitionIServices {
         }
     }
 
+    @Override
+    public int gainPoints(int myScore, int pcScore, int idDancer) {
+        Dancer dancer=dancerRepository.findById(idDancer).get();
+        int pts=0;
+        if(myScore==3&&pcScore==0){
+            pts=30;
+            dancer.setPoints(dancer.getPoints()+pts);
+            dancerRepository.save(dancer);
+        }
+        if(myScore==3&&pcScore==1){
+            pts=20;
+            dancerRepository.save(dancer);
+        }
+        if(myScore==3&&pcScore==2){
+            pts=10;
+            dancerRepository.save(dancer);
+        }
+        return pts;
+    }
+
 
     @Override
     public Competition AddCompetitionorUpdate(Competition c) {
