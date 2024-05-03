@@ -8,7 +8,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Repository
-public interface CompetitionRepository extends JpaRepository<Competition,Integer> {
+public interface CompetitionRepository extends JpaRepository<Competition,Integer> { 
     List<Competition> findCompetitionsByCompetitionNameContainingIgnoreCase(String CompetitionName);
 
 List<Competition> findCompetitionByLocationIsContainingIgnoreCase(String Location);
