@@ -3,7 +3,6 @@ package devnatic.danceodyssey.Services;
 import devnatic.danceodyssey.DAO.Entities.*;
 import devnatic.danceodyssey.DAO.Repositories.*;
 import devnatic.danceodyssey.Interfaces.IProductServices;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -22,7 +21,7 @@ public class ProductServices implements IProductServices {
     private final ProductRepository productRepository;
     private final CloudinaryService cloudinaryService;
     private final RaitingProductRepository raitingProductRepository;
-    private final UserRepository userRepository;
+    private final testUserRepo userRepository;
     private final  SubCategoryRepository subCategoryRepository;
 private final ParentCategoryRepository parentCategoryRepository;
 
