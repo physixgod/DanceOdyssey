@@ -43,4 +43,5 @@ public class JuryManager {
     @ManyToMany(cascade = CascadeType.ALL)
     @JsonIgnore()
     private Set<Competition> competitionsManagedByJuries;
+
 }

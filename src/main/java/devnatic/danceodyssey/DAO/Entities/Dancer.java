@@ -1,5 +1,6 @@
 package devnatic.danceodyssey.DAO.Entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import devnatic.danceodyssey.DAO.ENUM.DanceStyle;
 import devnatic.danceodyssey.DAO.ENUM.ExperienceLevel;
 import jakarta.persistence.*;
@@ -33,15 +34,20 @@ public class Dancer {
     private Set<Event> eventsAttendedByDancers;
     @ManyToMany(cascade = CascadeType.ALL)
     private Set<Event> eventsCreatedByDancers;
-    @OneToMany(cascade = CascadeType.ALL)
-    private Set<Group> createdGroups;
+
+    //@ManyToMany(mappedBy = "dancers", cascade = CascadeType.ALL)
+    //private Set<Group> joinedGroups;// corrected
     @ManyToMany(cascade = CascadeType.ALL)
+    @JsonIgnore()
     private Set<Group> joinedGroups;
+    @JsonIgnore()
     @ManyToMany(cascade = CascadeType.ALL)
+
     private Set<DanceCourses> dancecourses;
+    @JsonIgnore()
     @OneToMany(mappedBy = "DancerParticipated", cascade = CascadeType.ALL) // corrected
     private Set<Participate> participates;
     @OneToMany(cascade = CascadeType.ALL, mappedBy="dancerRec")
+    @JsonIgnore()
     private Set<Reclamation> dancersReclamations;
-
 }

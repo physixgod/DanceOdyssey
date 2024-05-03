@@ -1,8 +1,7 @@
 package devnatic.danceodyssey.RestController;
 
-import devnatic.danceodyssey.DAO.Entities.Competition;
-import devnatic.danceodyssey.DAO.Entities.JuryImage;
-import devnatic.danceodyssey.DAO.Entities.JuryManager;
+import devnatic.danceodyssey.DAO.ENUM.DanceStyle;
+import devnatic.danceodyssey.DAO.Entities.*;
 import devnatic.danceodyssey.DAO.Repositories.CompetitionRepository;
 import devnatic.danceodyssey.DAO.Repositories.ImageRepository;
 import devnatic.danceodyssey.Services.IJuryService;
@@ -198,6 +197,7 @@ public class JuryRestController {
     private byte[] generateExcelBytes(int competitionId) throws IOException {
         Competition competition = competitionRepository.findById(competitionId)
                 .orElseThrow(() -> new RuntimeException("Competition not found"));
+        System.err.println(competitionId);
 
         String excelFilePath = competition.getExcelFile();
         Path path = Paths.get(excelFilePath);
@@ -213,4 +213,41 @@ public class JuryRestController {
     public Map<String, Object> getParticipantDetails(@PathVariable int id) {
         return iJuryService.getParticipantDetails(id);
     }
+    @GetMapping("/participants/getCompetitionName/{id}")
+    public String getCompetitionName(@PathVariable("id") int id ){
+        return competitionRepository.findById(id).get().getCompetitionName();
+    }
+
+    @PostMapping("/createGroup")
+    public Group createGroup(@RequestBody Group requestGroup) {
+        return iJuryService.createGroup(requestGroup);
+    }
+
+    @GetMapping("/Allgroups")
+    public List<Group> getAllGroups() {
+        return iJuryService.getAllGroups();
+    }
+
+    @PostMapping("/join-groups/{groupId}/{idDancer}")
+    public Dancer joinGroup(
+            @PathVariable("groupId") int groupId,
+            @PathVariable("idDancer") int idDancer) {
+        return iJuryService.joinGroup(groupId,idDancer);
+    }
+
+    @GetMapping("/GroupMembers/{groupId}")
+    public Set<Dancer> getDancersInGroup(@PathVariable int groupId) {
+        return iJuryService.findDancersByGroupId(groupId);
+    }
+
+    @DeleteMapping("/leaveGroups/{groupId}/{dancerId}")
+    public Dancer leaveGroup(@PathVariable int groupId, @PathVariable int dancerId) {
+        return iJuryService.leaveGroup(groupId, dancerId);
+    }
+    @GetMapping("/getDesiredGroups")
+    public Set<Group> suggestGroupsBasedOnAnswers(@RequestParam String ageRange,@RequestParam String danceStyles, @RequestParam boolean diverseAgeRepresentation,@RequestParam boolean beginnerFriendly,@RequestParam boolean mentorshipProgram){
+        return iJuryService.suggestGroupsBasedOnAnswers(ageRange,danceStyles,diverseAgeRepresentation,beginnerFriendly,mentorshipProgram);
+    }
+
+
 }
