@@ -98,6 +98,10 @@ public class CompetitionRestController {
     public Competition updateCompetitionImage(@PathVariable("id")int idCompetition, @RequestParam("image")MultipartFile image){
         return competitionIServices.updateCompetitionImage(idCompetition,image);
     }
+    @PostMapping("gainPoints/{idDancer}")
+    public int gainPoints(@RequestParam int myScore,@RequestParam int pcScore,@PathVariable("idDancer") int idDancer ){
+        return competitionIServices.gainPoints(myScore,pcScore,idDancer);
+    }
 
 
 

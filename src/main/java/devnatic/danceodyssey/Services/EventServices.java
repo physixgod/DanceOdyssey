@@ -193,7 +193,7 @@ public class EventServices implements EventIServices {
 
     @Override
     public String userRegisterAtEvent(int idUser, int idEvent) {
-return null;
+        return null;
     }
 
 

@@ -1,4 +1,4 @@
-package devnatic.danceodyssey.Repositories;
+/* package devnatic.danceodyssey.Repositories;
 
 
 import devnatic.danceodyssey.DAO.Entities.DanceCourses;
@@ -15,4 +15,4 @@ public interface DanceCoursesRepository extends CrudRepository<DanceCourses, Int
 
     List<DanceCourses> findByNameContaining(String name);
 
-}
+}*/
