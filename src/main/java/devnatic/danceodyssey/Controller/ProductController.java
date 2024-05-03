@@ -1,7 +1,6 @@
 package devnatic.danceodyssey.Controller;
 
 import devnatic.danceodyssey.DAO.Entities.*;
-import devnatic.danceodyssey.DAO.Repositories.OrderLineRepository;
 import devnatic.danceodyssey.Interfaces.IOrderLineService;
 import devnatic.danceodyssey.Interfaces.IProductServices;
 import devnatic.danceodyssey.Interfaces.IRaitingProductService;
@@ -98,7 +97,7 @@ private  final IRaitingProductService iRaitingProductService;
 
 
     @PostMapping("/ajouterRainting/{productId}/{userId}")
-    public void AddRaitingToProduit(@RequestBody RaitingProductss rating, @PathVariable Integer productId, @PathVariable Long userId) {
+    public void AddRaitingToProduit(@RequestBody RatingProduct rating, @PathVariable Integer productId, @PathVariable Long userId) {
 iRaitingProductService.addRaiting(rating);
         iProductServices.addRatingToProduct(rating.getId(), productId, userId);
     }
@@ -131,7 +130,7 @@ iRaitingProductService.addRaiting(rating);
     }
 
     @GetMapping("/{productId}/reactions")
-    public Set<RaitingProductss> getProductReactions(@PathVariable("productId") Integer productId) {
+    public Set<RatingProduct> getProductReactions(@PathVariable("productId") Integer productId) {
         return iProductServices.getProductReactions(productId);
     }
     @GetMapping("/subcategories/{subCategoryId}/products")

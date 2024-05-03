@@ -11,7 +11,7 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class RaitingProductss {
+public class RatingProduct {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 

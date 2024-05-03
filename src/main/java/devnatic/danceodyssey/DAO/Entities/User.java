@@ -27,5 +27,5 @@ public class User {
     private CART cart;
     @OneToMany(cascade = CascadeType.ALL)
     @JsonIgnore
-    private Set<RaitingProductss> RatingProductsS;
+    private Set<RatingProduct> RatingProductsS;
 }

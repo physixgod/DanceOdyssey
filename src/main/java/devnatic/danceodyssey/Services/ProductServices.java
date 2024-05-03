@@ -172,7 +172,7 @@ private final ParentCategoryRepository parentCategoryRepository;
         // Retrieve the product, rating, and user from their respective repositories
         Products product = productRepository.findById(productId)
                 .orElseThrow(() -> new NotFoundException("Product not found"));
-        RaitingProductss rating = raitingProductRepository.findById(ratingId)
+        RatingProduct rating = raitingProductRepository.findById(ratingId)
                 .orElseThrow(() -> new NotFoundException("Rating not found"));
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("User not found"));
@@ -187,11 +187,11 @@ private final ParentCategoryRepository parentCategoryRepository;
         productRepository.save(product);
         raitingProductRepository.save(rating);
         // Recalculate the average score for the product
-        Set<RaitingProductss> ratings = product.getRatingProductsP();
+        Set<RatingProduct> ratings = product.getRatingProductsP();
 
         // Calculate the total score
         int totalScore = 0;
-        for (RaitingProductss r : ratings) {
+        for (RatingProduct r : ratings) {
             totalScore += r.getScore();
         }
 
@@ -267,7 +267,7 @@ private final ParentCategoryRepository parentCategoryRepository;
     }
 
     @Override
-    public Set<RaitingProductss> getProductReactions(Integer productId) {
+    public Set<RatingProduct> getProductReactions(Integer productId) {
         Optional<Products> productOptional = productRepository.findById(productId);
         if (productOptional.isEmpty()) {
             return null; // Or handle accordingly

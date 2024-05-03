@@ -1,6 +1,6 @@
 package devnatic.danceodyssey.Services;
 
-import devnatic.danceodyssey.DAO.Entities.RaitingProductss;
+import devnatic.danceodyssey.DAO.Entities.RatingProduct;
 import devnatic.danceodyssey.DAO.Repositories.RaitingProductRepository;
 import devnatic.danceodyssey.Interfaces.IRaitingProductService;
 import lombok.AllArgsConstructor;
@@ -14,7 +14,7 @@ public class RaitingProductService implements IRaitingProductService {
 
 
     @Override
-    public RaitingProductss addRaiting(RaitingProductss ratingProducts) {
+    public RatingProduct addRaiting(RatingProduct ratingProducts) {
         return raitingProductRepository.save(ratingProducts);
     }
 
