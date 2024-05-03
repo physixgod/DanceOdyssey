@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.List;
+
 
 @Entity
 @Setter
@@ -18,10 +20,11 @@ public class SubCategory {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
     String type;
-
     @ManyToOne
     @JsonIgnore
     @JoinColumn(name = "parent_category_id", referencedColumnName = "id")
     ParentCategory parentCategory;
-
+    @OneToMany(mappedBy = "subCategories", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Products> products;
 }

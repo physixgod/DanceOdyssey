@@ -16,7 +16,6 @@ public interface ProductRepository extends JpaRepository<Products, Integer> {
     @Query("SELECT MAX(p.idProduct) FROM Products p")
     Integer findMaxProductId();
 
-    Optional<Products> findByRefProduct(Integer refProduct);
 
     Set<Products> findProductsByArchived(Boolean archived);
 
@@ -30,7 +29,20 @@ public interface ProductRepository extends JpaRepository<Products, Integer> {
     List<Products> findTop5ByOrderBySumOfScoresDesc();
     List<Products> findByIsPromotion(Boolean isPromotion);
     List<Products> findByParentCategory(ParentCategory parentCategory);
-    List<Products> findByParentCategory_Id(Integer parentId);
+    Set<Products> findByParentCategoryAndProductNameContainingIgnoreCase(ParentCategory parentCategory, String productName);
+    List<Products> findProductsBySubCategories_Id(Integer subCategoryId);
+    List<Products> findTop10ByOrderByQuantiteVendueDesc();
+
+    @Query("SELECT p FROM Products p WHERE p.parentCategory.id = ?1 ORDER BY p.quantiteVendue DESC LIMIT 5")
+    List<Products> findTop5ByParentCategory_IdOrderByQuantiteVendueDesc(Integer parentCategoryId);
+    @Query("SELECT p FROM Products p WHERE p.parentCategory.id = ?1 AND p.isPromotion = TRUE ORDER BY p.idProduct DESC LIMIT 5")
+    List<Products> findPromotionalProductsByParentCategoryId(Integer parentCategoryId);
+    List<Products> findTop5ByParentCategoryOrderByDatePublicationDesc(ParentCategory parentCategory);
+
+    @Query("SELECT p FROM Products p WHERE p.parentCategory.id = ?1 ORDER BY p.avreageScore DESC LIMIT 5")
+    List<Products> findTop5ByParentCategoryIdOrderByAverageScoreDesc(Integer parentCategoryId);
+
+
 
 
 }

@@ -19,10 +19,12 @@ public class ParentCategory {
     Integer id;
 
     String type;
+    @Column
+    String imgUrl;
 
     @OneToMany(mappedBy = "parentCategory", cascade = CascadeType.ALL)
     List<SubCategory> subCategories;
     @OneToMany(mappedBy = "parentCategory", cascade = CascadeType.ALL)
     @JsonIgnore
-    private List<Products> products;
+     List<Products> products;
 }

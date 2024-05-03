@@ -1,12 +1,13 @@
 package devnatic.danceodyssey.DAO.Entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
-import lombok.*;
-import lombok.experimental.FieldDefaults;
+        import com.fasterxml.jackson.annotation.JsonIgnore;
+        import jakarta.persistence.*;
+        import lombok.*;
+        import lombok.experimental.FieldDefaults;
 
-import java.time.LocalDate;
-import java.util.Set;
+        import java.time.LocalDate;
+
+        import java.util.Set;
 
 @Entity
 @Setter
@@ -20,7 +21,6 @@ public class Products {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer idProduct;
-    Integer refProduct;
     String productName;
     Float price;
     Integer pointsPrice;
@@ -34,9 +34,13 @@ public class Products {
     Float pricePromotion;
     Integer pourcentagePromotion;
     Integer quantiteVendue;
+    LocalDate promotionEndDate;
+    @Column
+    Float avreageScore;
+
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
-    private Set<Image> images;
+    private Set<MediaFiles> images;
 
     @OneToMany(cascade = CascadeType.ALL)
     private Set<RatingProducts> ratingProductsP;
@@ -45,6 +49,10 @@ public class Products {
     @JoinColumn(name = "parent_category_id")
     ParentCategory parentCategory;
 
+    @ManyToOne
+    @JsonIgnore
+    @JoinColumn(name = "sub_category_id")
+    SubCategory subCategories;
 
 }
 

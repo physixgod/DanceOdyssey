@@ -1,7 +1,7 @@
 package devnatic.danceodyssey.Controller;
 
 import devnatic.danceodyssey.DAO.Entities.SubCategory;
-import devnatic.danceodyssey.Services.ISubCategoryService;
+import devnatic.danceodyssey.Interfaces.ISubCategoryService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

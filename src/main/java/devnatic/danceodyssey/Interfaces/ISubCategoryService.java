@@ -1,4 +1,4 @@
-package devnatic.danceodyssey.Services;
+package devnatic.danceodyssey.Interfaces;
 
 import devnatic.danceodyssey.DAO.Entities.SubCategory;
 

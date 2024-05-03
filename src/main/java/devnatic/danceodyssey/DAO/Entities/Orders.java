@@ -1,14 +1,13 @@
 package devnatic.danceodyssey.DAO.Entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import devnatic.danceodyssey.DAO.ENUM.DeliveryDetails;
-import devnatic.danceodyssey.DAO.ENUM.DeliveryStatus;
+import devnatic.danceodyssey.DAO.ENUM.Etat;
+import devnatic.danceodyssey.DAO.ENUM.Payment_Mode;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
-import java.util.Set;
 
 @Entity
 @Setter
@@ -17,22 +16,28 @@ import java.util.Set;
 @NoArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Delivery {
+public class Orders {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int idDelivery;
-    LocalDate release_date;
+
+    Integer ordersId;
+    String buyer_email;
+    String buyer_address;
+    Float totalPriceOders;
+    LocalDate ordersDate;
+    Long tax;
+    String currency;
+    Boolean archived ;
     @Enumerated(EnumType.STRING)
-    DeliveryDetails deliveryDetails;
-    LocalDate archive_date;
-    boolean validated;
+    private Payment_Mode payment_mode;
     @Enumerated(EnumType.STRING)
-    DeliveryStatus deliveryStatus;
-    String Adress;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy="delivery")
-    private Set<Orders> Orders;
+    private Etat etat;
+    @ManyToOne
+    @JsonIgnore
+    Delivery delivery;
 
-
-
+    @ManyToOne
+    @JsonIgnore
+    CART cartO;
 
 }

@@ -1,12 +1,10 @@
 package devnatic.danceodyssey.Controller;
 
-import devnatic.danceodyssey.DAO.Entities.Image;
-import devnatic.danceodyssey.DAO.Entities.ParentCategory;
-import devnatic.danceodyssey.DAO.Entities.Products;
-import devnatic.danceodyssey.DAO.Entities.RatingProducts;
-import devnatic.danceodyssey.Services.IProductServices;
-import devnatic.danceodyssey.Services.IRaitingProduct;
-import jakarta.persistence.EntityNotFoundException;
+import devnatic.danceodyssey.DAO.Entities.*;
+import devnatic.danceodyssey.DAO.Repositories.OrderLineRepository;
+import devnatic.danceodyssey.Interfaces.IOrderLineService;
+import devnatic.danceodyssey.Interfaces.IProductServices;
+import devnatic.danceodyssey.Interfaces.IRaitingProductService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -22,18 +20,23 @@ import java.util.Set;
 @RequestMapping("/products")
 @AllArgsConstructor
 public class ProductController {
+    private  final IOrderLineService iOrderService;
 
     private final IProductServices iProductServices;
-    private final IRaitingProduct iRaitingProduct;
-    @PostMapping("/{parentId}/product")
-    public Products addProduct( @PathVariable Integer parentId,@RequestBody Products products){
-        return iProductServices.addProduct(products,parentId);
+private  final IRaitingProductService iRaitingProductService;
+    @PostMapping("/{parentId}/product/{subCategoryId}")
+    public Products addProduct(@PathVariable Integer parentId,
+                               @PathVariable Integer subCategoryId,
+                               @RequestBody Products products) {
+        return iProductServices.addProduct(products, parentId, subCategoryId);
     }
+
+
     @PostMapping(value = "/{productId}/addImages", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public void addImagesToProduct(
-            @RequestParam("imageFiles") List<MultipartFile> imageFiles,
+            @RequestParam("mediaFiles") List<MultipartFile> mediaFiles,
             @PathVariable("productId") int productId) throws IOException {
-        iProductServices.addImagesToProduct(imageFiles, productId);
+        iProductServices.addMediaToProduct(mediaFiles, productId);
     }
 
     @PutMapping("/{productId}")
@@ -62,14 +65,12 @@ public class ProductController {
     }
 
     @PutMapping("/unarchiveProduct/{id}")
-    public void  unarchiveProduct(Integer id) {
+    public void unarchiveProduct(@PathVariable Integer id) {
         iProductServices.unarchiveProduct(id);
-
-
     }
 
     @GetMapping("/{productId}/images")
-    public List<Image> getImagesForProduct(@PathVariable Integer productId) {
+    public List<MediaFiles> getImagesForProduct(@PathVariable Integer productId) {
         return iProductServices.getImagesForProduct(productId);
     }
     @GetMapping("/last-5")
@@ -90,21 +91,24 @@ public class ProductController {
     public List<Products> getTopRatingProducts() {
         return iProductServices.getTopRatingProducts();
     }
+    @GetMapping("/products/top-10Order")
+    public List<Products> getTop10_Order_Product() {
+        return iProductServices.getTop10OrderProduct();
+    }
 
 
     @PostMapping("/ajouterRainting/{productId}/{userId}")
-    public void AddRaitingToProduit(@RequestBody RatingProducts ratingP, @PathVariable Integer productId, @PathVariable Integer userId) {
-
-        iRaitingProduct.addNEwRaitingProduit(ratingP);
-        iProductServices.addRatingToProduct(ratingP.getId(), productId, userId);
+    public void AddRaitingToProduit(@RequestBody RatingProducts rating, @PathVariable Integer productId, @PathVariable Integer userId) {
+iRaitingProductService.addRaiting(rating);
+        iProductServices.addRatingToProduct(rating.getId(), productId, userId);
     }
-    @PutMapping(value = "/{productId}/images/{imageId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public void  updateProductImage(
-            @PathVariable int productId,
-            @PathVariable int imageId,
-            @RequestParam("imageFile") MultipartFile updatedImageFile) throws EntityNotFoundException, IOException {
 
-        iProductServices.updateImageForProduct(updatedImageFile, productId, imageId);
+    @PutMapping(value = "/{productId}/media/{mediaId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public List<String> updateMediaForProduct(
+            @RequestParam("files") List<MultipartFile> newMediaFiles,
+            @PathVariable("productId") int productId,
+            @PathVariable("mediaId") int mediaId) throws IOException {
+        return iProductServices.updateMediaForProduct(newMediaFiles, productId, mediaId);
     }
     @GetMapping("/byParentCategory/{parentId}")
     public List<Products> getProductsByParentCategory(@PathVariable Integer parentId) {
@@ -116,7 +120,45 @@ public class ProductController {
     public List<Products> getProductsByParentCategoryId(@PathVariable Integer parentId) {
         return iProductServices.getProductsByParentCategoryId(parentId);
     }
+
+
+    @GetMapping("/SearchByParentByNameproducts")
+    public List<Products> getProductsByParentCategoryAndProductName(
+            @RequestParam("parentCategoryId") Integer parentCategoryId,
+            @RequestParam("productName") String productName
+    ) {
+        return iProductServices.getProductsByParentCategoryAndProductName(parentCategoryId, productName);
+    }
+
+    @GetMapping("/{productId}/reactions")
+    public Set<RatingProducts> getProductReactions(@PathVariable("productId") Integer productId) {
+        return iProductServices.getProductReactions(productId);
+    }
+    @GetMapping("/subcategories/{subCategoryId}/products")
+    public List<Products> getProductsBySubCategoryId(@PathVariable Integer subCategoryId) {
+        return iProductServices.getProductsBySubCategoryId(subCategoryId);
+    }
+    @GetMapping("/top5ProductVendu/{parentCategoryId}")
+    public List<Products> getTop5ProductsByParentCategoryId(@PathVariable Integer parentCategoryId) {
+        return iProductServices.findTop5ProductsByParentCategoryId(parentCategoryId);
+    }
+    @GetMapping("/top5Promotional/{parentCategoryId}")
+    public List<Products> getTop5ProductsPromotionalByParentCategoryId(@PathVariable Integer parentCategoryId) {
+        return iProductServices.findTop5ProductsIspromotion(parentCategoryId);
+    }
+    @GetMapping("/Last5Product_Parent/{parentCategoryId}")
+    public List<Products> getLastProduct_ParenByParentCategoryId(@PathVariable Integer parentCategoryId) {
+        return iProductServices.getLast5ProductsByParentCategoryId(parentCategoryId);
+    }
+    @GetMapping("/AvreageScoreProduct_Parent/{parentCategoryId}")
+    public List<Products> AvreageScoreProduct_ByParentCategoryId(@PathVariable Integer parentCategoryId) {
+        return iProductServices.getAvreagescoreProductsByParentCategoryId(parentCategoryId);
+    }
+
 }
+
+
+
 
 
 

@@ -22,7 +22,6 @@ public class User {
     String email;
     String password;
     String telNumber;
-
     @OneToOne
     private CART cart;
     @OneToMany(cascade = CascadeType.ALL)
