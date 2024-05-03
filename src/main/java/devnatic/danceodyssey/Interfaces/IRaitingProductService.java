@@ -1,7 +1,7 @@
 package devnatic.danceodyssey.Interfaces;
 
-import devnatic.danceodyssey.DAO.Entities.RatingProducts;
+import devnatic.danceodyssey.DAO.Entities.RaitingProductss;
 
 public interface IRaitingProductService {
-public RatingProducts addRaiting(RatingProducts ratingProducts);
+public RaitingProductss addRaiting(RaitingProductss ratingProducts);
     }

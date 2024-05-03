@@ -23,8 +23,10 @@ public class CART {
     Float totPrice;
 Integer TotalProducts;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "cart")
+    @JsonIgnore
     private List<OrderLine> orderList = new ArrayList<>();
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "cartO")
+    @JsonIgnore
     private List<Orders> ordersList = new ArrayList<>();
     @OneToOne(cascade = CascadeType.ALL)
     @JsonIgnore

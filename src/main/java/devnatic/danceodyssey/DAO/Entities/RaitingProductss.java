@@ -1,11 +1,8 @@
 package devnatic.danceodyssey.DAO.Entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
-import java.util.Set;
 
 @Entity
 @Setter
@@ -14,7 +11,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class RatingProducts {
+public class RaitingProductss {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 

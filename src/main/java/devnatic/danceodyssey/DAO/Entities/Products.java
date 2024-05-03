@@ -43,7 +43,7 @@ public class Products {
     private Set<MediaFiles> images;
 
     @OneToMany(cascade = CascadeType.ALL)
-    private Set<RatingProducts> ratingProductsP;
+    private Set<RaitingProductss> ratingProductsP;
     @ManyToOne
     @JsonIgnore
     @JoinColumn(name = "parent_category_id")

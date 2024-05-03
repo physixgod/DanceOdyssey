@@ -1,5 +1,6 @@
 package devnatic.danceodyssey.DAO.Entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -16,7 +17,7 @@ import java.util.Set;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int userID;
+    Long userID;
     String firstName;
     String lastName;
     String email;
@@ -25,9 +26,6 @@ public class User {
     @OneToOne
     private CART cart;
     @OneToMany(cascade = CascadeType.ALL)
-    private Set<RatingProducts> RatingProductsS;
-
-
-
-
+    @JsonIgnore
+    private Set<RaitingProductss> RatingProductsS;
 }

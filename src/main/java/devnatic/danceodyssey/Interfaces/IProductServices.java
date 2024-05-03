@@ -3,7 +3,7 @@ package devnatic.danceodyssey.Interfaces;
 import devnatic.danceodyssey.DAO.Entities.MediaFiles;
 import devnatic.danceodyssey.DAO.Entities.ParentCategory;
 import devnatic.danceodyssey.DAO.Entities.Products;
-import devnatic.danceodyssey.DAO.Entities.RatingProducts;
+import devnatic.danceodyssey.DAO.Entities.RaitingProductss;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -24,7 +24,7 @@ public interface IProductServices {
     public void unarchiveProduct(Integer id) ;
 
 
-    public void addRatingToProduct(Integer ratingId, Integer productId, Integer userId) ;
+    public void addRatingToProduct(Integer ratingId, Integer productId, Long userId) ;
     public List<Products> getLast5Products();
     public List<Products> getTop10OrderProduct();
 
@@ -39,7 +39,7 @@ public interface IProductServices {
 
     public List<Products> getProductsByParentCategoryId(Integer parentId) ;
     List<Products> getProductsByParentCategoryAndProductName(Integer parentCategoryId, String productName);
-    public Set<RatingProducts> getProductReactions(Integer productId);
+    public Set<RaitingProductss> getProductReactions(Integer productId);
     public List<Products> getProductsBySubCategoryId(Integer subCategoryId);
     public List<Products> findTop5ProductsByParentCategoryId(Integer parentCategoryId) ;
     public List<Products> findTop5ProductsIspromotion(Integer parentCategoryId) ;

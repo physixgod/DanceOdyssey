@@ -1,9 +1,6 @@
 package devnatic.danceodyssey.Controller;
 
-import devnatic.danceodyssey.DAO.Entities.CART;
-import devnatic.danceodyssey.DAO.Entities.OrderLine;
-import devnatic.danceodyssey.DAO.Entities.Orders;
-import devnatic.danceodyssey.DAO.Entities.Products;
+import devnatic.danceodyssey.DAO.Entities.*;
 import devnatic.danceodyssey.DAO.Repositories.OrderLineRepository;
 import devnatic.danceodyssey.DAO.Repositories.OrdersRepositppry;
 import devnatic.danceodyssey.Interfaces.ICartService;
@@ -67,7 +64,10 @@ public class OrderController {
         iOrdersService.Refuse_orders(idOrers);
         return ResponseEntity.ok("La commande a été refusée avec succès.");
     }
-
+    @PostMapping("/AssignUserToCart")
+    public User registerUser(@RequestBody User user) {
+        return cartService.AssignUserToCart(user);
+    }
     @GetMapping("/generateInvoice/{orderId}")
     public void generateInvoice(@PathVariable Integer orderId, HttpServletResponse response) throws IOException {
         try {

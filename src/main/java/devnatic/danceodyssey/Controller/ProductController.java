@@ -98,7 +98,7 @@ private  final IRaitingProductService iRaitingProductService;
 
 
     @PostMapping("/ajouterRainting/{productId}/{userId}")
-    public void AddRaitingToProduit(@RequestBody RatingProducts rating, @PathVariable Integer productId, @PathVariable Integer userId) {
+    public void AddRaitingToProduit(@RequestBody RaitingProductss rating, @PathVariable Integer productId, @PathVariable Long userId) {
 iRaitingProductService.addRaiting(rating);
         iProductServices.addRatingToProduct(rating.getId(), productId, userId);
     }
@@ -131,7 +131,7 @@ iRaitingProductService.addRaiting(rating);
     }
 
     @GetMapping("/{productId}/reactions")
-    public Set<RatingProducts> getProductReactions(@PathVariable("productId") Integer productId) {
+    public Set<RaitingProductss> getProductReactions(@PathVariable("productId") Integer productId) {
         return iProductServices.getProductReactions(productId);
     }
     @GetMapping("/subcategories/{subCategoryId}/products")

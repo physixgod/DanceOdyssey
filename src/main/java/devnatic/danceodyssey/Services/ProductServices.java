@@ -21,7 +21,7 @@ public class ProductServices implements IProductServices {
     private final ProductRepository productRepository;
     private final CloudinaryService cloudinaryService;
     private final RaitingProductRepository raitingProductRepository;
-    private final testUserRepo userRepository;
+    private final TestUserRepo userRepository;
     private final  SubCategoryRepository subCategoryRepository;
 private final ParentCategoryRepository parentCategoryRepository;
 
@@ -168,11 +168,11 @@ private final ParentCategoryRepository parentCategoryRepository;
 
 
     @Override
-    public void addRatingToProduct(Integer ratingId, Integer productId, Integer userId) {
+    public void addRatingToProduct(Integer ratingId, Integer productId, Long userId) {
         // Retrieve the product, rating, and user from their respective repositories
         Products product = productRepository.findById(productId)
                 .orElseThrow(() -> new NotFoundException("Product not found"));
-        RatingProducts rating = raitingProductRepository.findById(ratingId)
+        RaitingProductss rating = raitingProductRepository.findById(ratingId)
                 .orElseThrow(() -> new NotFoundException("Rating not found"));
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("User not found"));
@@ -187,11 +187,11 @@ private final ParentCategoryRepository parentCategoryRepository;
         productRepository.save(product);
         raitingProductRepository.save(rating);
         // Recalculate the average score for the product
-        Set<RatingProducts> ratings = product.getRatingProductsP();
+        Set<RaitingProductss> ratings = product.getRatingProductsP();
 
         // Calculate the total score
         int totalScore = 0;
-        for (RatingProducts r : ratings) {
+        for (RaitingProductss r : ratings) {
             totalScore += r.getScore();
         }
 
@@ -267,7 +267,7 @@ private final ParentCategoryRepository parentCategoryRepository;
     }
 
     @Override
-    public Set<RatingProducts> getProductReactions(Integer productId) {
+    public Set<RaitingProductss> getProductReactions(Integer productId) {
         Optional<Products> productOptional = productRepository.findById(productId);
         if (productOptional.isEmpty()) {
             return null; // Or handle accordingly
