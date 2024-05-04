@@ -7,6 +7,8 @@ import jakarta.persistence.Id;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 
 @Entity
@@ -26,6 +28,7 @@ public class PaymentInfo {
     private String expirationDate;
     private String cvv;
     private String subtype;
+    private LocalDateTime startDate;
 
     // Getters and setters
 }

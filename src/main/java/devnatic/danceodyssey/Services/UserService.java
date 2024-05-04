@@ -1,13 +1,7 @@
 package devnatic.danceodyssey.Services;
 
-import devnatic.danceodyssey.DAO.Entities.Admin;
-import devnatic.danceodyssey.DAO.Entities.Dancer;
-import devnatic.danceodyssey.DAO.Entities.JuryManager;
-import devnatic.danceodyssey.DAO.Entities.User;
-import devnatic.danceodyssey.DAO.Repositories.AdminRepo;
-import devnatic.danceodyssey.DAO.Repositories.DancerRepo;
-import devnatic.danceodyssey.DAO.Repositories.JuryRepo;
-import devnatic.danceodyssey.DAO.Repositories.UserRepo;
+import devnatic.danceodyssey.DAO.Entities.*;
+import devnatic.danceodyssey.DAO.Repositories.*;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,13 +14,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.List;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.*;
 
 @Service
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserService implements IUserServices {
+    @Autowired
+    PaymentInfoRepository paymentInfoRepository;
 @Autowired
     private UserRepo userRepo;
 @Autowired
@@ -40,6 +37,8 @@ public class UserService implements IUserServices {
     @Autowired
     private JuryRepo juryRepo;
     private final PasswordEncoder passwordEncoder=new BCryptPasswordEncoder();
+    @Autowired
+    private PasswordEncoder encoder;
 
     @Override
     public User adduser(User user) {
@@ -106,8 +105,6 @@ public class UserService implements IUserServices {
     public User laodByEmail(String email) throws UsernameNotFoundException {
         // Retrieve user details from the repository based on the email
         User user = userRepo.findByEmail(email);
-
-
         // Convert User entity to UserDetails
         return user;
     }
@@ -143,17 +140,125 @@ public class UserService implements IUserServices {
     }
 
     @Override
+    public void closeSub() {
+        List<PaymentInfo> paymentInfos=paymentInfoRepository.findAll();
+        for (PaymentInfo paymentInfo:paymentInfos){
+            if (Objects.equals(paymentInfo.getSubtype(), "1 Year Subscription")){
+                long yearsPassed = ChronoUnit.HOURS.between(paymentInfo.getStartDate(), LocalDateTime.now());
+                if (yearsPassed>=30){
+                    User user=userRepo.findById(paymentInfo.getId()).get();
+                    user.setStatus(false);
+                    userRepo.save(user);
+                }
+            }
+            if (Objects.equals(paymentInfo.getSubtype(), "6 Months Subscription")){
+                long monthpassed = ChronoUnit.SECONDS.between(paymentInfo.getStartDate(), LocalDateTime.now());
+                if (monthpassed>=10){
+                    User user=userRepo.findById(paymentInfo.getId()).get();
+                    user.setStatus(false);
+                    userRepo.save(user);
+                }
+            }
+
+        if (Objects.equals(paymentInfo.getSubtype(), "1 Month Subscription")){
+            long minutes = ChronoUnit.MINUTES.between(paymentInfo.getStartDate(), LocalDateTime.now());
+            System.err.println(paymentInfo.getStartDate());
+            System.err.println(LocalDateTime.now());
+            if (minutes>=1){
+                User user=userRepo.findById(paymentInfo.getId()).get();
+                user.setStatus(false);
+                userRepo.save(user);
+            }
+        }
+    }
+    }
+
+    @Override
+    public User getUserById(Long userId) {
+        return userRepo.findById(userId).orElse(null);
+    }
+
+    @Override
+    public User updateUser(User userInfo) {
+
+        userInfo.setPassword(encoder.encode(userInfo.getPassword()));
+        User user = userRepo.save(userInfo);
+
+        return userRepo.save(user);
+    }
+
+    @Override
     public String JuryCV(int idJuryCV) {
         JuryManager juryManager= juryRepo.findById(idJuryCV).get();
         String baseUrl = environment.getProperty("export.jury.images");
         String JuryCV = juryManager.getJuryCV();
         if (JuryCV != null && !JuryCV.isEmpty()) {
-
-
+            System.err.println(baseUrl + JuryCV);
             return baseUrl + JuryCV;
         }
 
         return null;
+    }
+
+
+    @Override
+    public String  userCV(int idUsercv) {
+       User user= userRepo.findById((long) idUsercv).get();
+        String baseUrl = environment.getProperty("export.jury.images");
+        String userCV = user.getUserCV();
+        if (userCV != null && !userCV.isEmpty()) {
+            System.err.println(baseUrl + userCV);
+            return baseUrl + userCV;
+        }
+
+        return null;
+    }
+
+
+
+    @Override
+
+    public User updateUserCV(Long idUser, MultipartFile userCV) {
+        User user = userRepo.findById(idUser).get();
+        try {
+            if (userCV != null && !userCV.isEmpty() && userCV.getSize() > 0) {
+                String uploadDir = environment.getProperty("upload.jury.images");
+
+                String newPhotoName = nameFile.nameFile(userCV);
+                user.setUserCV(newPhotoName);
+
+
+                util.saveNewFile(uploadDir, newPhotoName, userCV);
+            }
+            return userRepo.save(user);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to update competition photo", e);
+        }
+    }
+
+    @Override
+    public Map<String, Long> countUsersByRole() {
+        Map<String, Long> roleCounts = new HashMap<>();
+        List<User> users = userRepo.findAll();
+
+        for (User user : users) {
+            String roleId = user.getRole().getId().toString();
+            roleCounts.put(roleId, roleCounts.getOrDefault(roleId, 0L) + 1);
+        }
+
+        return roleCounts;
+    }
+    @Override
+    public Map<String, Long> countUsersByStatus() {
+        Map<String, Long> statusCounts = new HashMap<>();
+        List<User> users = userRepo.findAll();
+
+        for (User user : users) {
+            String status = user.getStatus() ? "1" : "0"; // Convert boolean status to string "1" or "0"
+            statusCounts.put(status, statusCounts.getOrDefault(status, 0L) + 1);
+        }
+
+        return statusCounts;
     }
 
 }

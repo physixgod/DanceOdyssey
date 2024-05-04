@@ -26,6 +26,10 @@ public class User implements UserDetails {
     String lastName;
     String email;
     String password;
+    @Getter
+    String userCV;
+    @Getter
+    boolean status = false;
 
     @ManyToOne
     @JoinColumn(name = "role_id")
@@ -34,7 +38,7 @@ public class User implements UserDetails {
     String confpassword;
     @ManyToMany(cascade = CascadeType.ALL)
     private Set<Event> eventsAttendedByUsers;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy="userRec")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userRec")
     private Set<Reclamation> UsersReclamations;
 
     @Override
@@ -68,4 +72,7 @@ public class User implements UserDetails {
     }
 
 
+    public boolean getStatus() {
+        return status;
+    }
 }

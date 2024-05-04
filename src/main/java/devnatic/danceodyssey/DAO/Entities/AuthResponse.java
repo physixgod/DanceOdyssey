@@ -14,4 +14,6 @@ public class AuthResponse {
      String userName;
      String email;
      Long userID;
+     boolean status;
+     String  userCV;
 }
