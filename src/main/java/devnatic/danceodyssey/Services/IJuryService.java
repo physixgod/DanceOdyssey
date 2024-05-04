@@ -1,7 +1,6 @@
 package devnatic.danceodyssey.Services;
 
-import devnatic.danceodyssey.DAO.Entities.Competition;
-import devnatic.danceodyssey.DAO.Entities.JuryManager;
+import devnatic.danceodyssey.DAO.Entities.*;
 import io.github.classgraph.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.web.multipart.MultipartFile;
@@ -37,6 +36,21 @@ public interface IJuryService {
     public UrlResource downloadExcel(int competitionId) throws MalformedURLException;
 
     Map<String, Object> getParticipantDetails(int participantId);
+
+    Group createGroup(Group group);
+    List<Group> getAllGroups();
+    public Dancer joinGroup(int groupId, int dancerId);
+    Set<Dancer> findDancersByGroupId(int groupId);
+    Dancer leaveGroup(int groupId, int dancerId);
+
+
+    public Set<Group> suggestGroupsBasedOnAnswers(
+            String ageRange,
+            String danceStyles,
+            boolean diverseAgeRepresentation,
+            boolean beginnerFriendly,
+            boolean mentorshipProgram
+    );
 
 
 }
