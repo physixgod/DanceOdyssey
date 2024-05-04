@@ -1,8 +1,12 @@
 package devnatic.danceodyssey.DAO.Entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+
+import java.util.List;
+
 
 @Entity
 @Setter
@@ -11,18 +15,9 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@ToString
-public class Participate {
+public class Test {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int idParticipate;
-    int competitionRank;
-    double competitionScore;
-    @ManyToOne(cascade = CascadeType.ALL)
-    @ToString.Exclude
-
-    private Dancer dancerParticipated;
-
-    @ManyToOne(cascade = CascadeType.ALL)
-    private Competition competition;
+    Integer id;
+    String gg;
 }

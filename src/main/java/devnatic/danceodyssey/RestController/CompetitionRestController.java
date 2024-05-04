@@ -2,6 +2,9 @@ package devnatic.danceodyssey.RestController;
 
 import devnatic.danceodyssey.DAO.Entities.Competition;
 import devnatic.danceodyssey.DAO.Entities.Dancer;
+import devnatic.danceodyssey.DAO.Entities.Products;
+import devnatic.danceodyssey.DAO.Repositories.CompetitionRepository;
+import devnatic.danceodyssey.DAO.Repositories.ProductRepository;
 import devnatic.danceodyssey.Services.CompetitionIServices;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -102,7 +105,10 @@ public class CompetitionRestController {
     public int gainPoints(@RequestParam int myScore,@RequestParam int pcScore,@PathVariable("idDancer") int idDancer ){
         return competitionIServices.gainPoints(myScore,pcScore,idDancer);
     }
+    ProductRepository productRepository;
 
-
-
+    @GetMapping("GetAll")
+    public List<Products> getProdcuts(){
+        return productRepository.findAll();
+    }
 }
