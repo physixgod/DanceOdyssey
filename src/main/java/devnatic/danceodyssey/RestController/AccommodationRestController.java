@@ -35,4 +35,5 @@ public class AccommodationRestController {
         return accomdationIServices.showAccPrice(idAcc,nbPersonnes,br,lunch,dinner);
     }
 
+
 }

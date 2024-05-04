@@ -34,41 +34,12 @@ public class SecurityConfig {
     public UserDetailsService userDetailsService() {
         return new UserInfoService();
     }
-
-    // Configuring HttpSecurity
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf().disable()
                 .cors() // Enable CORS
                 .and()
-                .authorizeHttpRequests()
-                .requestMatchers("/user/addNewUser", "/user/generateToken", "/roles", "/user/showusers",
-                        "/user/forgotPassword", "/user/resetPassword", "/user/updateJuryCV/image/*",
-                        "/user/getJuryCV/*", "/competition/ShowCompetitions", "/competition/AddCompetitionorUpdate",
-                        "/jury/addJury", "/competition/DeleteCompetition/*", "/competition/SearchCompetitionByName/*",
-                        "/competition/SearchCompetitionByLocation/*", "/competition/SearchCompetitionStartDate/*",
-                        "/competition/SeachCompetitionByDanceCategory/*", "/competition/UpdateCompetitionStatus/*",
-                        "/competition/showCompetitonDancers/*", "/competition/showDancersRank/*",
-                        "/competition/showClosedCompetition", "/competition/getcp/*", "/competition/Register/*/*",
-                        "/competition/getCompetitionDancers/*", "/competition/getMyCompetitions/*",
-                        "/competition/getCompetitionImage/*", "/competition/uploadCompetitionImage/image/*",
-                        "/event/AddEvent", "/event/ShowEvents", "/event/showEventsDancers/*", "/event/showEventsUsers/*",
-                        "/event/AddEventByDancer/*", "/event/MyCreatedEvents/*", "/event/getEventById/*",
-                        "/event/DeleteEvent/*", "/event/nearbyEvents", "/event/getEventImage/*",
-                        "/event/uploadEventImage/image/*", "/event/registerDancerEvent/*/*", "/jury/addJury",
-                        "/jury/updatejury/*", "/jury/getAll", "/jury/getjurybyid/*", "/jury/deletejury/*",
-                        "/jury/juryManagers/search", "/jury/approvejury/*", "/jury/rejectjury/*", "/jury/competitions",
-                        "/jury/setJury/*/*", "/jury/showApprovedJuries", "/jury/showNotAffectedJuries/*",
-                        "/jury/showAffectedJuries/*", "/jury/SearchJuryByName/*", "/jury/SearchJuries/*/*",
-                        "/jury/*/image", "/jury/uploadImage/*", "/jury/*/uploadExcel", "/jury/Noteparticipants",
-                        "/jury/MyJuryCompetition/*", "/question/getRandomQuestion", "/event/AddACC/*/*",
-                        "/event/registerACC/*/*", "/event/ShowAcc/*", "/event/register/*/*",
-                        "/event/GetPrice/*", "/jury/*/uploadExcel", "/jury/participants/*/details",
-                        "/jury/*/downloadExcel","/competition/gainPoints/*").permitAll()
-                .and()
-                .authorizeHttpRequests().requestMatchers("/**").authenticated()
-                .and()
-                .authorizeHttpRequests().requestMatchers("/user/admin/**").authenticated()
+                .authorizeHttpRequests().anyRequest().permitAll()
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -77,6 +48,8 @@ public class SecurityConfig {
                 .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
+    // Configuring HttpSecurity
+
 
     // Password Encoding
     @Bean

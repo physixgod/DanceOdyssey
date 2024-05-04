@@ -32,4 +32,8 @@ public class SubCategoryController {
     public void deleteSubCategoryByParentCategoryId(@PathVariable Integer parentId, @PathVariable Integer subCategoryId) {
         iSubCategoryService.deleteByParentCategoryId(parentId, subCategoryId);
     }
+    @GetMapping("gg")
+    public String gg (){
+        return "gg";
+    }
 }

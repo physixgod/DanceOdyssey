@@ -1,9 +1,12 @@
 package devnatic.danceodyssey.RestController;
 
 import devnatic.danceodyssey.DAO.Entities.*;
+import devnatic.danceodyssey.DAO.Repositories.ProductRepository;
 import devnatic.danceodyssey.DAO.Repositories.UserRepo;
+import devnatic.danceodyssey.Interfaces.IParentCategoryService;
 import devnatic.danceodyssey.Services.*;
 import devnatic.danceodyssey.utils.CodeGenerator;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -41,6 +44,15 @@ public class Controller {
     private JwtService jwtService;
     @Autowired
     private EmailService emailService;
+
+    @Autowired
+    private IParentCategoryService iParentCategoryService;
+
+
+
+
+
+
     @PostMapping("/addUser")
     public User addUser( @RequestBody User user) {
         return services.adduser(user);}
@@ -142,6 +154,11 @@ public class Controller {
     @PostMapping("updateJuryCV/image/{id}")
     public JuryManager updateJuryCV(@PathVariable("id")int idJury, @RequestParam("image") MultipartFile image){
         return services.updateJuryCV(idJury,image);
+    }
+    ProductRepository productRepository;
+    @GetMapping("GetAll")
+    public List<Products> getProdcuts(){
+        return productRepository.findAll();
     }
 }
 

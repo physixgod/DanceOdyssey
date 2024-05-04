@@ -39,11 +39,11 @@ public class Products {
     Float avreageScore;
 
 
+    @JsonIgnore
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private Set<MediaFiles> images;
-
     @OneToMany(cascade = CascadeType.ALL)
-    private Set<RatingProducts> ratingProductsP;
+    private Set<RatingProduct> ratingProductsP;
     @ManyToOne
     @JsonIgnore
     @JoinColumn(name = "parent_category_id")
