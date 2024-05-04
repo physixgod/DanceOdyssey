@@ -1,16 +1,27 @@
 package devnatic.danceodyssey.RestController;
 
 import devnatic.danceodyssey.DAO.Entities.*;
+
+import devnatic.danceodyssey.DAO.Repositories.JuryRepo;
+import devnatic.danceodyssey.DAO.Repositories.PaymentInfoRepository;
+
 import devnatic.danceodyssey.DAO.Repositories.ProductRepository;
+
 import devnatic.danceodyssey.DAO.Repositories.UserRepo;
 import devnatic.danceodyssey.Interfaces.IParentCategoryService;
 import devnatic.danceodyssey.Services.*;
 import devnatic.danceodyssey.utils.CodeGenerator;
+
+import jakarta.servlet.http.HttpServletRequest;
+
 import jakarta.validation.Valid;
+
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -18,10 +29,15 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.mail.MessagingException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/user")
@@ -29,6 +45,8 @@ import java.util.List;
 @AllArgsConstructor()
 
 public class Controller {
+    @Autowired
+    private JuryRepo juryRepo;
     UserRepo userRepo;
     @Autowired
     private IUserServices services;
@@ -46,10 +64,12 @@ public class Controller {
     private EmailService emailService;
 
     @Autowired
+    private PaymentInfoRepository paymentInfoRepository ;
+    @Autowired
+    private ApplicationContext applicationContext;
+
+    @Autowired
     private IParentCategoryService iParentCategoryService;
-
-
-
 
 
 
@@ -93,8 +113,11 @@ public class Controller {
             String token = jwtService.generateToken(authRequest.getUsername());
             response.setToken(token);
             User user = services.laodByEmail(authRequest.getUsername());
+            response.setEmail(user.getEmail()); // Set the email
             response.setUserName(user.getUsername());
+            response.setUserID(Long.valueOf(String.valueOf(user.getUserID()))); // Set the userID as a string
             response.setRole(user.getRole());
+            response.setStatus(user.getStatus());
             return ResponseEntity.ok(response);
         } catch (AuthenticationException e) {
             // If authentication fails, return unauthorized response
@@ -103,10 +126,10 @@ public class Controller {
     }
 
 
+
     @PostMapping("/addNewUser")
     public User addNewUser(@RequestBody User userInfo) {
-        System.err.println(userInfo.toString());
-        System.err.println(userInfo.getRole().toString());
+
 
         return serviceUser.addUser(userInfo);
     }
@@ -155,12 +178,93 @@ public class Controller {
     public JuryManager updateJuryCV(@PathVariable("id")int idJury, @RequestParam("image") MultipartFile image){
         return services.updateJuryCV(idJury,image);
     }
+    @GetMapping("findjurybyid/{id}")
+    public JuryManager findjurybyid(@PathVariable("id")int idjury){
+        return juryRepo.findById(idjury).get();
+    }
+    @PostMapping("/payment")
+    public PaymentInfo savePaymentInfo(@RequestBody PaymentInfo paymentInfo) {
+        paymentInfo.setStartDate(LocalDateTime.now());
+        return paymentInfoRepository.save(paymentInfo);
+    }
+    @PutMapping("/updateUserStatus/{userID}")
+    public ResponseEntity<?> updateUserStatus(@PathVariable Long userID, @RequestBody boolean status) {
+        try {
+            // Log the received status value
+            System.out.println("Received status value for user with ID " + userID + ": " + status);
+
+            // Update the user's status using the UserInfoService
+            serviceUser.updateUserStatus(userID, status);
+            return ResponseEntity.ok().body("User status updated successfully");
+        } catch (IllegalArgumentException e) {
+            // If user not found, return not found response
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            // If an unexpected error occurs, return internal server error response
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error updating user status");
+        }
+    }
+    @GetMapping("/getUserById/{userId}")
+    public ResponseEntity<?> getUserById(@PathVariable Long userId) {
+        User user = services.getUserById(userId);
+        if (user != null) {
+            return ResponseEntity.ok().body(user);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+        }
+    }
+    @PostMapping("/updateuser")
+    public User updateUser (@RequestBody User user ){
+        return services.updateUser(user);
+
+    }
+    @GetMapping("getUserCV/{id}")
+    public String getUserCV(@PathVariable("id") int idUserCV) {
+        return services.userCV(idUserCV);
+    }
+    @PostMapping("updateUserCV/image/{id}")
+    public User updateUserCV(@PathVariable("id") Long idUser, @RequestParam("image") MultipartFile image) {
+        return services.updateUserCV(idUser, image);
+    }
+    @GetMapping("findUserById/{id}")
+    public User findUserById(@PathVariable("id") long idUser) {
+        return userRepo.findById(idUser).orElse(null);
+    }
+
+
+
+
+@GetMapping("/countUsersByRole")
+public ResponseEntity<?> countUsersByRole() {
+    try {
+        // Call a service method to count users by role
+        Map<String, Long> roleCounts =  services.countUsersByRole();
+        return ResponseEntity.ok().body(roleCounts);
+    } catch (Exception e) {
+        // If an error occurs, return an error response
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error counting users by role");
+    }}
+    @GetMapping("/countUsersByStatus")
+    public ResponseEntity<?> countUsersByStatus() {
+        try {
+            // Call the service method to count users by status
+            Map<String, Long> statusCounts = services.countUsersByStatus();
+            return ResponseEntity.ok().body(statusCounts);
+        } catch (Exception e) {
+            // If an error occurs, return an error response
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error counting users by status");
+        }
+
     ProductRepository productRepository;
     @GetMapping("GetAll")
     public List<Products> getProdcuts(){
         return productRepository.findAll();
+
     }
 }
+
+
+
 
 
 

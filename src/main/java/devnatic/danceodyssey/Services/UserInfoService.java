@@ -9,22 +9,19 @@ import devnatic.danceodyssey.DAO.Repositories.JuryRepo;
 import devnatic.danceodyssey.DAO.Repositories.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class UserInfoService implements UserDetailsService {
-
     @Autowired
     private UserRepo repository;
-
     @Autowired
     private PasswordEncoder encoder;
     @Autowired
@@ -34,9 +31,10 @@ public class UserInfoService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        System.err.println("deed");
+
 
         Optional<User> userDetail = Optional.ofNullable(repository.findByEmail(username));
+        System.err.println(username);
 
         return userDetail.map(UserInfoDetails::new)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found " + username));
@@ -56,7 +54,7 @@ public class UserInfoService implements UserDetailsService {
             dancerRepo.save(dancer);
 
             // Set the dancer ID as the user ID
-            userInfo.setUserID((long) dancer.getDancerId());
+           userInfo.setUserID ((long) dancer.getDancerId());
         } else if (userInfo.getRole().getName().equals("jury")) {
            JuryManager juryManager = new JuryManager();
 
@@ -69,9 +67,10 @@ public class UserInfoService implements UserDetailsService {
             
         }
         else if (userInfo.getRole().getName().equals("User")) {
-            UUID uuid = UUID.randomUUID();
-            long uniqueId = Math.abs(uuid.getMostSignificantBits()); // Get the most significant bits of the UUID
-            userInfo.setUserID(uniqueId);
+            Random random = new Random();
+            int uniqueId = random.nextInt(10001); // Generates a random number between 0 and 10000
+            userInfo.setUserID((long) uniqueId);
+
         }
 
         System.err.println(userInfo.getUserID());
@@ -93,7 +92,18 @@ public class UserInfoService implements UserDetailsService {
         // Return the user ID of the last added user
         return lastAddedUser != null ? lastAddedUser.getUserID() : null;
     }
+    public void updateUserStatus(Long userID, boolean status) {
+        Optional<User> userOptional = repository.findById(userID);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            user.setStatus(status);
+            repository.save(user);
+        } else {
+            throw new IllegalArgumentException("User not found with ID: " + userID);
+        }
+    }
 
 }
+
 
 
