@@ -1,21 +1,19 @@
 package devnatic.danceodyssey.Services;
 
-import devnatic.danceodyssey.DAO.Entities.Competition;
-import devnatic.danceodyssey.DAO.Entities.Dancer;
-import devnatic.danceodyssey.DAO.Entities.JuryManager;
-import devnatic.danceodyssey.DAO.Entities.Participate;
-import devnatic.danceodyssey.DAO.Repositories.CompetitionRepository;
-import devnatic.danceodyssey.DAO.Repositories.DancerRepsoitory;
-import devnatic.danceodyssey.DAO.Repositories.JuryManagerRepository;
-import devnatic.danceodyssey.DAO.Repositories.ParticipateRepository;
+import devnatic.danceodyssey.DAO.Entities.*;
+import devnatic.danceodyssey.DAO.Repositories.*;
 import io.github.classgraph.Resource;
+import jakarta.mail.MessagingException;
 import lombok.AllArgsConstructor;
 import org.apache.poi.ss.usermodel.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.web.multipart.MultipartFile;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.core.io.UrlResource;
+import org.webjars.NotFoundException;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -23,6 +21,7 @@ import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.util.*;
 
 @org.springframework.stereotype.Service
@@ -32,6 +31,8 @@ public class JuryService implements IJuryService {
     JuryManagerRepository juryManagerRepository;
     DancerRepsoitory dancerRepsoitory;
     private CompetitionRepository competitionRepository;
+    GroupRepository groupRepository;
+    EmailSender emailSender;
     @Override
     public JuryManager addJury(JuryManager juryManager) {
         if (juryManager != null) {
@@ -124,6 +125,30 @@ public class JuryService implements IJuryService {
         Jury.getCompetitionsManagedByJuries().add(c);
         juryManagerRepository.save(Jury);
         competitionRepository.save(c);
+        String juryEmail=Jury.getEmail();
+        String juryName=Jury.getFirstName();
+        String competitionName= c.getCompetitionName();
+        LocalDate startDate=c.getStartDate();
+        String emailSubject = "You've been assigned as a jury for " + competitionName;
+        String emailText = "<html><body>"
+                + "<p>Hello " + juryName + ",</p>"
+                + "<p>You have been assigned as a jury for the competition '<strong>" + competitionName + "</strong>'.</p>"
+                + "<p>The competition will start on <strong>" + startDate.toString() + "</strong>.</p>"
+                + "<p>Please make sure to be available and prepared for your role.</p>"
+                + "<br>"
+                + "<p>Best regards,<br>"
+                + "Your DanceOdessey Team</p>"
+                + "</body></html>";
+
+
+        // Send the email
+        try {
+            emailSender.sendSimpleMessage(juryEmail, emailSubject, emailText);
+        } catch ( MessagingException e) {
+            // Handle messaging exception
+            e.printStackTrace();
+        }
+
     }
 
     @Override
@@ -204,7 +229,7 @@ public class JuryService implements IJuryService {
         if (file.isEmpty()) {
             throw new RuntimeException("Failed to store empty file");
         }
-        String uploadDirectory = "C:/xampp/htdocs/ExcelFile/";
+        String uploadDirectory = "C:/xamp/htdocs/ExcelFile/";
         String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
         String filePath = uploadDirectory + fileName;
         Files.createDirectories(Paths.get(uploadDirectory));
@@ -280,6 +305,83 @@ public class JuryService implements IJuryService {
         });
         return participantDetails;
     }
+    public Group createGroup(Group group) {
+        return groupRepository.save(group);
+    }
+
+    public List<Group> getAllGroups() {
+        return groupRepository.findAll();
+    }
+
+    public Dancer joinGroup(int groupId, int dancerId) {
+        Group group = groupRepository.findById(groupId).orElse(null);
+        Dancer dancer = dancerRepsoitory.findById(dancerId).orElse(null);
+        dancer.getJoinedGroups().add(group);
+       // dancer.getJoinedGroups().remove(group);
+        return dancerRepsoitory.save(dancer);
+    }
+
+    public Set<Dancer> findDancersByGroupId(int groupId) {
+        Group group=groupRepository.findById(groupId).get();
+        Set<Dancer> dancers=group.getDancers();
+        return dancers;
+    }
+
+
+    public Dancer leaveGroup(int groupId, int dancerId) {
+        Group group = groupRepository.findById(groupId).orElse(null);
+        Dancer dancer = dancerRepsoitory.findById(dancerId).orElse(null);
+        dancer.getJoinedGroups().remove(group);
+        return dancerRepsoitory.save(dancer);
+    }
+
+
+
+    @Override
+    public Set<Group> suggestGroupsBasedOnAnswers(String ageRange, String danceStyles, boolean diverseAgeRepresentation, boolean beginnerFriendly, boolean mentorshipProgram) {
+        List<Group> groups=groupRepository.findAll();
+        Set<Group> filtre1=new HashSet<>();
+        Set<Group> filtre2=new HashSet<>();
+        Set<Group> filtre3=new HashSet<>();
+        Set<Group> filtre4=new HashSet<>();
+        Set<Group> filtre5=new HashSet<>();
+        for (Group group:groups){
+            if (Objects.equals(group.getAgeRange(), ageRange)){
+                filtre1.add(group);
+            }
+        }
+        if (diverseAgeRepresentation){
+            filtre2.addAll(groups);
+        }
+        if(!diverseAgeRepresentation) {
+            filtre2=filtre1;
+        }
+        for (Group group:filtre2){
+            if(Objects.equals(group.getDanceStyle(), danceStyles)){
+                filtre3.add(group);
+            }
+        }
+        for (Group group:filtre3){
+            if(group.isBeginnerFriendly()){
+                filtre4.add(group);
+            }
+        }
+        for (Group group:filtre4){
+            if(group.isMentorshipProgram()){
+                filtre5.add(group);
+            }
+        }
+        return filtre5;
+
+    }
+
+
+
+
+
+
+
 }
+
 
 
