@@ -33,11 +33,10 @@ public class JuryManager {
     String email;
     String password;
     String telNumber;
-
+    String juryCV;
     @Lob
     @Column(name = "imageUrl", columnDefinition = "TEXT")
     String imageUrl;
-
     @OneToMany(mappedBy = "jury", cascade = CascadeType.ALL)
     private Set<JuryImage> jury_data;
     @ManyToMany(cascade = CascadeType.ALL)

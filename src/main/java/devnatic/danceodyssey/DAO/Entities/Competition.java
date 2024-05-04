@@ -1,6 +1,5 @@
     package devnatic.danceodyssey.DAO.Entities;
 
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
@@ -8,7 +7,6 @@ import lombok.experimental.FieldDefaults;
 
 
     import java.time.LocalDate;
-    import java.util.List;
     import java.util.Set;
 
 
@@ -45,4 +43,3 @@ public class Competition {
     @ManyToMany(mappedBy="competitionsManagedByJuries", cascade = CascadeType.ALL)
     private Set<JuryManager> jurymanagers;
 }
-

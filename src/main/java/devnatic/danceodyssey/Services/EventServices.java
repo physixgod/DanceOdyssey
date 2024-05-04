@@ -167,28 +167,33 @@ public class EventServices implements EventIServices {
     }
 
     @Override
-    public String dancerRegisterAtEvent(int idDancer, int idEvent) {
+    public Boolean dancerRegisterAtEvent(int idDancer, int idEvent) {
         Dancer dancer = dancerRepository.findById(idDancer).orElse(null);
         Event event = eventRepository.findById(idEvent).orElse(null);
         String msg = "";
+        boolean test=false;
         if (dancer == null || event == null) {
             msg = "Invalid dancer or event ID";
         } else if (event.getDancers().contains(dancer)) {
-            msg = "You have already registered for this event";
+
         } else {
             event.getDancers().add(dancer);
             dancer.getEventsAttendedByDancers().add(event);
             event.setCurrentParticipants(event.getCurrentParticipants() + 1);
+
             eventRepository.save(event);
             dancerRepository.save(dancer);
             msg = "You have been registered for this event";
+            test=true;
         }
-        return msg;
+        System.err.println(msg);
+        return test;
+
     }
 
     @Override
     public String userRegisterAtEvent(int idUser, int idEvent) {
-return null;
+        return null;
     }
 
 

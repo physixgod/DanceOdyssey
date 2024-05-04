@@ -14,4 +14,5 @@ public class NameFile {
         String fileExtension = originalFileName.substring(fileDotIndex);
         return UUID.randomUUID().toString() + fileExtension;
     }
+
 }
