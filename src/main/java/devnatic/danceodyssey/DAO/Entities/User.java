@@ -27,6 +27,10 @@ public class User implements UserDetails {
     String lastName;
     String email;
     String password;
+    @Getter
+    String userCV;
+    @Getter
+    boolean status = false;
 
     @ManyToOne
     @JoinColumn(name = "role_id")
@@ -36,6 +40,7 @@ public class User implements UserDetails {
     @JsonIgnore
     @ManyToMany(cascade = CascadeType.ALL)
     private Set<Event> eventsAttendedByUsers;
+
     @OneToMany(mappedBy = "userRec", cascade = CascadeType.ALL)
     private Set<Reclamation> userReclamations;
     @OneToOne
@@ -44,6 +49,7 @@ public class User implements UserDetails {
     @OneToMany(cascade = CascadeType.ALL)
     @JsonIgnore
     private Set<RatingProduct> RatingProductsS;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;
@@ -73,5 +79,14 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return false;
     }
+
+
+
+    public boolean getStatus() {
+        return status;
+    }
 }
+
+
+
 
