@@ -1,6 +1,7 @@
 package devnatic.danceodyssey.DAO.Entities;
 
-import devnatic.danceodyssey.DAO.ENUM.PaymentMethod;
+import devnatic.danceodyssey.DAO.ENUM.Payment_Mode;
+import devnatic.danceodyssey.DAO.ENUM.Payment_Mode;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -21,5 +22,5 @@ public class Order {
     int orderID;
     float totalPrice;
     LocalDate orderDate;
-    PaymentMethod paymentMethod;
+    Payment_Mode paymentMethod;
 }

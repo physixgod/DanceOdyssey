@@ -1,5 +1,6 @@
 package devnatic.danceodyssey.DAO.Entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -36,10 +37,18 @@ public class User implements UserDetails {
     private Role role;
 
     String confpassword;
+    @JsonIgnore
     @ManyToMany(cascade = CascadeType.ALL)
     private Set<Event> eventsAttendedByUsers;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userRec")
-    private Set<Reclamation> UsersReclamations;
+
+    @OneToMany(mappedBy = "userRec", cascade = CascadeType.ALL)
+    private Set<Reclamation> userReclamations;
+    @OneToOne
+    @JsonIgnore
+    private CART cart;
+    @OneToMany(cascade = CascadeType.ALL)
+    @JsonIgnore
+    private Set<RatingProduct> RatingProductsS;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -72,7 +81,12 @@ public class User implements UserDetails {
     }
 
 
+
     public boolean getStatus() {
         return status;
     }
 }
+
+
+
+

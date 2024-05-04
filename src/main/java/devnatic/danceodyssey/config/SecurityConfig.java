@@ -4,7 +4,6 @@ import devnatic.danceodyssey.Services.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -25,7 +24,6 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
-
 public class SecurityConfig {
 
     @Autowired
@@ -36,19 +34,12 @@ public class SecurityConfig {
     public UserDetailsService userDetailsService() {
         return new UserInfoService();
     }
-
-    // Configuring HttpSecurity
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf().disable()
                 .cors() // Enable CORS
                 .and()
-                .authorizeHttpRequests()
-                .requestMatchers("/user/addNewUser", "/user/generateToken", "/roles", "/user/showusers","/user/forgotPassword","/user/resetPassword","/user/updateJuryCV/image/*", "/user/getJuryCV/*","/user/payment","/user/updateUserStatus/*","/user/updateUserStatussch/*","/user/getUserById/{userId}","/user/getUserCV/{id}","/user/updateUserCV/image/{id}","/user/findUserById/{id}","/user/countUsersByRole","/user/countUsersByStatus").permitAll()
-                .and()
-                .authorizeHttpRequests().requestMatchers("/**").authenticated()
-                .and()
-                .authorizeHttpRequests().requestMatchers("/user/admin/**").authenticated()
+                .authorizeHttpRequests().anyRequest().permitAll()
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -57,6 +48,8 @@ public class SecurityConfig {
                 .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
+    // Configuring HttpSecurity
+
 
     // Password Encoding
     @Bean

@@ -1,12 +1,21 @@
 package devnatic.danceodyssey.RestController;
 
 import devnatic.danceodyssey.DAO.Entities.*;
+
 import devnatic.danceodyssey.DAO.Repositories.JuryRepo;
 import devnatic.danceodyssey.DAO.Repositories.PaymentInfoRepository;
+
+import devnatic.danceodyssey.DAO.Repositories.ProductRepository;
+
 import devnatic.danceodyssey.DAO.Repositories.UserRepo;
+import devnatic.danceodyssey.Interfaces.IParentCategoryService;
 import devnatic.danceodyssey.Services.*;
 import devnatic.danceodyssey.utils.CodeGenerator;
+
 import jakarta.servlet.http.HttpServletRequest;
+
+import jakarta.validation.Valid;
+
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -53,10 +62,17 @@ public class Controller {
     private JwtService jwtService;
     @Autowired
     private EmailService emailService;
+
     @Autowired
     private PaymentInfoRepository paymentInfoRepository ;
     @Autowired
     private ApplicationContext applicationContext;
+
+    @Autowired
+    private IParentCategoryService iParentCategoryService;
+
+
+
     @PostMapping("/addUser")
     public User addUser( @RequestBody User user) {
         return services.adduser(user);}
@@ -238,6 +254,12 @@ public ResponseEntity<?> countUsersByRole() {
             // If an error occurs, return an error response
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error counting users by status");
         }
+
+    ProductRepository productRepository;
+    @GetMapping("GetAll")
+    public List<Products> getProdcuts(){
+        return productRepository.findAll();
+
     }
 }
 
