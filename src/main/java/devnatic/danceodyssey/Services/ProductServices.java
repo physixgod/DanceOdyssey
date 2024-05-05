@@ -173,12 +173,13 @@ private final ParentCategoryRepository parentCategoryRepository;
         Products product = productRepository.findById(productId)
                 .orElseThrow(() -> new NotFoundException("Product not found"));
         RatingProduct rating = raitingProductRepository.findById(ratingId)
-                .orElseThrow(() -> new NotFoundException("Rating not found"));
+                .get();
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("User not found"));
 
         // Add the rating to the user's set of ratings
         user.getRatingProductsS().add(rating);
+
 
         // Add the rating to the product's set of ratings
         product.getRatingProductsP().add(rating);

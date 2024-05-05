@@ -2,6 +2,9 @@ package devnatic.danceodyssey.Controller;
 
 import devnatic.danceodyssey.DAO.Entities.*;
 import devnatic.danceodyssey.DAO.Repositories.OrderLineRepository;
+import devnatic.danceodyssey.DAO.Repositories.RaitingProductRepository;
+import devnatic.danceodyssey.DAO.Repositories.ReclamationRepositories;
+import devnatic.danceodyssey.DAO.Repositories.UserRepo;
 import devnatic.danceodyssey.Interfaces.IOrderLineService;
 import devnatic.danceodyssey.Interfaces.IProductServices;
 import devnatic.danceodyssey.Interfaces.IRaitingProductService;
@@ -15,12 +18,14 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/products")
 @AllArgsConstructor
 public class ProductController {
     private  final IOrderLineService iOrderService;
+
+    private   final RaitingProductRepository raitingProductRepository;
 
     private final IProductServices iProductServices;
 private  final IRaitingProductService iRaitingProductService;
@@ -99,8 +104,14 @@ private  final IRaitingProductService iRaitingProductService;
 
     @PostMapping("/ajouterRainting/{productId}/{userId}")
     public void AddRaitingToProduit(@RequestBody RatingProduct rating, @PathVariable Integer productId, @PathVariable Long userId) {
-iRaitingProductService.addRaiting(rating);
-        iProductServices.addRatingToProduct(rating.getId(), productId, userId);
+        RatingProduct R =  iRaitingProductService.addRaiting(rating);
+System.err.println("+++++++++++++++++++++++++++++++++++++++++++" + R.getScore());
+
+
+
+
+
+        iProductServices.addRatingToProduct(R.getId(), productId, userId);
     }
 
     @PutMapping(value = "/{productId}/media/{mediaId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -153,6 +164,12 @@ iRaitingProductService.addRaiting(rating);
     @GetMapping("/AvreageScoreProduct_Parent/{parentCategoryId}")
     public List<Products> AvreageScoreProduct_ByParentCategoryId(@PathVariable Integer parentCategoryId) {
         return iProductServices.getAvreagescoreProductsByParentCategoryId(parentCategoryId);
+    }
+    UserRepo userRepo;
+    @GetMapping("getCartID/{idUser}")
+    public int getCartID(@PathVariable("idUser")Long idUser){
+        User user=userRepo.findById(idUser).get();
+        return user.getCart().getId();
     }
 
 }

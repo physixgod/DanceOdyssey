@@ -1,4 +1,4 @@
-package devnatic.danceodyssey.Services;
+/*package devnatic.danceodyssey.Services;
 
 import devnatic.danceodyssey.DAO.Entities.DanceCourses;
 
@@ -16,4 +16,4 @@ public interface IDanceCoursesService {
     // Custom search methods (optional)
     List<DanceCourses> findCoursesByCategory(String category);
     List<DanceCourses> findCoursesByName(String name);
-}
+}*/

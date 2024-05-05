@@ -27,6 +27,5 @@ Integer TotalProducts;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "cartO")
     private List<Orders> ordersList = new ArrayList<>();
     @OneToOne(cascade = CascadeType.ALL)
-    @JsonIgnore
     private User user ;
 }

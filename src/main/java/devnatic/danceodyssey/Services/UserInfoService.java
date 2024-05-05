@@ -1,9 +1,9 @@
 package devnatic.danceodyssey.Services;
 
-import devnatic.danceodyssey.DAO.Entities.Dancer;
-import devnatic.danceodyssey.DAO.Entities.JuryManager;
-import devnatic.danceodyssey.DAO.Entities.User;
-import devnatic.danceodyssey.DAO.Entities.UserInfoDetails;
+import devnatic.danceodyssey.DAO.ENUM.DanceStyle;
+import devnatic.danceodyssey.DAO.ENUM.ExperienceLevel;
+import devnatic.danceodyssey.DAO.Entities.*;
+import devnatic.danceodyssey.DAO.Repositories.CartRepository;
 import devnatic.danceodyssey.DAO.Repositories.DancerRepo;
 import devnatic.danceodyssey.DAO.Repositories.JuryRepo;
 import devnatic.danceodyssey.DAO.Repositories.UserRepo;
@@ -28,9 +28,11 @@ public class UserInfoService implements UserDetailsService {
     private DancerRepo dancerRepo;
     @Autowired
     JuryRepo juryRepo;
+    private CartRepository cartRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+
 
 
         Optional<User> userDetail = Optional.ofNullable(repository.findByEmail(username));
@@ -42,21 +44,53 @@ public class UserInfoService implements UserDetailsService {
 
 
 
+    public static int generateRandomNumber() {
+        Random rand = new Random();
+        // Generate a random number between 10000000 and 99999999
+        int randomNumber = rand.nextInt(90000000) + 10000000;
+        return randomNumber;
+    }
+    public static DanceStyle getRandomDanceStyle() {
+        DanceStyle[] danceStyles = DanceStyle.values();
+        Random rand = new Random();
+        int index = rand.nextInt(danceStyles.length);
+        return danceStyles[index];
+    }
+    public static ExperienceLevel getRandomExperienceLevel() {
+        ExperienceLevel[] experienceLevels = ExperienceLevel.values();
+        Random rand = new Random();
+        int index = rand.nextInt(experienceLevels.length);
+        return experienceLevels[index];
+    }
+
 
     public User addUser(User userInfo) {
+
         if (userInfo.getRole().getName().equals("Dancer")) {
             Dancer dancer = new Dancer();
-
+            ExperienceLevel randomExperienceLevel = getRandomExperienceLevel();
+            int randomNumber = generateRandomNumber();
+            String randomString = Integer.toString(randomNumber);
+            DanceStyle randomDanceStyle = getRandomDanceStyle();
+            dancer.setExperienceLevel(randomExperienceLevel);
+            dancer.setDanceStyle(randomDanceStyle);
+            dancer.setTelNum(randomString);
             dancer.setFirstName(userInfo.getUsername());
             dancer.setLastName(userInfo.getLastName());
             dancer.setEmail(userInfo.getEmail());
             dancer.setPassword(userInfo.getPassword());
+
             dancerRepo.save(dancer);
 
             // Set the dancer ID as the user ID
            userInfo.setUserID ((long) dancer.getDancerId());
         } else if (userInfo.getRole().getName().equals("jury")) {
            JuryManager juryManager = new JuryManager();
+            int randomNumber = generateRandomNumber();
+            String randomString = Integer.toString(randomNumber);
+            juryManager.setTelNumber(randomString);
+            juryManager.setApproved(false);
+            juryManager.setRejected(false);
 
             juryManager.setFirstName(userInfo.getUsername());
             juryManager.setLastName(userInfo.getLastName());
@@ -76,9 +110,12 @@ public class UserInfoService implements UserDetailsService {
         System.err.println(userInfo.getUserID());
 
         userInfo.setPassword(encoder.encode(userInfo.getPassword()));
-        User user = repository.save(userInfo);
-        return user;
-        
+        repository.save(userInfo);
+
+
+        return userInfo;
+
+
 
     }
 
