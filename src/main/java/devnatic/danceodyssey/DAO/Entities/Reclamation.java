@@ -1,9 +1,13 @@
 package devnatic.danceodyssey.DAO.Entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import java.time.LocalDate;
+import org.hibernate.annotations.CreationTimestamp;
+
+
+import java.util.Date;
 import java.util.Set;
 
 @Entity
@@ -18,10 +22,14 @@ public class Reclamation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int reclamationID;
     String reclamationDescription;
-    String reclamationDate;
     String reclamationResponse;
     String reclamationReason;
-    String imageurl;
+    String priority;
+
+    @CreationTimestamp
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private Date reclamationDate;
+
     @ManyToOne(cascade = CascadeType.ALL)
     private User userRec;
     @ManyToOne(cascade = CascadeType.ALL)
@@ -33,9 +41,5 @@ public class Reclamation {
     @ManyToMany(cascade = CascadeType.ALL)
     private Set<Delivery> reclamationdelivery;
 
-    @PrePersist
-    public void prePersist() {
-        // Set the current date when the entity is being persisted
-        this.reclamationDate = LocalDate.now().toString();
-    }
+
 }

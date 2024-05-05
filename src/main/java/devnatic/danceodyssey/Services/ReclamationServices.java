@@ -46,11 +46,11 @@ public class ReclamationServices implements IReclamationServices{
             Reclamation existingReclamation = existingReclamationOptional.get();
             // Update attributes of existingReclamation with attributes of rec
             existingReclamation.setReclamationDescription(rec.getReclamationDescription());
-           
             existingReclamation.setReclamationResponse(rec.getReclamationResponse());
-            existingReclamation.setImageurl(rec.getImageurl());
+            existingReclamation.setReclamationReason(rec.getReclamationReason());
             existingReclamation.setUserRec(rec.getUserRec());
             existingReclamation.setDancerRec(rec.getDancerRec());
+
             // Save the updated reclamation back to the database
             return reclamationRepositories.save(existingReclamation);
         } else {

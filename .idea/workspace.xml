@@ -5,10 +5,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="85ce16fb-d666-4112-a2aa-c6d6561fff90" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/devnatic/danceodyssey/DAO/Entities/Progress.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/devnatic/danceodyssey/DAO/Entities/ProgressDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/devnatic/danceodyssey/DAO/Repositories/ProgressRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/devnatic/danceodyssey/RestController/ProgressController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/devnatic/danceodyssey/Services/IProgressServices.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/devnatic/danceodyssey/Services/ProgressServices.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/devnatic/danceodyssey/DAO/Entities/Delivery.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/devnatic/danceodyssey/DAO/Entities/Delivery.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/devnatic/danceodyssey/DAO/Entities/Feedback.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/devnatic/danceodyssey/DAO/Entities/Feedback.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/devnatic/danceodyssey/DAO/Entities/Products.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/devnatic/danceodyssey/DAO/Entities/Products.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/devnatic/danceodyssey/DAO/Entities/Reclamation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/devnatic/danceodyssey/DAO/Entities/Reclamation.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/devnatic/danceodyssey/RestController/RealNotificationsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/devnatic/danceodyssey/RestController/RealNotificationsController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/devnatic/danceodyssey/RestController/ReclamationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/devnatic/danceodyssey/RestController/ReclamationController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/devnatic/danceodyssey/Services/FeedbackServices.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/devnatic/danceodyssey/Services/FeedbackServices.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/devnatic/danceodyssey/Services/ReclamationServices.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/devnatic/danceodyssey/Services/ReclamationServices.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -19,13 +30,18 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="Enum" />
         <option value="Interface" />
         <option value="Class" />
-        <option value="Enum" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="main" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="MarkdownSettingsMigration">
@@ -56,7 +72,8 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "Spring Boot.DanceOdysseyApplication.executor": "Debug",
-    "git-widget-placeholder": "Montassar",
+    "git-widget-placeholder": "montassaralaya",
+    "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/MSI/OneDrive/Desktop/projtfinal/DanceOdyssey",
     "node.js.detected.package.eslint": "true",
@@ -68,7 +85,7 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager" selected="Spring Boot.DanceOdysseyApplication">
+  <component name="RunManager" selected="Application.DanceOdysseyApplication">
     <configuration name="DanceOdysseyApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="devnatic.danceodyssey.DanceOdysseyApplication" />
       <module name="DanceOdyssey" />
@@ -99,12 +116,14 @@
       <list>
         <item itemvalue="Spring Boot.DanceOdysseyApplication" />
         <item itemvalue="Application.DanceOdysseyApplication" />
+        <item itemvalue="Application.DanceOdysseyApplication" />
       </list>
     </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
+        <option value="jdk-19.0.2-corretto-19.0.2-f644763e9732-1e16d6ec" />
         <option value="jdk-21.0.2-openjdk-21.0.2-f644763e9732-c0c073db" />
       </set>
     </attachedChunks>
@@ -161,7 +180,12 @@
       <workItem from="1713958292304" duration="1926000" />
       <workItem from="1713997517205" duration="609000" />
       <workItem from="1714141274212" duration="607000" />
-      <workItem from="1714747001299" duration="33000" />
+      <workItem from="1714747036209" duration="7059000" />
+      <workItem from="1714821267307" duration="7615000" />
+      <workItem from="1714906804678" duration="3003000" />
+      <workItem from="1714923008449" duration="767000" />
+      <workItem from="1714930295703" duration="1473000" />
+      <workItem from="1714944999128" duration="1879000" />
     </task>
     <servers />
   </component>
