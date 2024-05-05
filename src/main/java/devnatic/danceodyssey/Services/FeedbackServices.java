@@ -20,7 +20,6 @@ public class FeedbackServices implements IFeedbackservices{
         Feedback existingFeedback = feedbackRepositories.findById(feedbackId)
                 .orElseThrow(() -> new RuntimeException("Feedback not found with id: " + feedbackId));
 
-        existingFeedback.setResolved(resolved);
 
         return feedbackRepositories.save(existingFeedback);
     }
