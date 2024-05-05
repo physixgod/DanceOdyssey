@@ -1,10 +1,13 @@
 package devnatic.danceodyssey.DAO.Entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDate;
+import java.util.Date;
 
 @Entity
 @Setter
@@ -20,14 +23,12 @@ public class Feedback {
 
     private int rating;
     private String feedbackMessage;
-    private String createdAt;
     private boolean resolved;
+    private String feedbackcomments;
 
-    @PrePersist
-    public void prePersist() {
-        // Set the current date when the entity is being persisted
-        this.createdAt = LocalDate.now().toString();
-    }
+    @CreationTimestamp
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private Date createdAt;
     @ManyToOne
     User userfeed;
     @ManyToOne
