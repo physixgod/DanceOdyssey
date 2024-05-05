@@ -117,6 +117,7 @@ public class UserService implements IUserServices {
     public User ResetPassword(String Email, String password){
         User user = userRepo.findByEmail(Email);
         user.setPassword(passwordEncoder.encode(password));
+        user.setConfpassword(password);
         return userRepo.save(user);
 
     }

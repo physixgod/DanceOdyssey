@@ -255,11 +255,6 @@ public ResponseEntity<?> countUsersByRole() {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error counting users by status");
         }
 
-    ProductRepository productRepository;
-    @GetMapping("GetAll")
-    public List<Products> getProdcuts(){
-        return productRepository.findAll();
-
     }
 }
 

@@ -44,7 +44,6 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "userRec", cascade = CascadeType.ALL)
     private Set<Reclamation> userReclamations;
     @OneToOne
-    @JsonIgnore
     private CART cart;
     @OneToMany(cascade = CascadeType.ALL)
     @JsonIgnore

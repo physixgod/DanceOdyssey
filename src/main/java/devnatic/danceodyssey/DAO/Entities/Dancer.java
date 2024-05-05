@@ -38,9 +38,9 @@ public class Dancer {
     @ManyToMany(cascade = CascadeType.ALL)
     @JsonIgnore()
     private Set<Group> joinedGroups;
-    @JsonIgnore()
+  /*  @JsonIgnore()
     @ManyToMany(cascade = CascadeType.ALL)
-    private Set<DanceCourses> dancecourses;
+    private Set<DanceCourses> dancecourses;*/
     @OneToMany(mappedBy = "dancerParticipated", cascade = CascadeType.ALL) // corrected
     @JsonIgnore()
     private Set<Participate> participates;

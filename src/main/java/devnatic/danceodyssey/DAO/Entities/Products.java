@@ -39,7 +39,6 @@ public class Products {
     Float avreageScore;
 
 
-    @JsonIgnore
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private Set<MediaFiles> images;
     @OneToMany(cascade = CascadeType.ALL)

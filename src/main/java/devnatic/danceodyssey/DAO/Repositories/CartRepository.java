@@ -8,4 +8,6 @@ import org.springframework.stereotype.Repository;
 public interface CartRepository extends JpaRepository<CART,Integer> {
     CART findFirstByOrderByIdDesc();
 
+    
+
 }
