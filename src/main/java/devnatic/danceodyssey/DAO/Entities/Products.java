@@ -52,6 +52,7 @@ public class Products {
     @JsonIgnore
     @JoinColumn(name = "sub_category_id")
     SubCategory subCategories;
+
     @ManyToMany(mappedBy="reclamationproducts", cascade = CascadeType.ALL)
     private Set<Reclamation> reclamations;
 
