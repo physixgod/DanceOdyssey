@@ -32,10 +32,8 @@ public class Delivery {
     @OneToMany(cascade = CascadeType.ALL, mappedBy="delivery")
     private Set<Orders> Orders;
 
+
     @ManyToMany(mappedBy="reclamationdelivery", cascade = CascadeType.ALL)
     private Set<Reclamation> reclamationsde;
-
-
-
 
 }

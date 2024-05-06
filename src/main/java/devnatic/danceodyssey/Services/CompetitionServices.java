@@ -132,6 +132,7 @@ public class CompetitionServices implements CompetitionIServices {
             pts=10;
             dancerRepository.save(dancer);
         }
+
         return pts;
     }
 

@@ -45,8 +45,8 @@ public class ReclamationController {
 
     @GetMapping("/Showall")
     public ResponseEntity<List<Reclamation>> ShowReclamation(){
-      List<Reclamation> reclamations = reclamationServices.Showreclamation();
-      return new ResponseEntity<>(reclamations, HttpStatus.OK);
+        List<Reclamation> reclamations = reclamationServices.Showreclamation();
+        return new ResponseEntity<>(reclamations, HttpStatus.OK);
     }
 
     @GetMapping("/find/{id}")
@@ -110,3 +110,5 @@ public class ReclamationController {
 
 
 }
+
+

@@ -4,21 +4,34 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="85ce16fb-d666-4112-a2aa-c6d6561fff90" name="Changes" comment="">
+    <list default="true" id="e663c396-abed-4a5c-8646-9999ed297bba" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/devnatic/danceodyssey/Controller/AnnulationController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/devnatic/danceodyssey/DAO/Entities/Annulation.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/java/devnatic/danceodyssey/DAO/Entities/Progress.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/java/devnatic/danceodyssey/DAO/Entities/ProgressDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/devnatic/danceodyssey/DAO/Repositories/AnnulationRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/devnatic/danceodyssey/DAO/Repositories/DanceCoursesRepository.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/java/devnatic/danceodyssey/DAO/Repositories/ProgressRepository.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/java/devnatic/danceodyssey/RestController/ProgressController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/devnatic/danceodyssey/RestController/RealNotificationsController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/devnatic/danceodyssey/Services/AnnulationService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/devnatic/danceodyssey/Services/IAnnulationService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/devnatic/danceodyssey/Services/IDanceCoursesServices.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/java/devnatic/danceodyssey/Services/IProgressServices.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/java/devnatic/danceodyssey/Services/ProgressServices.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/devnatic/danceodyssey/Controller/DanceCoursesController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/devnatic/danceodyssey/Controller/DanceCoursesController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/devnatic/danceodyssey/Controller/ProductController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/devnatic/danceodyssey/Controller/ProductController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/devnatic/danceodyssey/DAO/Entities/DanceCourses.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/devnatic/danceodyssey/DAO/Entities/DanceCourses.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/devnatic/danceodyssey/DAO/Entities/Dancer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/devnatic/danceodyssey/DAO/Entities/Dancer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/devnatic/danceodyssey/DAO/Entities/Delivery.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/devnatic/danceodyssey/DAO/Entities/Delivery.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/devnatic/danceodyssey/DAO/Entities/Feedback.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/devnatic/danceodyssey/DAO/Entities/Feedback.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/devnatic/danceodyssey/DAO/Entities/Products.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/devnatic/danceodyssey/DAO/Entities/Products.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/devnatic/danceodyssey/DAO/Entities/Reclamation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/devnatic/danceodyssey/DAO/Entities/Reclamation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/devnatic/danceodyssey/RestController/RealNotificationsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/devnatic/danceodyssey/RestController/RealNotificationsController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/devnatic/danceodyssey/RestController/ReclamationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/devnatic/danceodyssey/RestController/ReclamationController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/devnatic/danceodyssey/Services/CompetitionServices.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/devnatic/danceodyssey/Services/CompetitionServices.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/devnatic/danceodyssey/Services/DanceCoursesService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/devnatic/danceodyssey/Services/DanceCoursesService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/devnatic/danceodyssey/Services/FeedbackServices.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/devnatic/danceodyssey/Services/FeedbackServices.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/devnatic/danceodyssey/Services/IFeedbackservices.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/devnatic/danceodyssey/Services/IFeedbackservices.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/devnatic/danceodyssey/Services/ReclamationServices.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/devnatic/danceodyssey/Services/ReclamationServices.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
     </list>
@@ -27,25 +40,8 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="FileTemplateManagerImpl">
-    <option name="RECENT_TEMPLATES">
-      <list>
-        <option value="Enum" />
-        <option value="Interface" />
-        <option value="Class" />
-      </list>
-    </option>
-  </component>
   <component name="Git.Settings">
-    <option name="RECENT_BRANCH_BY_REPOSITORY">
-      <map>
-        <entry key="$PROJECT_DIR$" value="main" />
-      </map>
-    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
-  </component>
-  <component name="MarkdownSettingsMigration">
-    <option name="stateVersion" value="1" />
   </component>
   <component name="MavenImportPreferences">
     <option name="generalSettings">
@@ -55,164 +51,62 @@
     </option>
   </component>
   <component name="ProjectColorInfo">{
-  &quot;associatedIndex&quot;: 1
+  &quot;associatedIndex&quot;: 5
 }</component>
-  <component name="ProjectId" id="2cdGIGcl0IDuGsjJQmohqdYjRum" />
+  <component name="ProjectId" id="2g4LVYovwG19pwX7RHRRLjTjetG" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "Application.DanceOdysseyApplication.executor": "Run",
     "RequestMappingsPanelOrder0": "0",
     "RequestMappingsPanelOrder1": "1",
     "RequestMappingsPanelWidth0": "75",
     "RequestMappingsPanelWidth1": "75",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "Spring Boot.DanceOdysseyApplication.executor": "Debug",
-    "git-widget-placeholder": "montassaralaya",
-    "ignore.virus.scanning.warn.message": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/MSI/OneDrive/Desktop/projtfinal/DanceOdyssey",
+    "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "Mostfa",
+    "last_opened_file_path": "C:/projectsSpring/DanceOdyssey Mostfa/src/main/java/devnatic/danceodyssey/Controller",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager" selected="Application.DanceOdysseyApplication">
-    <configuration name="DanceOdysseyApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="devnatic.danceodyssey.DanceOdysseyApplication" />
-      <module name="DanceOdyssey" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="devnatic.danceodyssey.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="DanceOdysseyApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
-      <module name="DanceOdyssey" />
-      <option name="SPRING_BOOT_MAIN_CLASS" value="devnatic.danceodyssey.DanceOdysseyApplication" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="devnatic.danceodyssey.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <recent_temporary>
-      <list>
-        <item itemvalue="Spring Boot.DanceOdysseyApplication" />
-        <item itemvalue="Application.DanceOdysseyApplication" />
-        <item itemvalue="Application.DanceOdysseyApplication" />
-      </list>
-    </recent_temporary>
-  </component>
-  <component name="SharedIndexes">
-    <attachedChunks>
-      <set>
-        <option value="jdk-19.0.2-corretto-19.0.2-f644763e9732-1e16d6ec" />
-        <option value="jdk-21.0.2-openjdk-21.0.2-f644763e9732-c0c073db" />
-      </set>
-    </attachedChunks>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\projectsSpring\DanceOdyssey Mostfa\src\main\java\devnatic\danceodyssey\Controller" />
+      <recent name="C:\projectsSpring\DanceOdyssey Mostfa\src\main\java\devnatic\danceodyssey\Services" />
+      <recent name="C:\projectsSpring\DanceOdyssey Mostfa\src\main\java\devnatic\danceodyssey\DAO\Repositories" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="devnatic.danceodyssey.DAO.Entities" />
+      <recent name="devnatic.danceodyssey.DAO.Repositories" />
+      <recent name="devnatic.danceodyssey.Services" />
+      <recent name="devnatic.danceodyssey.RestController" />
+    </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="85ce16fb-d666-4112-a2aa-c6d6561fff90" name="Changes" comment="" />
-      <created>1708433960926</created>
+      <changelist id="e663c396-abed-4a5c-8646-9999ed297bba" name="Changes" comment="" />
+      <created>1714951929917</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1708433960926</updated>
-      <workItem from="1708433961996" duration="9000000" />
-      <workItem from="1708965801121" duration="647000" />
-      <workItem from="1708976362985" duration="6890000" />
-      <workItem from="1709023996568" duration="973000" />
-      <workItem from="1709026131287" duration="1261000" />
-      <workItem from="1709038790578" duration="2091000" />
-      <workItem from="1709041071589" duration="868000" />
-      <workItem from="1709379622954" duration="2769000" />
-      <workItem from="1709416401441" duration="1605000" />
-      <workItem from="1709548862263" duration="91000" />
-      <workItem from="1709562252592" duration="3720000" />
-      <workItem from="1709618372115" duration="2611000" />
-      <workItem from="1709635118810" duration="3677000" />
-      <workItem from="1709642669928" duration="2946000" />
-      <workItem from="1710021053672" duration="669000" />
-      <workItem from="1710231330019" duration="1287000" />
-      <workItem from="1710241645804" duration="2109000" />
-      <workItem from="1710245118016" duration="398000" />
-      <workItem from="1710245634103" duration="603000" />
-      <workItem from="1711366939843" duration="653000" />
-      <workItem from="1711451867454" duration="1741000" />
-      <workItem from="1711542126095" duration="788000" />
-      <workItem from="1711547822874" duration="859000" />
-      <workItem from="1711658414050" duration="4646000" />
-      <workItem from="1711699983459" duration="6620000" />
-      <workItem from="1711726664608" duration="12005000" />
-      <workItem from="1711800497038" duration="11917000" />
-      <workItem from="1711889418239" duration="5938000" />
-      <workItem from="1711918077860" duration="3823000" />
-      <workItem from="1711925105614" duration="3979000" />
-      <workItem from="1711929097988" duration="1386000" />
-      <workItem from="1711967484795" duration="2487000" />
-      <workItem from="1711972316753" duration="5320000" />
-      <workItem from="1711986537655" duration="4034000" />
-      <workItem from="1712018241417" duration="2710000" />
-      <workItem from="1712055715895" duration="652000" />
-      <workItem from="1712061309853" duration="551000" />
-      <workItem from="1713247966768" duration="611000" />
-      <workItem from="1713803444171" duration="603000" />
-      <workItem from="1713814367330" duration="608000" />
-      <workItem from="1713863873243" duration="2646000" />
-      <workItem from="1713958292304" duration="1926000" />
-      <workItem from="1713997517205" duration="609000" />
-      <workItem from="1714141274212" duration="607000" />
-      <workItem from="1714747036209" duration="7059000" />
-      <workItem from="1714821267307" duration="7615000" />
-      <workItem from="1714906804678" duration="3003000" />
-      <workItem from="1714923008449" duration="767000" />
-      <workItem from="1714930295703" duration="1473000" />
-      <workItem from="1714944999128" duration="1879000" />
+      <updated>1714951929917</updated>
+      <workItem from="1714951932617" duration="920000" />
+      <workItem from="1714952883212" duration="14006000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
-  </component>
-  <component name="Vcs.Log.Tabs.Properties">
-    <option name="TAB_STATES">
-      <map>
-        <entry key="MAIN">
-          <value>
-            <State>
-              <option name="FILTERS">
-                <map>
-                  <entry key="branch">
-                    <value>
-                      <list>
-                        <option value="origin/Montassar" />
-                      </list>
-                    </value>
-                  </entry>
-                </map>
-              </option>
-            </State>
-          </value>
-        </entry>
-      </map>
-    </option>
   </component>
 </project>

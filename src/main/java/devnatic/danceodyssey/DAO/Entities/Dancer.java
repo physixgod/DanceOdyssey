@@ -38,12 +38,16 @@ public class Dancer {
     @ManyToMany(cascade = CascadeType.ALL)
     @JsonIgnore()
     private Set<Group> joinedGroups;
-  /*  @JsonIgnore()
+    /*  @JsonIgnore()
+      @ManyToMany(cascade = CascadeType.ALL)
+      private Set<DanceCourses> dancecourses;*/
     @ManyToMany(cascade = CascadeType.ALL)
-    private Set<DanceCourses> dancecourses;*/
+    private Set<DanceCourses> dancecourses;
     @OneToMany(mappedBy = "dancerParticipated", cascade = CascadeType.ALL) // corrected
     @JsonIgnore()
     private Set<Participate> participates;
+
+
     @OneToMany(cascade = CascadeType.ALL , mappedBy = "hoster")
     Set<Accommodation> hosterAccommodations;
     @ManyToMany(cascade = CascadeType.ALL , mappedBy = "residents")
@@ -52,4 +56,9 @@ public class Dancer {
     private Set<Reclamation> DancersReclamation;
     @OneToMany(mappedBy = "dancerfeed", cascade = CascadeType.ALL)
     private Set<Feedback> DancersFeedback;
+
+
+
+
+
 }

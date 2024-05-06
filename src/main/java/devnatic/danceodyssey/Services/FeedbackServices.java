@@ -15,7 +15,7 @@ public class FeedbackServices implements IFeedbackservices{
         return feedbackRepositories.save(feedback);
     }
 
-   @Override
+    @Override
     public Feedback Updatefeedback(int feedbackId, boolean resolved) {
         Feedback existingFeedback = feedbackRepositories.findById(feedbackId)
                 .orElseThrow(() -> new RuntimeException("Feedback not found with id: " + feedbackId));

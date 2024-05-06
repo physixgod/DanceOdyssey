@@ -1,4 +1,3 @@
-
 package devnatic.danceodyssey.Services;
 
 import devnatic.danceodyssey.DAO.Entities.Reclamation;
@@ -63,7 +62,7 @@ public class ReclamationServices implements IReclamationServices{
 
     @Override
     public List<Reclamation> Showreclamation(){
-          return reclamationRepositories.findAll();
+        return reclamationRepositories.findAll();
     }
 
     @Override
