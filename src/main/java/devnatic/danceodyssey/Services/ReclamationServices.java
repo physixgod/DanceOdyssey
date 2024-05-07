@@ -27,7 +27,13 @@ public class ReclamationServices implements IReclamationServices{
     }
 
     @Override
-    public Reclamation Addreclamation(Reclamation reclamation){
+    public Reclamation Addreclamation(Reclamation reclamation) {
+        // Set default value for status if not provided
+        if (reclamation.getStatus() == null || reclamation.getStatus().isEmpty()) {
+            reclamation.setStatus("Pending");
+        }
+
+        // Save the reclamation entity
         Reclamation savedReclamation = reclamationRepositories.save(reclamation);
 
         // Send notification after saving
@@ -46,11 +52,12 @@ public class ReclamationServices implements IReclamationServices{
             Reclamation existingReclamation = existingReclamationOptional.get();
             // Update attributes of existingReclamation with attributes of rec
             existingReclamation.setReclamationDescription(rec.getReclamationDescription());
-           
             existingReclamation.setReclamationResponse(rec.getReclamationResponse());
-            existingReclamation.setImageurl(rec.getImageurl());
+            existingReclamation.setReclamationReason(rec.getReclamationReason());
             existingReclamation.setUserRec(rec.getUserRec());
             existingReclamation.setDancerRec(rec.getDancerRec());
+            existingReclamation.setStatus(rec.getStatus());
+
             // Save the updated reclamation back to the database
             return reclamationRepositories.save(existingReclamation);
         } else {

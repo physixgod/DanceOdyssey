@@ -14,6 +14,7 @@ public class RealNotificationsController {
     private RealNotifications notifications = new RealNotifications(0);
     @GetMapping("/notify")
     public String getNotification() {
+        System.err.println("gg");
         // Increment Notification by one
         notifications.increment();
         // Push notifications to front-end

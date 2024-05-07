@@ -1,12 +1,11 @@
 package devnatic.danceodyssey.DAO.Entities;
 
 import devnatic.danceodyssey.DAO.ENUM.Status;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+
+import java.util.Set;
 
 @Entity
 @Setter
@@ -29,4 +28,6 @@ public class Products {
     String Model;
     byte[] productimage;
     int quantity;
+    @ManyToMany(mappedBy="reclamationproducts", cascade = CascadeType.ALL)
+    private Set<Reclamation> reclamations;
 }
